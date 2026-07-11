@@ -1,0 +1,77 @@
+{
+  "brand": "LANTANA",
+  "tag": "Maison de Parfum — Damascus",
+  "nav": { "shop": "Shop", "collections": "Collections", "maison": "The Maison", "journal": "Journal", "contact": "Contact", "search": "Search", "wishlist": "Wishlist", "cart": "Cart", "account": "Account" },
+  "hero": {
+    "eyebrow": "Damascus · Est. 2026",
+    "title": "Scent is memory",
+    "sub": "Eight eaux de parfum composed with French and Swiss essences, born in the city of jasmine.",
+    "cta": "Discover the collection",
+    "cta2": "Our story"
+  },
+  "home": {
+    "featured": "The Collection",
+    "featuredSub": "Eight compositions. One signature.",
+    "hero_product": "The Damascus flower",
+    "ritual": "The ritual",
+    "ritualBody": "Worn quietly. Remembered always. Each LANTANA composition is macerated for weeks, hand-finished, and sealed in Dubai with essences from Grasse and Geneva.",
+    "journal": "From the Journal",
+    "newsletter": "The private list",
+    "newsletterSub": "Launches, private previews and the Damascus edit. Never more than once a month.",
+    "newsletterCta": "Subscribe",
+    "newsletterPlaceholder": "Your email address",
+    "newsletterDone": "Welcome to the maison."
+  },
+  "shop": { "title": "All Fragrances", "filter": "Filter", "sort": "Sort", "sortNew": "Newest", "sortPriceAsc": "Price · low to high", "sortPriceDesc": "Price · high to low", "all": "All", "results": "results", "empty": "No fragrances match your selection." },
+  "product": {
+    "notes": "Olfactive pyramid", "top": "Top notes", "heart": "Heart notes", "base": "Base notes",
+    "addToCart": "Add to cart", "added": "Added to cart", "buyNow": "Buy now",
+    "wishlist": "Add to wishlist", "wishlisted": "In your wishlist",
+    "details": "Details", "shippingReturns": "Shipping & returns",
+    "shippingBody": "Complimentary gift wrapping. Dispatched within 48 hours from Damascus and Dubai. Returns accepted within 14 days, unopened.",
+    "related": "You may also love", "recentlyViewed": "Recently viewed",
+    "reviews": "Reviews", "writeReview": "Write a review", "yourName": "Your name", "yourReview": "Your impressions", "submitReview": "Submit review", "reviewThanks": "Thank you — your review is awaiting approval.",
+    "eau": "Eau de Parfum", "accord": "Accord", "outOfStock": "Currently unavailable", "lowStock": "Only a few remain"
+  },
+  "cart": {
+    "title": "Your cart", "empty": "Your cart is empty.", "emptyCta": "Discover the collection",
+    "subtotal": "Subtotal", "shipping": "Shipping", "shippingAtCheckout": "Calculated at checkout",
+    "checkout": "Proceed to checkout", "remove": "Remove", "qty": "Qty", "total": "Total", "discount": "Discount"
+  },
+  "checkout": {
+    "title": "Checkout", "contact": "Contact", "delivery": "Delivery", "payment": "Payment",
+    "name": "Full name", "email": "Email", "phone": "Phone", "address": "Address", "city": "City", "country": "Country", "notes": "Order notes (optional)",
+    "coupon": "Coupon code", "apply": "Apply", "couponInvalid": "This code is not valid.", "couponApplied": "Coupon applied.",
+    "payCard": "Card · Apple Pay · Google Pay", "payCardSub": "Secure payment via Stripe",
+    "payMyFatoorah": "MyFatoorah", "payMyFatoorahSub": "KNET, mada, and regional cards",
+    "payCod": "Cash on delivery", "payCodSub": "Available in Syria — pay the courier on arrival",
+    "payBank": "Bank transfer", "payBankSub": "Details sent with your order confirmation",
+    "placeOrder": "Place order", "processing": "Processing…",
+    "eta": "Estimated delivery", "days": "business days",
+    "successTitle": "Thank you.", "successBody": "Your order is confirmed. A confirmation has been sent to your email.", "orderNumber": "Order number", "continue": "Continue shopping",
+    "errors": { "required": "This field is required", "email": "Enter a valid email", "generic": "Something needs attention — please review the form." }
+  },
+  "wishlist": { "title": "Wishlist", "empty": "Nothing saved yet.", "moveToCart": "Add to cart" },
+  "search": { "title": "Search", "placeholder": "Search fragrances, notes, moods…", "empty": "No results for" },
+  "footer": {
+    "maison": "The Maison", "about": "Our story", "journal": "Journal", "contact": "Contact",
+    "care": "Client care", "shipping": "Shipping & returns", "privacy": "Privacy policy", "terms": "Terms of service",
+    "follow": "Follow", "rights": "All rights reserved.", "madeIn": "Composed in Damascus · Crafted in Dubai"
+  },
+  "about": {
+    "title": "The city of jasmine, in a bottle",
+    "body1": "LANTANA was born in Damascus — the oldest continuously inhabited city on earth, where jasmine climbs the courtyard walls and every evening carries a different memory.",
+    "body2": "Our compositions are built from French and Swiss essences, macerated slowly and finished by hand in Dubai. Each bottle carries a fragment of the Levant: rose from the gardens, oud from the old souk, jasmine from the city itself.",
+    "body3": "We believe in fragrances worn quietly — felt before they are noticed, remembered after they are gone."
+  },
+  "contactPage": { "title": "Contact", "body": "For orders, press and private commissions.", "send": "Send message", "message": "Your message", "sent": "Message received. We reply within one business day." },
+  "journal": { "title": "Journal", "read": "Read" },
+  "account": { "title": "Account", "orders": "Your orders", "signOut": "Sign out" },
+  "currency": { "detected": "Prices shown in", "change": "Change region" },
+  "misc": { "loading": "Loading", "backToShop": "Back to shop", "menu": "Menu", "close": "Close", "language": "العربية", "from": "From", "new": "New", "bestseller": "Bestseller", "viewAll": "View all" },
+  "legal": {
+    "privacyTitle": "Privacy policy",
+    "termsTitle": "Terms of service",
+    "shippingTitle": "Shipping & returns"
+  }
+}
