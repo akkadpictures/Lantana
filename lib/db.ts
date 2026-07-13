@@ -28,26 +28,38 @@ const mem = {
 /* ── Products ────────────────────────────────────────────────── */
 export async function getProducts(opts?: { includeDrafts?: boolean }): Promise<Product[]> {
   if (hasDB) {
-    let q = supa().from("products").select("*").order("created_at", { ascending: false });
-    if (!opts?.includeDrafts) q = q.eq("status", "active");
-    const { data, error } = await q;
-    if (error) throw error;
-    return (data ?? []).map(rowToProduct);
+    try {
+      let q = supa().from("products").select("*").order("created_at", { ascending: false });
+      if (!opts?.includeDrafts) q = q.eq("status", "active");
+      const { data, error } = await q;
+      if (error) throw error;
+      if (data?.length) return data.map(rowToProduct);
+    } catch (e) {
+      console.warn("[lantana] products: falling back to catalog.", e);
+    }
   }
   const list = [...mem.products].sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
   return opts?.includeDrafts ? list : list.filter((p) => p.status === "active");
 }
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   if (hasDB) {
-    const { data } = await supa().from("products").select("*").eq("slug", slug).maybeSingle();
-    return data ? rowToProduct(data) : null;
+    try {
+      const { data } = await supa().from("products").select("*").eq("slug", slug).maybeSingle();
+      if (data) return rowToProduct(data);
+    } catch (e) {
+      console.warn("[lantana] product: falling back to catalog.", e);
+    }
   }
   return mem.products.find((p) => p.slug === slug) ?? null;
 }
 export async function getProductById(id: string): Promise<Product | null> {
   if (hasDB) {
-    const { data } = await supa().from("products").select("*").eq("id", id).maybeSingle();
-    return data ? rowToProduct(data) : null;
+    try {
+      const { data } = await supa().from("products").select("*").eq("id", id).maybeSingle();
+      if (data) return rowToProduct(data);
+    } catch (e) {
+      console.warn("[lantana] product: falling back to catalog.", e);
+    }
   }
   return mem.products.find((p) => p.id === id) ?? null;
 }
@@ -77,8 +89,12 @@ export async function adjustInventory(id: string, delta: number): Promise<void> 
 /* ── Collections ─────────────────────────────────────────────── */
 export async function getCollections(): Promise<Collection[]> {
   if (hasDB) {
-    const { data } = await supa().from("collections").select("*").order("id");
-    if (data?.length) return data.map((r: Record<string, unknown>) => ({ id: r.id as string, slug: r.slug as string, name: r.name as Collection["name"], description: r.description as Collection["description"], image: r.image as string }));
+    try {
+      const { data } = await supa().from("collections").select("*").order("id");
+      if (data?.length) return data.map((r: Record<string, unknown>) => ({ id: r.id as string, slug: r.slug as string, name: r.name as Collection["name"], description: r.description as Collection["description"], image: r.image as string }));
+    } catch (e) {
+      console.warn("[lantana] collections: falling back to catalog.", e);
+    }
   }
   return mem.collections;
 }
@@ -95,8 +111,12 @@ export async function deleteCollection(id: string): Promise<void> {
 /* ── Shipping ────────────────────────────────────────────────── */
 export async function getShippingRates(): Promise<ShippingRate[]> {
   if (hasDB) {
-    const { data } = await supa().from("shipping_rates").select("*");
-    if (data?.length) return data.map((r: Record<string, unknown>) => ({ country: r.country as CountryCode, label: r.label as ShippingRate["label"], priceUSD: Number(r.price_usd), etaDays: [Number(r.eta_min), Number(r.eta_max)] as [number, number] }));
+    try {
+      const { data } = await supa().from("shipping_rates").select("*");
+      if (data?.length) return data.map((r: Record<string, unknown>) => ({ country: r.country as CountryCode, label: r.label as ShippingRate["label"], priceUSD: Number(r.price_usd), etaDays: [Number(r.eta_min), Number(r.eta_max)] as [number, number] }));
+    } catch (e) {
+      console.warn("[lantana] shipping: falling back to catalog.", e);
+    }
   }
   return mem.shipping;
 }
@@ -142,8 +162,12 @@ export async function deleteCoupon(code: string): Promise<void> {
 /* ── Blog ────────────────────────────────────────────────────── */
 export async function getBlogPosts(): Promise<BlogPost[]> {
   if (hasDB) {
-    const { data } = await supa().from("blog_posts").select("*").order("published_at", { ascending: false });
-    if (data?.length) return data.map((r: Record<string, unknown>) => ({ id: r.id as string, slug: r.slug as string, title: r.title as BlogPost["title"], excerpt: r.excerpt as BlogPost["excerpt"], body: r.body as BlogPost["body"], image: r.image as string, publishedAt: r.published_at as string }));
+    try {
+      const { data } = await supa().from("blog_posts").select("*").order("published_at", { ascending: false });
+      if (data?.length) return data.map((r: Record<string, unknown>) => ({ id: r.id as string, slug: r.slug as string, title: r.title as BlogPost["title"], excerpt: r.excerpt as BlogPost["excerpt"], body: r.body as BlogPost["body"], image: r.image as string, publishedAt: r.published_at as string }));
+    } catch (e) {
+      console.warn("[lantana] journal: falling back to catalog.", e);
+    }
   }
   return [...mem.posts].sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt));
 }
@@ -163,8 +187,12 @@ export async function deleteBlogPost(id: string): Promise<void> {
 /* ── Reviews ─────────────────────────────────────────────────── */
 export async function getReviews(productId: string): Promise<Review[]> {
   if (hasDB) {
-    const { data } = await supa().from("reviews").select("*").eq("product_id", productId).eq("approved", true).order("created_at", { ascending: false });
-    return (data ?? []).map(rowToReview);
+    try {
+      const { data } = await supa().from("reviews").select("*").eq("product_id", productId).eq("approved", true).order("created_at", { ascending: false });
+      return (data ?? []).map(rowToReview);
+    } catch (e) {
+      console.warn("[lantana] reviews: falling back to catalog.", e);
+    }
   }
   return mem.reviews.filter((r) => r.productId === productId && r.approved);
 }
