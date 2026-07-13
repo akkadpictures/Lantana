@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { LantanaMark } from "@/components/brand/LantanaMark";
 import { Input, Label } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -12,18 +12,25 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const router = useRouter();
-  const params = useSearchParams();
 
   async function submit() {
+    if (busy) return;
     setBusy(true);
     setError("");
     try {
       const res = await fetch("/api/admin/login", {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      if (!res.ok) { setError("Invalid email or password."); setBusy(false); return; }
-      router.push(params.get("next") || "/admin");
+      if (!res.ok) {
+        setError("Invalid email or password.");
+        setBusy(false);
+        return;
+      }
+      // Return to the page the guard came from, if any.
+      const next = new URLSearchParams(window.location.search).get("next");
+      router.push(next && next.startsWith("/admin") ? next : "/admin");
       router.refresh();
     } catch {
       setError("Something went wrong. Please try again.");
@@ -42,11 +49,13 @@ export default function AdminLoginPage() {
         <div className="space-y-4">
           <div>
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" dir="ltr" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
+            <Input id="email" type="email" dir="ltr" autoComplete="username" value={email}
+              onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
           </div>
           <div>
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
+            <Input id="password" type="password" autoComplete="current-password" value={password}
+              onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
           </div>
           {error && <p className="font-body text-xs text-red-800" role="alert">{error}</p>}
           <Button className="w-full" onClick={submit} disabled={busy}>{busy ? "Signing in…" : "Sign in"}</Button>
