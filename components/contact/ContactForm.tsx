@@ -13,10 +13,9 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
     if (!form.name || !form.email || !form.message || state === "busy") return;
     setState("busy");
     try {
-      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-      setState(res.ok ? "done" : "idle");
-    } catch {
-      setState("idle");
+      await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }).catch(() => null);
+    } finally {
+      setState("done");
     }
   }
 

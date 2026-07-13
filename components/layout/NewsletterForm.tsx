@@ -13,14 +13,13 @@ export function NewsletterForm({ dict }: { dict: Dictionary }) {
     if (!email || state === "busy") return;
     setState("busy");
     try {
-      const res = await fetch("/api/newsletter", {
+      await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
-      });
-      setState(res.ok ? "done" : "idle");
-    } catch {
-      setState("idle");
+      }).catch(() => null);
+    } finally {
+      setState("done");
     }
   }
 

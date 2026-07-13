@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import type { Locale, Product } from "@/types";
 import { t } from "./utils";
 
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`) ||
-  (process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`) ||
-  "http://localhost:3000";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://lantana.com";
 
 export function baseMetadata(locale: Locale): Metadata {
   const isAr = locale === "ar";
