@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n/config";
 import { getProducts, getProductBySlug, getReviews, getShippingRates } from "@/lib/db";
-import { COUNTRY_CURRENCY, toCountryCode, resolvePrice } from "@/lib/currency";
+import { getMarket } from "@/lib/market";
+import { priceOf } from "@/lib/currency";
 import { productJsonLd } from "@/lib/seo";
 import { NotesPyramid } from "@/components/product/NotesPyramid";
 import { AddToCart } from "@/components/product/AddToCart";
@@ -14,6 +14,7 @@ import { TrackRecent } from "@/components/product/TrackRecent";
 import { Stars } from "@/components/product/Stars";
 import { ReviewForm } from "@/components/product/ReviewForm";
 import { Price } from "@/components/product/Price";
+import { Gallery, type GalleryImage } from "@/components/product/Gallery";
 import { Reveal } from "@/components/motion/Reveal";
 import { t } from "@/lib/utils";
 import type { Locale } from "@/types";
@@ -44,55 +45,57 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
   const product = await getProductBySlug(slug);
   if (!product || product.status !== "active") notFound();
 
-  const cookieStore = await cookies();
-  const country = toCountryCode(cookieStore.get("lantana_country")?.value);
-  const currency = COUNTRY_CURRENCY[country];
-  const price = resolvePrice(product.basePriceUSD, product.prices, currency);
+  const market = await getMarket();
+  const price = priceOf(product, market.currency, market.multiplier, market.rates);
 
   const [allProducts, reviews, rates] = await Promise.all([getProducts(), getReviews(product.id), getShippingRates()]);
   const related = allProducts.filter((p) => p.id !== product.id && (p.collection === product.collection || p.featured)).slice(0, 4);
-  const rate = rates.find((r) => r.country === country) ?? rates.find((r) => r.country === "WW");
+  const rate = rates.find((r) => r.country === market.country) ?? rates.find((r) => r.country === "WW");
+
+  const name = t(product.name, locale);
+  const secondary: GalleryImage[] = product.gallery
+    .filter((src) => src !== product.image)
+    .map((src, i) => ({ src, caption: `${name} — ${i + 2}` }));
 
   return (
-    <article className="mx-auto max-w-7xl px-5 py-12 md:px-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(product, locale, price, currency)) }} />
+    <article className="shell py-14 md:py-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(product, locale, price, market.currency)) }}
+      />
       <TrackRecent slug={product.slug} />
 
-      <div className="grid gap-12 lg:grid-cols-2">
-        {/* Gallery */}
-        <Reveal className="space-y-4">
-          <div className="frame-zoom relative aspect-square bg-ivory-soft">
-            <Image src={product.image} alt={t(product.name, locale)} fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+      <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
+        {/* Hero frame + gallery */}
+        <Reveal className="space-y-6">
+          <div className="frame-zoom relative aspect-[4/5] overflow-hidden bg-ivory-soft">
+            <Image src={product.image} alt={name} fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
           </div>
-          {product.gallery.length > 1 && (
-            <div className="grid grid-cols-2 gap-4">
-              {product.gallery.slice(1).map((src, i) => (
-                <div key={i} className="frame-zoom relative aspect-square bg-ivory-soft">
-                  <Image src={src} alt={`${t(product.name, locale)} — ${i + 2}`} fill sizes="25vw" className="object-cover" />
-                </div>
-              ))}
-            </div>
-          )}
+          {secondary.length > 0 && <Gallery images={secondary} alt={name} className="!columns-2 gap-4" />}
         </Reveal>
 
         {/* Details */}
-        <Reveal delay={0.1} className="lg:py-6">
-          <p className="eyebrow mb-3">{product.concentration} · {product.size}</p>
-          <h1 className="h-display text-5xl text-ink">{t(product.name, locale)}</h1>
-          <p className="mt-3 font-display text-xl font-light italic text-olive-deep">{t(product.tagline, locale)}</p>
-          <p className="mt-6 font-body text-2xl text-ink">
-            <Price product={product} currency={currency} locale={locale} />
-          </p>
-          <p className="mt-6 max-w-lg font-body text-[15px] leading-loose text-ink/70">{t(product.description, locale)}</p>
-          <p className="mt-4 font-body text-xs uppercase tracking-wide2 text-ink/50">{dict.product.accord}: {t(product.accord, locale)}</p>
+        <Reveal delay={0.1} className="lg:py-8">
+          <p className="eyebrow mb-4">{product.concentration} · {product.size}</p>
+          <h1 className="t-h1 text-ink">{name}</h1>
+          <p className="mt-4 font-display text-d4 font-light italic text-olive-deep">{t(product.tagline, locale)}</p>
 
-          <div className="mt-9 max-w-md">
+          <p className="mt-8 font-body text-d4 tracking-wide2 text-ink tabular-nums">
+            <Price product={product} />
+          </p>
+
+          <p className="t-body mt-8 max-w-prose2">{t(product.description, locale)}</p>
+          <p className="t-label mt-5 tracking-wide2 text-ink/50">
+            {dict.product.accord}: {t(product.accord, locale)}
+          </p>
+
+          <div className="mt-10 max-w-md">
             <AddToCart product={product} locale={locale} dict={dict} />
           </div>
 
-          <details className="mt-10 border-t hairline pt-5">
-            <summary className="cursor-pointer font-body text-[12px] uppercase tracking-wide2 text-ink/70">{dict.product.shippingReturns}</summary>
-            <p className="mt-3 font-body text-sm leading-relaxed text-ink/60">
+          <details className="mt-12 border-t hairline pt-6">
+            <summary className="t-label cursor-pointer tracking-wide2 text-ink/70">{dict.product.shippingReturns}</summary>
+            <p className="t-small mt-4">
               {dict.product.shippingBody}
               {rate && <> {dict.checkout.eta}: {rate.etaDays[0]}–{rate.etaDays[1]} {dict.checkout.days}.</>}
             </p>
@@ -101,22 +104,22 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
       </div>
 
       {/* Olfactive pyramid */}
-      <Reveal className="mx-auto mt-24 max-w-4xl">
+      <Reveal className="mx-auto mt-28 max-w-4xl md:mt-36">
         <NotesPyramid notes={product.notes} locale={locale} dict={dict} />
       </Reveal>
 
       {/* Reviews */}
-      <Reveal className="mx-auto mt-24 max-w-3xl">
-        <h2 className="h-display mb-8 text-center text-3xl text-ink">{dict.product.reviews}</h2>
+      <Reveal className="mx-auto mt-28 max-w-3xl md:mt-36">
+        <h2 className="t-h2 mb-10 text-center text-ink">{dict.product.reviews}</h2>
         {reviews.length > 0 && (
-          <ul className="mb-12 space-y-8">
+          <ul className="mb-14 space-y-9">
             {reviews.map((r) => (
-              <li key={r.id} className="border-b hairline pb-8">
+              <li key={r.id} className="border-b hairline pb-9">
                 <div className="flex items-center justify-between">
-                  <p className="font-body text-sm font-medium text-ink">{r.author}</p>
-                  <Stars rating={r.rating} className="text-sm" />
+                  <p className="font-body text-base2 text-ink">{r.author}</p>
+                  <Stars rating={r.rating} className="text-base2" />
                 </div>
-                <p className="mt-2 font-body text-sm leading-relaxed text-ink/65">{r.body}</p>
+                <p className="t-body mt-3">{r.body}</p>
               </li>
             ))}
           </ul>
@@ -126,13 +129,13 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
 
       {/* Related */}
       {related.length > 0 && (
-        <section className="mt-24">
-          <Reveal className="mb-10 text-center">
-            <h2 className="h-display text-3xl text-ink">{dict.product.related}</h2>
+        <section className="mt-28 md:mt-36">
+          <Reveal className="mb-12 text-center">
+            <h2 className="t-h2 text-ink">{dict.product.related}</h2>
           </Reveal>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-14 lg:grid-cols-4">
             {related.map((p) => (
-              <ProductCard key={p.id} product={p} locale={locale} currency={currency} />
+              <ProductCard key={p.id} product={p} locale={locale} />
             ))}
           </div>
         </section>

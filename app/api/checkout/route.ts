@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { checkoutSchema } from "@/lib/validation";
 import { getProductById, getShippingRates, getCoupon, createOrder, adjustInventory } from "@/lib/db";
-import { COUNTRY_CURRENCY, toCountryCode, resolvePrice, convertUSD } from "@/lib/currency";
+import { toCountryCode, priceOf, amountOf, multiplierFor, toCurrency } from "@/lib/currency";
+import { getRates } from "@/lib/rates";
 import { hasStripe, stripe, toStripeAmount, STRIPE_SUPPORTED } from "@/lib/stripe";
 import { orderNumber, t } from "@/lib/utils";
 import { SITE_URL } from "@/lib/seo";
@@ -15,8 +16,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid_input" }, { status: 400 });
   }
 
-  const country = toCountryCode(input.country);
-  const currency: Currency = COUNTRY_CURRENCY[country];
+  /* The delivery country decides shipping and payment rails. The *price tier*
+     is decided by where the customer actually is, read from the edge geo header,
+     so a Damascus price cannot be claimed by typing "Syria" into a form. */
+  const shipTo = toCountryCode(input.country);
+  const geoCountry = toCountryCode(
+    req.headers.get("x-vercel-ip-country") || req.headers.get("cf-ipcountry") || ""
+  );
+  const multiplier = multiplierFor(geoCountry);
+  const currency: Currency =
+    toCurrency(req.cookies.get("lantana_currency")?.value) ?? (geoCountry === "SY" ? "SYP" : "USD");
+  const rates = await getRates();
+  const country = shipTo;
 
   /* Server-side pricing — the client total is never trusted. */
   const lines: Order["items"] = [];
@@ -26,16 +37,16 @@ export async function POST(req: NextRequest) {
     const p = await getProductById(item.productId);
     if (!p || p.status !== "active") return NextResponse.json({ error: "product_unavailable" }, { status: 400 });
     if (p.inventory < item.qty) return NextResponse.json({ error: "insufficient_stock" }, { status: 409 });
-    const unit = resolvePrice(p.basePriceUSD, p.prices, currency);
+    const unit = priceOf(p, currency, multiplier, rates);
     lines.push({ productId: p.id, name: t(p.name, input.locale), qty: item.qty, unitPrice: unit });
     subtotal += unit * item.qty;
-    subtotalUSD += p.basePriceUSD * item.qty;
+    subtotalUSD += p.basePriceUSD * multiplier * item.qty;
   }
 
-  const rates = await getShippingRates();
-  const rate = rates.find((r) => r.country === country) ?? rates.find((r) => r.country === "WW")!;
-  const shipping = convertUSD(rate.priceUSD, currency);
-  const shippingUSD = rate.priceUSD;
+  const shippingRates = await getShippingRates();
+  const rate = shippingRates.find((r) => r.country === country) ?? shippingRates.find((r) => r.country === "WW")!;
+  const shipping = amountOf(rate.priceUSD, currency, multiplier, rates);
+  const shippingUSD = rate.priceUSD * multiplier;
 
   let discount = 0;
   let discountUSD = 0;
@@ -43,8 +54,8 @@ export async function POST(req: NextRequest) {
   if (input.couponCode) {
     const c = await getCoupon(input.couponCode);
     if (c && subtotalUSD >= c.minSubtotalUSD) {
-      discount = c.type === "percent" ? Math.round(subtotal * (c.value / 100) * 100) / 100 : convertUSD(c.value, currency);
-      discountUSD = c.type === "percent" ? Math.round(subtotalUSD * (c.value / 100) * 100) / 100 : c.value;
+      discount = c.type === "percent" ? Math.round(subtotal * (c.value / 100) * 100) / 100 : amountOf(c.value, currency, multiplier, rates);
+      discountUSD = c.type === "percent" ? Math.round(subtotalUSD * (c.value / 100) * 100) / 100 : c.value * multiplier;
       couponCode = c.code;
     }
   }

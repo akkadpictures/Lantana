@@ -4,11 +4,12 @@ import type { Metadata } from "next";
 import { getDictionary } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n/config";
 import { getProducts, getCollections } from "@/lib/db";
-import { COUNTRY_CURRENCY, toCountryCode, resolvePrice } from "@/lib/currency";
+import { COUNTRY_CURRENCY, toCountryCode, priceOf } from "@/lib/currency";
+import { getMarket } from "@/lib/market";
 import { ProductCard } from "@/components/product/ProductCard";
 import { Reveal } from "@/components/motion/Reveal";
 import { cn, t } from "@/lib/utils";
-import type { Locale } from "@/types";
+import type { Locale, Product } from "@/types";
 
 export const revalidate = 300;
 
@@ -28,12 +29,14 @@ export default async function ShopPage({
   const dict = await getDictionary(locale);
   const cookieStore = await cookies();
   const currency = COUNTRY_CURRENCY[toCountryCode(cookieStore.get("lantana_country")?.value)];
+  const market = await getMarket();
+  const shelf = (p: Product) => priceOf(p, market.currency, market.multiplier, market.rates);
 
   const [allProducts, collections] = await Promise.all([getProducts(), getCollections()]);
 
   let products = sp.collection ? allProducts.filter((p) => p.collection === sp.collection) : allProducts;
-  if (sp.sort === "price-asc") products = [...products].sort((a, b) => resolvePrice(a.basePriceUSD, a.prices, currency) - resolvePrice(b.basePriceUSD, b.prices, currency));
-  else if (sp.sort === "price-desc") products = [...products].sort((a, b) => resolvePrice(b.basePriceUSD, b.prices, currency) - resolvePrice(a.basePriceUSD, a.prices, currency));
+  if (sp.sort === "price-asc") products = [...products].sort((a, b) => shelf(a) - shelf(b));
+  else if (sp.sort === "price-desc") products = [...products].sort((a, b) => shelf(b) - shelf(a));
 
   const qs = (patch: Record<string, string | undefined>) => {
     const p = new URLSearchParams();

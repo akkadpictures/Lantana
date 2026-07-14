@@ -64,9 +64,9 @@ export async function middleware(req: NextRequest) {
 
   const setCommon = (res: NextResponse, locale: "en" | "ar") => {
     res.cookies.set(LOCALE_COOKIE, locale, { path: "/", maxAge: YEAR });
-    if (!req.cookies.get(COUNTRY_COOKIE)) {
-      res.cookies.set(COUNTRY_COOKIE, country, { path: "/", maxAge: MONTH });
-    }
+    /* Refreshed on every request, never merely seeded: the tier a customer pays
+       must track where they are now, not where they were a month ago. */
+    res.cookies.set(COUNTRY_COOKIE, country, { path: "/", maxAge: MONTH });
     return res;
   };
 
