@@ -10,9 +10,9 @@ export function Card({ children, className }: { children: ReactNode; className?:
 export function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
     <Card>
-      <p className="font-body text-[11px] uppercase tracking-wide2 text-ink/50">{label}</p>
-      <p className="mt-2 font-display text-3xl font-light text-ink">{value}</p>
-      {sub && <p className="mt-1 font-body text-xs text-ink/50">{sub}</p>}
+      <p className="font-body text-micro uppercase tracking-wide2 text-ink/50">{label}</p>
+      <p className="mt-2 font-display text-d3 font-light text-ink">{value}</p>
+      {sub && <p className="mt-1 font-body text-sm2 text-ink/50">{sub}</p>}
     </Card>
   );
 }
@@ -20,11 +20,11 @@ export function Stat({ label, value, sub }: { label: string; value: string; sub?
 export function Table({ head, children }: { head: string[]; children: ReactNode }) {
   return (
     <div className="overflow-x-auto border hairline">
-      <table className="w-full border-collapse text-start font-body text-sm">
+      <table className="w-full border-collapse text-start font-body text-base2">
         <thead>
           <tr className="border-b hairline bg-ink/[0.03]">
             {head.map((h) => (
-              <th key={h} className="whitespace-nowrap px-4 py-3 text-start font-medium uppercase tracking-wide2 text-[11px] text-ink/60">{h}</th>
+              <th key={h} className="whitespace-nowrap px-4 py-3 text-start font-medium uppercase tracking-wide2 text-micro text-ink/60">{h}</th>
             ))}
           </tr>
         </thead>
@@ -42,5 +42,5 @@ export function Badge({ children, tone = "olive" }: { children: ReactNode; tone?
     red: "bg-red-100 text-red-800",
     grey: "bg-ink/10 text-ink/60",
   };
-  return <span className={cn("inline-block rounded-full px-2.5 py-0.5 text-[11px] uppercase tracking-wide2", tones[tone])}>{children}</span>;
+  return <span className={cn("inline-block rounded-full px-2.5 py-0.5 text-micro uppercase tracking-wide2", tones[tone])}>{children}</span>;
 }

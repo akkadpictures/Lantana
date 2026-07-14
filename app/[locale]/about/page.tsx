@@ -25,7 +25,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <div className="relative mx-auto max-w-3xl px-5 text-center">
           <Reveal>
             <LantanaMark className="mx-auto mb-8 h-10 w-10 text-olive-mist" />
-            <h1 className="h-display text-4xl leading-tight text-ivory sm:text-5xl lg:text-6xl">{dict.about.title}</h1>
+            <h1 className="h-display text-d2 leading-tight text-ivory sm:text-d2 lg:text-d1">{dict.about.title}</h1>
           </Reveal>
         </div>
       </section>
@@ -33,7 +33,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <section className="mx-auto max-w-3xl space-y-10 px-5 py-20 md:px-8 lg:py-24">
         {[dict.about.body1, dict.about.body2, dict.about.body3].map((p, i) => (
           <Reveal key={i} delay={i * 0.08}>
-            <p className="font-display text-2xl font-light leading-relaxed text-ink sm:text-[27px]">{p}</p>
+            <p className="font-display text-d4 font-light leading-relaxed text-ink sm:text-[27px]">{p}</p>
           </Reveal>
         ))}
       </section>
@@ -47,8 +47,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           ].map((v, i) => (
             <Reveal key={i} delay={i * 0.1}>
               <LantanaMark className="mx-auto mb-4 h-6 w-6 text-olive" />
-              <h3 className="font-display text-xl font-light text-ink">{v.t}</h3>
-              <p className="mt-2 font-body text-sm text-ink/55">{v.d}</p>
+              <h3 className="font-display text-d5 font-light text-ink">{v.t}</h3>
+              <p className="mt-2 font-body text-base2 text-ink/55">{v.d}</p>
             </Reveal>
           ))}
         </div>

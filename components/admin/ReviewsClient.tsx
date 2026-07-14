@@ -17,7 +17,7 @@ export function ReviewsClient({ initial, names }: { initial: Review[]; names: Re
     setReviews((list) => list.filter((r) => r.id !== id));
   }
 
-  if (reviews.length === 0) return <Card><p className="font-body text-sm text-ink/50">No reviews yet.</p></Card>;
+  if (reviews.length === 0) return <Card><p className="font-body text-base2 text-ink/50">No reviews yet.</p></Card>;
 
   return (
     <Table head={["Product", "Author", "Rating", "Review", "Status", ""]}>

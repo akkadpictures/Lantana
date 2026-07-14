@@ -28,9 +28,9 @@ export function Wordmark({
     <div className={cn("flex flex-col items-start gap-3", tones[tone], className)}>
       <LantanaMark className="h-9 w-9" />
       <div className="leading-none">
-        <span className="block font-display text-2xl font-light tracking-luxe">LANTANA</span>
+        <span className="block font-display text-d4 font-light tracking-luxe">LANTANA</span>
         <span
-          className="mt-1.5 block text-lg opacity-70"
+          className="mt-1.5 block text-lead opacity-70"
           style={{ fontFamily: "var(--font-display-ar), serif" }}
           lang="ar"
           dir="rtl"

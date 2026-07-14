@@ -104,7 +104,7 @@ export function Gallery({
             <button
               onClick={close}
               aria-label="Close"
-              className="absolute end-6 top-6 z-10 text-3xl leading-none text-ivory/70 transition-colors hover:text-ivory"
+              className="absolute end-6 top-6 z-10 text-d3 leading-none text-ivory/70 transition-colors hover:text-ivory"
             >
               ×
             </button>

@@ -19,11 +19,11 @@ export function ShippingClient({ initial }: { initial: ShippingRate[] }) {
 
   return (
     <div className="overflow-x-auto border hairline">
-      <table className="w-full border-collapse font-body text-sm">
+      <table className="w-full border-collapse font-body text-base2">
         <thead>
           <tr className="border-b hairline bg-ink/[0.03]">
             {["Region", "Label (EN)", "Price (USD)", "ETA min", "ETA max", ""].map((h) => (
-              <th key={h} className="px-4 py-3 text-start text-[11px] uppercase tracking-wide2 text-ink/60">{h}</th>
+              <th key={h} className="px-4 py-3 text-start text-micro uppercase tracking-wide2 text-ink/60">{h}</th>
             ))}
           </tr>
         </thead>
@@ -35,7 +35,7 @@ export function ShippingClient({ initial }: { initial: ShippingRate[] }) {
               <td className="px-4 py-2"><input type="number" className="w-20 border border-ink/15 bg-transparent px-2 py-1 focus:border-olive focus:outline-none" defaultValue={r.priceUSD} onChange={(e) => upd(r.country, { priceUSD: parseFloat(e.target.value) || 0 })} /></td>
               <td className="px-4 py-2"><input type="number" className="w-16 border border-ink/15 bg-transparent px-2 py-1 focus:border-olive focus:outline-none" defaultValue={r.etaDays[0]} onChange={(e) => upd(r.country, { etaDays: [parseInt(e.target.value) || 0, r.etaDays[1]] })} /></td>
               <td className="px-4 py-2"><input type="number" className="w-16 border border-ink/15 bg-transparent px-2 py-1 focus:border-olive focus:outline-none" defaultValue={r.etaDays[1]} onChange={(e) => upd(r.country, { etaDays: [r.etaDays[0], parseInt(e.target.value) || 0] })} /></td>
-              <td className="px-4 py-2"><Button variant="outline" className="px-4 py-1.5 text-[11px]" disabled={saving === r.country} onClick={() => save(rates.find((x) => x.country === r.country)!)}>Save</Button></td>
+              <td className="px-4 py-2"><Button variant="outline" className="px-4 py-1.5 text-micro" disabled={saving === r.country} onClick={() => save(rates.find((x) => x.country === r.country)!)}>Save</Button></td>
             </tr>
           ))}
         </tbody>

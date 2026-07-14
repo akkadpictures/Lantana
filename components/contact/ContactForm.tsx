@@ -19,7 +19,7 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
     }
   }
 
-  if (state === "done") return <p className="font-body text-sm text-olive-deep">{dict.contactPage.sent}</p>;
+  if (state === "done") return <p className="font-body text-base2 text-olive-deep">{dict.contactPage.sent}</p>;
 
   return (
     <div className="space-y-4">

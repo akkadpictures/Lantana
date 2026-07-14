@@ -36,7 +36,7 @@ export function BlogClient({ initial }: { initial: BlogPost[] }) {
     const upd = (patch: Partial<BlogPost>) => setEditing({ ...b, ...patch });
     return (
       <Card className="max-w-3xl">
-        <h2 className="mb-6 font-display text-xl">{initial.some((x) => x.id === b.id) ? "Edit article" : "New article"}</h2>
+        <h2 className="mb-6 font-display text-d5">{initial.some((x) => x.id === b.id) ? "Edit article" : "New article"}</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div><Label>Title (EN)</Label><Input value={b.title.en} onChange={(e) => upd({ title: { ...b.title, en: e.target.value } })} /></div>
           <div><Label>Title (AR)</Label><Input dir="rtl" value={b.title.ar} onChange={(e) => upd({ title: { ...b.title, ar: e.target.value } })} /></div>
@@ -49,7 +49,7 @@ export function BlogClient({ initial }: { initial: BlogPost[] }) {
         </div>
         <div className="mt-6 flex gap-3">
           <Button onClick={() => save(b)} disabled={saving || !b.title.en}>{saving ? "Saving…" : "Publish"}</Button>
-          <button onClick={() => setEditing(null)} className="font-body text-sm text-ink/50">Cancel</button>
+          <button onClick={() => setEditing(null)} className="font-body text-base2 text-ink/50">Cancel</button>
         </div>
       </Card>
     );
@@ -62,10 +62,10 @@ export function BlogClient({ initial }: { initial: BlogPost[] }) {
         {posts.map((p) => (
           <Card key={p.id} className="flex items-center justify-between">
             <div>
-              <h3 className="font-display text-lg">{p.title.en}</h3>
-              <p className="font-body text-xs text-ink/50">{new Date(p.publishedAt).toLocaleDateString("en-GB")} · {p.slug}</p>
+              <h3 className="font-display text-lead">{p.title.en}</h3>
+              <p className="font-body text-sm2 text-ink/50">{new Date(p.publishedAt).toLocaleDateString("en-GB")} · {p.slug}</p>
             </div>
-            <div className="flex gap-3 font-body text-sm">
+            <div className="flex gap-3 font-body text-base2">
               <button className="text-olive-deep underline" onClick={() => setEditing(p)}>Edit</button>
               <button className="text-red-800 underline" onClick={() => remove(p.id)}>Delete</button>
             </div>

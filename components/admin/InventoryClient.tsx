@@ -26,13 +26,13 @@ export function InventoryClient({ initial }: { initial: Product[] }) {
           <td className="px-4 py-3">
             <input
               type="number" min={0} defaultValue={p.inventory}
-              className="w-24 border border-ink/20 bg-transparent px-2 py-1 font-body text-sm focus:border-olive focus:outline-none"
+              className="w-24 border border-ink/20 bg-transparent px-2 py-1 font-body text-base2 focus:border-olive focus:outline-none"
               onBlur={(e) => { const v = Math.max(0, parseInt(e.target.value) || 0); if (v !== p.inventory) save(p, v); }}
             />
-            {p.inventory <= 10 && <span className="ms-2 text-xs text-red-800">low</span>}
+            {p.inventory <= 10 && <span className="ms-2 text-sm2 text-red-800">low</span>}
           </td>
           <td className="px-4 py-3">
-            <Button variant="outline" className="px-4 py-1.5 text-[11px]" disabled={saving === p.id}
+            <Button variant="outline" className="px-4 py-1.5 text-micro" disabled={saving === p.id}
               onClick={() => save(p, p.inventory + 50)}>+50</Button>
           </td>
         </tr>

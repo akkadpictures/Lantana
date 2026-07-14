@@ -88,7 +88,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           <button onClick={openCart} aria-label={`${dict.nav.cart} (${count})`} className="relative text-ink/75 transition-colors hover:text-ink">
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 8h12l-1 12H7L6 8Z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
             {count > 0 && (
-              <span className="absolute -end-2 -top-2 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-olive px-1 font-body text-[11px] leading-none text-ivory">
+              <span className="absolute -end-2 -top-2 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-olive px-1 font-body text-micro leading-none text-ivory">
                 {count}
               </span>
             )}

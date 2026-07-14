@@ -36,7 +36,7 @@ export function CollectionsClient({ initial }: { initial: Collection[] }) {
     const upd = (patch: Partial<Collection>) => setEditing({ ...c, ...patch });
     return (
       <Card className="max-w-2xl">
-        <h2 className="mb-6 font-display text-xl">{initial.some((x) => x.id === c.id) ? "Edit collection" : "New collection"}</h2>
+        <h2 className="mb-6 font-display text-d5">{initial.some((x) => x.id === c.id) ? "Edit collection" : "New collection"}</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div><Label>Name (EN)</Label><Input value={c.name.en} onChange={(e) => upd({ name: { ...c.name, en: e.target.value } })} /></div>
           <div><Label>Name (AR)</Label><Input dir="rtl" value={c.name.ar} onChange={(e) => upd({ name: { ...c.name, ar: e.target.value } })} /></div>
@@ -47,7 +47,7 @@ export function CollectionsClient({ initial }: { initial: Collection[] }) {
         </div>
         <div className="mt-6 flex gap-3">
           <Button onClick={() => save(c)} disabled={saving || !c.name.en}>{saving ? "Saving…" : "Save"}</Button>
-          <button onClick={() => setEditing(null)} className="font-body text-sm text-ink/50">Cancel</button>
+          <button onClick={() => setEditing(null)} className="font-body text-base2 text-ink/50">Cancel</button>
         </div>
       </Card>
     );
@@ -59,10 +59,10 @@ export function CollectionsClient({ initial }: { initial: Collection[] }) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {collections.map((c) => (
           <Card key={c.id}>
-            <h3 className="font-display text-lg">{c.name.en}</h3>
-            <p className="mt-1 font-body text-xs text-ink/50">{c.slug}</p>
-            <p className="mt-2 font-body text-sm text-ink/60 line-clamp-2">{c.description.en}</p>
-            <div className="mt-4 flex gap-3 font-body text-sm">
+            <h3 className="font-display text-lead">{c.name.en}</h3>
+            <p className="mt-1 font-body text-sm2 text-ink/50">{c.slug}</p>
+            <p className="mt-2 font-body text-base2 text-ink/60 line-clamp-2">{c.description.en}</p>
+            <div className="mt-4 flex gap-3 font-body text-base2">
               <button className="text-olive-deep underline" onClick={() => setEditing(c)}>Edit</button>
               <button className="text-red-800 underline" onClick={() => remove(c.id)}>Delete</button>
             </div>

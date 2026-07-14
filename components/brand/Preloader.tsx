@@ -29,7 +29,7 @@ export function Preloader() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { delay: 0.9, duration: 0.6 } }}
-              className="mt-6 text-center font-body text-[11px] uppercase tracking-luxe"
+              className="mt-6 text-center font-body text-micro uppercase tracking-luxe"
             >
               Lantana
             </motion.p>

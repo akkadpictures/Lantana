@@ -30,7 +30,7 @@ export function CouponsClient({ initial }: { initial: Coupon[] }) {
   return (
     <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
       <div>
-        {coupons.length === 0 ? <Card><p className="font-body text-sm text-ink/50">No coupons yet.</p></Card> : (
+        {coupons.length === 0 ? <Card><p className="font-body text-base2 text-ink/50">No coupons yet.</p></Card> : (
           <Table head={["Code", "Type", "Value", "Min (USD)", "Status", ""]}>
             {coupons.map((c) => (
               <tr key={c.code} className="border-b hairline last:border-0">
@@ -46,13 +46,13 @@ export function CouponsClient({ initial }: { initial: Coupon[] }) {
         )}
       </div>
       <Card>
-        <h2 className="mb-4 font-display text-xl">Add / edit coupon</h2>
+        <h2 className="mb-4 font-display text-d5">Add / edit coupon</h2>
         <div className="space-y-3">
           <div><Label>Code</Label><Input value={draft.code} onChange={(e) => setDraft({ ...draft, code: e.target.value })} /></div>
           <div><Label>Type</Label><Select value={draft.type} onChange={(e) => setDraft({ ...draft, type: e.target.value as Coupon["type"] })}><option value="percent">Percent</option><option value="fixed">Fixed (USD)</option></Select></div>
           <div><Label>Value</Label><Input type="number" value={draft.value} onChange={(e) => setDraft({ ...draft, value: parseFloat(e.target.value) || 0 })} /></div>
           <div><Label>Minimum subtotal (USD)</Label><Input type="number" value={draft.minSubtotalUSD} onChange={(e) => setDraft({ ...draft, minSubtotalUSD: parseFloat(e.target.value) || 0 })} /></div>
-          <label className="flex items-center gap-2 font-body text-sm"><input type="checkbox" checked={draft.active} onChange={(e) => setDraft({ ...draft, active: e.target.checked })} /> Active</label>
+          <label className="flex items-center gap-2 font-body text-base2"><input type="checkbox" checked={draft.active} onChange={(e) => setDraft({ ...draft, active: e.target.checked })} /> Active</label>
           <Button variant="olive" onClick={save} disabled={saving || !draft.code.trim()}>{saving ? "Saving…" : "Save coupon"}</Button>
         </div>
       </Card>

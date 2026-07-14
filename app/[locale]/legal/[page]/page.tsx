@@ -84,10 +84,10 @@ export default async function LegalPage({ params }: { params: Promise<{ locale: 
   return (
     <div className="mx-auto max-w-2xl px-5 py-16 md:px-8 lg:py-24">
       <Reveal>
-        <h1 className="h-display mb-10 text-4xl text-ink">{c.title}</h1>
+        <h1 className="h-display mb-10 text-d2 text-ink">{c.title}</h1>
         <div className="space-y-6">
           {c.body.map((p, i) => (
-            <p key={i} className="font-body text-[15px] leading-loose text-ink/70">{p}</p>
+            <p key={i} className="font-body text-base2 leading-loose text-ink/70">{p}</p>
           ))}
         </div>
       </Reveal>

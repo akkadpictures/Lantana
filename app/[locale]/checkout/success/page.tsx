@@ -23,15 +23,15 @@ export default async function SuccessPage({
     <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 px-5 py-28 text-center">
       <ClearCart />
       <LantanaMark animated className="h-16 w-16 text-olive" />
-      <h1 className="h-display text-5xl text-ink">{dict.checkout.successTitle}</h1>
-      <p className="font-body text-sm leading-relaxed text-ink/60">{dict.checkout.successBody}</p>
+      <h1 className="h-display text-d2 text-ink">{dict.checkout.successTitle}</h1>
+      <p className="font-body text-base2 leading-relaxed text-ink/60">{dict.checkout.successBody}</p>
       {sp.order && (
-        <p className="border hairline bg-ivory-soft px-6 py-3 font-body text-sm tracking-wide2">
+        <p className="border hairline bg-ivory-soft px-6 py-3 font-body text-base2 tracking-wide2">
           {dict.checkout.orderNumber}: <span className="text-olive-deep" dir="ltr">{sp.order}</span>
         </p>
       )}
       {sp.method === "bank_transfer" && (
-        <p className="max-w-md font-body text-xs leading-relaxed text-ink/55">{BANK_TRANSFER_DETAILS[locale]}</p>
+        <p className="max-w-md font-body text-sm2 leading-relaxed text-ink/55">{BANK_TRANSFER_DETAILS[locale]}</p>
       )}
       <ButtonLink href={`/${locale}/shop`} variant="outline" className="mt-4">{dict.checkout.continue}</ButtonLink>
     </div>

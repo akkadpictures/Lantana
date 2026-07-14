@@ -36,7 +36,7 @@ export function CartDrawer({ locale, dict }: { locale: Locale; currency?: Curren
           >
             <div className="flex items-center justify-between border-b hairline px-6 py-5">
               <h2 className="t-h4">{dict.cart.title}</h2>
-              <button onClick={close} aria-label={dict.misc.close} className="text-2xl leading-none text-ink/60 hover:text-ink">×</button>
+              <button onClick={close} aria-label={dict.misc.close} className="text-d4 leading-none text-ink/60 hover:text-ink">×</button>
             </div>
 
             {items.length === 0 ? (
@@ -54,18 +54,18 @@ export function CartDrawer({ locale, dict }: { locale: Locale; currency?: Curren
                       </Link>
                       <div className="flex flex-1 flex-col">
                         <p className="font-display text-d5 font-light">{t(item.name, locale)}</p>
-                        <p className="font-body text-xs text-ink/50">{item.size}</p>
+                        <p className="font-body text-sm2 text-ink/50">{item.size}</p>
                         <div className="mt-auto flex items-center justify-between">
-                          <div className="flex items-center border border-ink/15 text-sm">
+                          <div className="flex items-center border border-ink/15 text-base2">
                             <button aria-label="−" className="px-2.5 py-1 text-ink/60" onClick={() => setQty(item.productId, item.qty - 1)}>−</button>
                             <span className="w-6 text-center font-body">{item.qty}</span>
                             <button aria-label="+" className="px-2.5 py-1 text-ink/60" onClick={() => setQty(item.productId, item.qty + 1)}>+</button>
                           </div>
-                          <p className="font-body text-sm text-olive-deep">
+                          <p className="font-body text-base2 text-olive-deep">
                             {format(amount(item.unitPriceUSD * item.qty))}
                           </p>
                         </div>
-                        <button className="mt-1 self-start font-body text-[11px] uppercase tracking-wide2 text-ink/40 hover:text-ink" onClick={() => remove(item.productId)}>
+                        <button className="mt-1 self-start font-body text-micro uppercase tracking-wide2 text-ink/40 hover:text-ink" onClick={() => remove(item.productId)}>
                           {dict.cart.remove}
                         </button>
                       </div>
@@ -73,11 +73,11 @@ export function CartDrawer({ locale, dict }: { locale: Locale; currency?: Curren
                   ))}
                 </ul>
                 <div className="border-t hairline px-6 py-5">
-                  <div className="mb-1 flex justify-between font-body text-sm">
+                  <div className="mb-1 flex justify-between font-body text-base2">
                     <span className="text-ink/60">{dict.cart.subtotal}</span>
                     <span className="tabular-nums">{format(amount(subtotalUSD))}</span>
                   </div>
-                  <p className="mb-4 font-body text-xs text-ink/40">{dict.cart.shipping}: {dict.cart.shippingAtCheckout}</p>
+                  <p className="mb-4 font-body text-sm2 text-ink/40">{dict.cart.shipping}: {dict.cart.shippingAtCheckout}</p>
                   <Link href={`/${locale}/checkout`} onClick={close} className="block">
                     <Button className="w-full">{dict.cart.checkout}</Button>
                   </Link>

@@ -24,7 +24,7 @@ export default async function CollectionsPage({ params }: { params: Promise<{ lo
   return (
     <div className="mx-auto max-w-7xl px-5 py-14 md:px-8">
       <Reveal className="mb-14 text-center">
-        <h1 className="h-display text-4xl text-ink sm:text-5xl">{dict.nav.collections}</h1>
+        <h1 className="h-display text-d2 text-ink sm:text-d2">{dict.nav.collections}</h1>
       </Reveal>
       <div className="space-y-16">
         {collections.map((c, i) => (
@@ -34,8 +34,8 @@ export default async function CollectionsPage({ params }: { params: Promise<{ lo
                 <Image src={c.image} alt={t(c.name, locale)} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
               </div>
               <div className={i % 2 === 1 ? "md:order-1 md:text-end" : ""}>
-                <h2 className="h-display text-3xl text-ink group-hover:text-olive-deep sm:text-4xl">{t(c.name, locale)}</h2>
-                <p className="mt-4 max-w-md font-body text-sm leading-relaxed text-ink/60 md:inline-block">{t(c.description, locale)}</p>
+                <h2 className="h-display text-d3 text-ink group-hover:text-olive-deep sm:text-d2">{t(c.name, locale)}</h2>
+                <p className="mt-4 max-w-md font-body text-base2 leading-relaxed text-ink/60 md:inline-block">{t(c.description, locale)}</p>
               </div>
             </Link>
           </Reveal>

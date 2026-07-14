@@ -35,11 +35,11 @@ export default async function JournalPostPage({ params }: { params: Promise<{ lo
   return (
     <article className="mx-auto max-w-3xl px-5 py-14 md:px-8">
       <Reveal className="text-center">
-        <Link href={`/${locale}/journal`} className="link-reveal font-body text-[11px] uppercase tracking-wide2 text-ink/50">← {dict.journal.title}</Link>
-        <p className="mt-6 font-body text-[11px] uppercase tracking-wide2 text-olive">
+        <Link href={`/${locale}/journal`} className="link-reveal font-body text-micro uppercase tracking-wide2 text-ink/50">← {dict.journal.title}</Link>
+        <p className="mt-6 font-body text-micro uppercase tracking-wide2 text-olive">
           {new Date(post.publishedAt).toLocaleDateString(locale === "ar" ? "ar-SY" : "en-GB", { day: "numeric", month: "long", year: "numeric" })}
         </p>
-        <h1 className="mt-3 h-display text-4xl leading-tight text-ink sm:text-5xl">{t(post.title, locale)}</h1>
+        <h1 className="mt-3 h-display text-d2 leading-tight text-ink sm:text-d2">{t(post.title, locale)}</h1>
       </Reveal>
 
       <Reveal delay={0.1} className="frame-zoom relative mt-10 aspect-[16/9] bg-ivory-soft">

@@ -34,17 +34,17 @@ export function PricingClient({ initial }: { initial: Product[] }) {
   return (
     <>
       <div className="overflow-x-auto border hairline">
-        <table className="w-full border-collapse font-body text-sm">
+        <table className="w-full border-collapse font-body text-base2">
           <thead>
             <tr className="border-b hairline bg-ink/[0.03]">
-              <th className="px-4 py-3 text-start text-[11px] uppercase tracking-wide2 text-ink/60">Product</th>
-              {CURRENCIES.map((c) => <th key={c} className="px-3 py-3 text-start text-[11px] uppercase tracking-wide2 text-ink/60">{c}</th>)}
+              <th className="px-4 py-3 text-start text-micro uppercase tracking-wide2 text-ink/60">Product</th>
+              {CURRENCIES.map((c) => <th key={c} className="px-3 py-3 text-start text-micro uppercase tracking-wide2 text-ink/60">{c}</th>)}
             </tr>
           </thead>
           <tbody>
             {products.map((p) => (
               <tr key={p.id} className="border-b hairline last:border-0">
-                <td className="px-4 py-2 font-medium">{p.name.en}<span className="block text-xs text-ink/40">{p.size}</span></td>
+                <td className="px-4 py-2 font-medium">{p.name.en}<span className="block text-sm2 text-ink/40">{p.size}</span></td>
                 {CURRENCIES.map((c) => {
                   const isUSD = c === "USD";
                   const explicit = isUSD ? p.basePriceUSD : p.prices[c];
@@ -58,7 +58,7 @@ export function PricingClient({ initial }: { initial: Product[] }) {
                         className="w-24 border border-ink/15 bg-transparent px-2 py-1 focus:border-olive focus:outline-none"
                         onChange={(e) => setPrice(p.id, c, e.target.value)}
                       />
-                      {!isUSD && explicit === undefined && <span className="ms-1 text-[10px] text-ink/30">auto</span>}
+                      {!isUSD && explicit === undefined && <span className="ms-1 text-micro text-ink/30">auto</span>}
                     </td>
                   );
                 })}

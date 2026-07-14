@@ -22,14 +22,14 @@ export function OrdersClient({ initial }: { initial: Order[] }) {
 
   const shown = filter === "all" ? orders : orders.filter((o) => o.status === filter);
 
-  if (orders.length === 0) return <Card><p className="font-body text-sm text-ink/50">No orders yet.</p></Card>;
+  if (orders.length === 0) return <Card><p className="font-body text-base2 text-ink/50">No orders yet.</p></Card>;
 
   return (
     <>
       <div className="mb-5 flex flex-wrap gap-2">
         {(["all", ...STATUSES] as const).map((s) => (
           <button key={s} onClick={() => setFilter(s)}
-            className={`rounded-full px-3 py-1 font-body text-[11px] uppercase tracking-wide2 ${filter === s ? "bg-ink text-ivory" : "bg-ink/5 text-ink/60"}`}>
+            className={`rounded-full px-3 py-1 font-body text-micro uppercase tracking-wide2 ${filter === s ? "bg-ink text-ivory" : "bg-ink/5 text-ink/60"}`}>
             {s}
           </button>
         ))}
@@ -52,31 +52,31 @@ export function OrdersClient({ initial }: { initial: Order[] }) {
                 <td colSpan={8} className="px-4 py-5">
                   <div className="grid gap-6 md:grid-cols-2">
                     <div>
-                      <p className="mb-2 font-body text-[11px] uppercase tracking-wide2 text-ink/50">Customer</p>
-                      <p className="font-body text-sm">{o.customer.name}</p>
-                      <p className="font-body text-sm text-ink/60">{o.customer.email} · {o.customer.phone}</p>
-                      <p className="font-body text-sm text-ink/60">{o.customer.address}, {o.customer.city}, {o.country}</p>
-                      {o.customer.notes && <p className="mt-2 font-body text-sm italic text-ink/50">“{o.customer.notes}”</p>}
+                      <p className="mb-2 font-body text-micro uppercase tracking-wide2 text-ink/50">Customer</p>
+                      <p className="font-body text-base2">{o.customer.name}</p>
+                      <p className="font-body text-base2 text-ink/60">{o.customer.email} · {o.customer.phone}</p>
+                      <p className="font-body text-base2 text-ink/60">{o.customer.address}, {o.customer.city}, {o.country}</p>
+                      {o.customer.notes && <p className="mt-2 font-body text-base2 italic text-ink/50">“{o.customer.notes}”</p>}
                     </div>
                     <div>
-                      <p className="mb-2 font-body text-[11px] uppercase tracking-wide2 text-ink/50">Items</p>
+                      <p className="mb-2 font-body text-micro uppercase tracking-wide2 text-ink/50">Items</p>
                       {o.items.map((i, k) => (
-                        <div key={k} className="flex justify-between font-body text-sm">
+                        <div key={k} className="flex justify-between font-body text-base2">
                           <span>{i.name} × {i.qty}</span>
                           <span>{formatPrice(i.unitPrice * i.qty, o.currency, "en")}</span>
                         </div>
                       ))}
-                      <div className="mt-2 border-t hairline pt-2 font-body text-sm">
+                      <div className="mt-2 border-t hairline pt-2 font-body text-base2">
                         <div className="flex justify-between text-ink/60"><span>Shipping</span><span>{formatPrice(o.shipping, o.currency, "en")}</span></div>
                         {o.discount > 0 && <div className="flex justify-between text-olive-deep"><span>Discount {o.couponCode ? `(${o.couponCode})` : ""}</span><span>−{formatPrice(o.discount, o.currency, "en")}</span></div>}
                         <div className="flex justify-between font-medium"><span>Total</span><span>{formatPrice(o.total, o.currency, "en")}</span></div>
                       </div>
                       <div className="mt-4">
-                        <p className="mb-1.5 font-body text-[11px] uppercase tracking-wide2 text-ink/50">Update status</p>
+                        <p className="mb-1.5 font-body text-micro uppercase tracking-wide2 text-ink/50">Update status</p>
                         <div className="flex flex-wrap gap-2">
                           {STATUSES.map((s) => (
                             <button key={s} onClick={() => setStatus(o.id, s)}
-                              className={`rounded px-2.5 py-1 font-body text-xs ${o.status === s ? "bg-olive text-ivory" : "bg-ink/5 text-ink/60 hover:bg-ink/10"}`}>{s}</button>
+                              className={`rounded px-2.5 py-1 font-body text-sm2 ${o.status === s ? "bg-olive text-ivory" : "bg-ink/5 text-ink/60 hover:bg-ink/10"}`}>{s}</button>
                           ))}
                         </div>
                       </div>

@@ -49,17 +49,17 @@ export default async function ShopPage({
   return (
     <div className="mx-auto max-w-7xl px-5 py-14 md:px-8">
       <Reveal className="mb-10 text-center">
-        <h1 className="h-display text-4xl text-ink sm:text-5xl">{dict.shop.title}</h1>
-        <p className="mt-3 font-body text-sm text-ink/50">{products.length} {dict.shop.results}</p>
+        <h1 className="h-display text-d2 text-ink sm:text-d2">{dict.shop.title}</h1>
+        <p className="mt-3 font-body text-base2 text-ink/50">{products.length} {dict.shop.results}</p>
       </Reveal>
 
       <div className="mb-12 flex flex-col items-center justify-between gap-5 border-y hairline py-4 sm:flex-row">
         <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2" aria-label={dict.shop.filter}>
-          <Link href={qs({ collection: undefined })} className={cn("font-body text-[12px] uppercase tracking-wide2", !sp.collection ? "text-ink underline underline-offset-4" : "text-ink/50 hover:text-ink")}>
+          <Link href={qs({ collection: undefined })} className={cn("font-body text-label uppercase tracking-wide2", !sp.collection ? "text-ink underline underline-offset-4" : "text-ink/50 hover:text-ink")}>
             {dict.shop.all}
           </Link>
           {collections.map((c) => (
-            <Link key={c.slug} href={qs({ collection: c.slug })} className={cn("font-body text-[12px] uppercase tracking-wide2", sp.collection === c.slug ? "text-ink underline underline-offset-4" : "text-ink/50 hover:text-ink")}>
+            <Link key={c.slug} href={qs({ collection: c.slug })} className={cn("font-body text-label uppercase tracking-wide2", sp.collection === c.slug ? "text-ink underline underline-offset-4" : "text-ink/50 hover:text-ink")}>
               {t(c.name, locale)}
             </Link>
           ))}
@@ -70,7 +70,7 @@ export default async function ShopPage({
             { key: "price-asc", label: dict.shop.sortPriceAsc },
             { key: "price-desc", label: dict.shop.sortPriceDesc },
           ].map((s) => (
-            <Link key={s.label} href={qs({ sort: s.key })} className={cn("font-body text-[12px] uppercase tracking-wide2", sp.sort === s.key || (!sp.sort && !s.key) ? "text-ink underline underline-offset-4" : "text-ink/50 hover:text-ink")}>
+            <Link key={s.label} href={qs({ sort: s.key })} className={cn("font-body text-label uppercase tracking-wide2", sp.sort === s.key || (!sp.sort && !s.key) ? "text-ink underline underline-offset-4" : "text-ink/50 hover:text-ink")}>
               {s.label}
             </Link>
           ))}
@@ -78,7 +78,7 @@ export default async function ShopPage({
       </div>
 
       {products.length === 0 ? (
-        <p className="py-20 text-center font-body text-sm text-ink/50">{dict.shop.empty}</p>
+        <p className="py-20 text-center font-body text-base2 text-ink/50">{dict.shop.empty}</p>
       ) : (
         <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 lg:grid-cols-4">
           {products.map((p, i) => (

@@ -33,11 +33,11 @@ export default async function CollectionPage({ params }: { params: Promise<{ loc
   return (
     <div className="mx-auto max-w-7xl px-5 py-14 md:px-8">
       <Reveal className="mb-14 text-center">
-        <h1 className="h-display text-4xl text-ink sm:text-5xl">{t(collection.name, locale)}</h1>
-        <p className="mx-auto mt-4 max-w-xl font-body text-sm leading-relaxed text-ink/60">{t(collection.description, locale)}</p>
+        <h1 className="h-display text-d2 text-ink sm:text-d2">{t(collection.name, locale)}</h1>
+        <p className="mx-auto mt-4 max-w-xl font-body text-base2 leading-relaxed text-ink/60">{t(collection.description, locale)}</p>
       </Reveal>
       {products.length === 0 ? (
-        <p className="py-20 text-center font-body text-sm text-ink/50">{dict.shop.empty}</p>
+        <p className="py-20 text-center font-body text-base2 text-ink/50">{dict.shop.empty}</p>
       ) : (
         <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 lg:grid-cols-4">
           {products.map((p, i) => (

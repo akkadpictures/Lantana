@@ -33,10 +33,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-14 md:grid-cols-2 md:px-8 lg:py-24">
           <Reveal>
             <p className="eyebrow mb-5">{dict.hero.eyebrow}</p>
-            <h1 className="h-display text-5xl leading-[1.05] text-ink sm:text-6xl lg:text-7xl">
+            <h1 className="t-display text-ink">
               {dict.hero.title}
             </h1>
-            <p className="mt-6 max-w-md font-body text-base leading-relaxed text-ink/60">{dict.hero.sub}</p>
+            <p className="mt-6 max-w-md font-body text-base2 leading-relaxed text-ink/60">{dict.hero.sub}</p>
             <div className="mt-9 flex flex-wrap gap-4">
               <ButtonLink href={`/${locale}/shop`}>{dict.hero.cta}</ButtonLink>
               <ButtonLink href={`/${locale}/about`} variant="outline">{dict.hero.cta2}</ButtonLink>
@@ -54,7 +54,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                   className="object-cover"
                 />
               </Link>
-              <p className="mt-4 text-center font-body text-xs uppercase tracking-luxe text-ink/50">
+              <p className="mt-4 text-center font-body text-sm2 uppercase tracking-luxe text-ink/50">
                 {t(hero.name, locale)} — {dict.home.hero_product}
               </p>
             </Reveal>
@@ -66,8 +66,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* ── Featured collection ───────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-5 py-20 md:px-8">
         <Reveal className="mb-12 text-center">
-          <h2 className="h-display text-4xl text-ink">{dict.home.featured}</h2>
-          <p className="mt-2 font-body text-sm text-ink/50">{dict.home.featuredSub}</p>
+          <h2 className="h-display text-d2 text-ink">{dict.home.featured}</h2>
+          <p className="mt-2 font-body text-base2 text-ink/50">{dict.home.featuredSub}</p>
         </Reveal>
         <div className="grid grid-cols-2 gap-x-5 gap-y-12 lg:grid-cols-4">
           {featured.map((p, i) => (
@@ -86,15 +86,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-24 md:grid-cols-2 md:px-8">
           <Reveal>
             <LantanaMark className="mb-6 h-8 w-8 text-olive-mist" />
-            <h2 className="h-display text-4xl text-ivory">{dict.home.ritual}</h2>
-            <p className="mt-6 max-w-md font-body text-base leading-loose text-ivory/70">{dict.home.ritualBody}</p>
+            <h2 className="h-display text-d2 text-ivory">{dict.home.ritual}</h2>
+            <p className="mt-6 max-w-md font-body text-base2 leading-loose text-ivory/70">{dict.home.ritualBody}</p>
           </Reveal>
           {coffret && (
             <Reveal delay={0.15}>
               <Link href={`/${locale}/product/${coffret.slug}`} className="frame-zoom relative block aspect-[16/10]">
                 <Image src={coffret.image} alt={t(coffret.name, locale)} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
               </Link>
-              <p className="mt-4 font-body text-xs uppercase tracking-luxe text-ivory/50">{t(coffret.name, locale)}</p>
+              <p className="mt-4 font-body text-sm2 uppercase tracking-luxe text-ivory/50">{t(coffret.name, locale)}</p>
             </Reveal>
           )}
         </div>
@@ -103,7 +103,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* ── Journal ────────────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-5 py-20 md:px-8">
         <Reveal className="mb-10 text-center">
-          <h2 className="h-display text-3xl text-ink">{dict.home.journal}</h2>
+          <h2 className="h-display text-d3 text-ink">{dict.home.journal}</h2>
         </Reveal>
         <div className="grid gap-10 md:grid-cols-2">
           {posts.slice(0, 2).map((post, i) => (
@@ -112,8 +112,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 <div className="frame-zoom relative aspect-[16/9] bg-ivory-soft">
                   <Image src={post.image} alt={t(post.title, locale)} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
-                <h3 className="mt-5 font-display text-2xl font-light text-ink group-hover:text-olive-deep">{t(post.title, locale)}</h3>
-                <p className="mt-2 font-body text-sm text-ink/55">{t(post.excerpt, locale)}</p>
+                <h3 className="mt-5 font-display text-d4 font-light text-ink group-hover:text-olive-deep">{t(post.title, locale)}</h3>
+                <p className="mt-2 font-body text-base2 text-ink/55">{t(post.excerpt, locale)}</p>
               </Link>
             </Reveal>
           ))}

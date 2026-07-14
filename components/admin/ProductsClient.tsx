@@ -48,8 +48,8 @@ export function ProductsClient({ initial, collections }: { initial: Product[]; c
     return (
       <Card className="max-w-3xl">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="font-display text-xl">{initial.some((x) => x.id === p.id) ? "Edit product" : "New product"}</h2>
-          <button onClick={() => setEditing(null)} className="font-body text-sm text-ink/50 hover:text-ink">Cancel</button>
+          <h2 className="font-display text-d5">{initial.some((x) => x.id === p.id) ? "Edit product" : "New product"}</h2>
+          <button onClick={() => setEditing(null)} className="font-body text-base2 text-ink/50 hover:text-ink">Cancel</button>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div><Label>Name (EN)</Label><Input value={p.name.en} onChange={(e) => upd({ name: { ...p.name, en: e.target.value } })} /></div>
@@ -77,7 +77,7 @@ export function ProductsClient({ initial, collections }: { initial: Product[]; c
         </div>
 
         <div className="mt-6">
-          <p className="mb-2 font-body text-[11px] uppercase tracking-wide2 text-ink/50">Pricing per currency — leave blank to auto-convert from USD</p>
+          <p className="mb-2 font-body text-micro uppercase tracking-wide2 text-ink/50">Pricing per currency — leave blank to auto-convert from USD</p>
           <div className="grid gap-3 sm:grid-cols-3">
             <div><Label>Base price (USD)</Label><Input type="number" value={p.basePriceUSD} onChange={(e) => upd({ basePriceUSD: parseFloat(e.target.value) || 0 })} /></div>
             {CURRENCIES.filter((c) => c !== "USD").map((c) => (
@@ -91,8 +91,8 @@ export function ProductsClient({ initial, collections }: { initial: Product[]; c
         </div>
 
         <div className="mt-6 flex items-center gap-6">
-          <label className="flex items-center gap-2 font-body text-sm"><input type="checkbox" checked={p.featured} onChange={(e) => upd({ featured: e.target.checked })} /> Featured</label>
-          <label className="flex items-center gap-2 font-body text-sm"><input type="checkbox" checked={p.hero ?? false} onChange={(e) => upd({ hero: e.target.checked })} /> Hero</label>
+          <label className="flex items-center gap-2 font-body text-base2"><input type="checkbox" checked={p.featured} onChange={(e) => upd({ featured: e.target.checked })} /> Featured</label>
+          <label className="flex items-center gap-2 font-body text-base2"><input type="checkbox" checked={p.hero ?? false} onChange={(e) => upd({ hero: e.target.checked })} /> Hero</label>
         </div>
 
         <div className="mt-8 flex gap-3">
@@ -109,7 +109,7 @@ export function ProductsClient({ initial, collections }: { initial: Product[]; c
         {products.map((p) => (
           <tr key={p.id} className="border-b hairline last:border-0">
             <td className="px-4 py-2"><div className="relative h-10 w-10 bg-ivory-deep"><Image src={p.image} alt="" fill sizes="40px" className="object-cover" /></div></td>
-            <td className="px-4 py-3 font-medium">{p.name.en}<span className="block text-xs text-ink/40">{p.size}</span></td>
+            <td className="px-4 py-3 font-medium">{p.name.en}<span className="block text-sm2 text-ink/40">{p.size}</span></td>
             <td className="px-4 py-3 text-ink/60">{p.collection}</td>
             <td className="px-4 py-3">${p.basePriceUSD}</td>
             <td className="px-4 py-3">{p.inventory}</td>

@@ -23,7 +23,7 @@ export function NewsletterForm({ dict }: { dict: Dictionary }) {
     }
   }
 
-  if (state === "done") return <p className="font-body text-sm text-olive-deep">{dict.home.newsletterDone}</p>;
+  if (state === "done") return <p className="font-body text-base2 text-olive-deep">{dict.home.newsletterDone}</p>;
 
   return (
     <div className="flex gap-2">
