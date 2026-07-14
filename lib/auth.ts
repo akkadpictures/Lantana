@@ -6,15 +6,26 @@ const SESSION_COOKIE = "lantana_admin";
  * Signing secret for the admin session cookie.
  * Priority: explicit AUTH_SECRET → derived from the Supabase service-role key
  * (high entropy, already secret) → local development fallback.
- * This means NO manual secret generation is required for deployment: paste the
- * Supabase keys and a strong, stable secret is derived automatically.
  */
 function secret(): Uint8Array {
   const source =
-    process.env.AUTH_SECRET ||
-    (process.env.SUPABASE_SERVICE_ROLE_KEY ? `lantana::${process.env.SUPABASE_SERVICE_ROLE_KEY}` : "") ||
+    clean(process.env.AUTH_SECRET) ||
+    (clean(process.env.SUPABASE_SERVICE_ROLE_KEY)
+      ? `lantana::${clean(process.env.SUPABASE_SERVICE_ROLE_KEY)}`
+      : "") ||
     "lantana-development-secret-change-in-production";
   return new TextEncoder().encode(source);
+}
+
+/**
+ * Environment values pasted through a dashboard very often carry an invisible
+ * trailing newline, a stray space, or wrapping quotes. Any one of those makes a
+ * byte-for-byte credential comparison fail while the value *looks* correct in
+ * the UI — so every env value is normalised before it is ever compared.
+ */
+function clean(v: string | undefined | null): string {
+  if (!v) return "";
+  return v.trim().replace(/^["']|["']$/g, "").trim();
 }
 
 function timingSafeEqual(a: string, b: string): boolean {
@@ -25,14 +36,16 @@ function timingSafeEqual(a: string, b: string): boolean {
 }
 
 /**
- * Verifies admin credentials against plain env vars.
- * ADMIN_EMAIL / ADMIN_PASSWORD are set directly in Vercel (encrypted at rest) —
- * no password hashing step required. Defaults allow immediate local sign-in.
+ * Verifies admin credentials against ADMIN_EMAIL / ADMIN_PASSWORD env vars.
+ * Both sides are normalised, so a stray space in Vercel no longer locks you out.
  */
 export async function verifyCredentials(email: string, password: string): Promise<boolean> {
-  const adminEmail = (process.env.ADMIN_EMAIL || "admin@lantana.com").trim().toLowerCase();
-  const adminPassword = process.env.ADMIN_PASSWORD || "lantana2026";
-  return timingSafeEqual(email.trim().toLowerCase(), adminEmail) && timingSafeEqual(password, adminPassword);
+  const adminEmail = (clean(process.env.ADMIN_EMAIL) || "admin@lantana.com").toLowerCase();
+  const adminPassword = clean(process.env.ADMIN_PASSWORD) || "lantana2026";
+
+  const emailOk = timingSafeEqual(clean(email).toLowerCase(), adminEmail);
+  const passwordOk = timingSafeEqual(clean(password), adminPassword);
+  return emailOk && passwordOk;
 }
 
 export async function createSession(): Promise<string> {
