@@ -1,6 +1,6 @@
 export type Locale = "en" | "ar";
-export type Currency = "USD" | "SYP" | "AED" | "SAR" | "QAR" | "KWD";
-export type CountryCode = "SY" | "AE" | "SA" | "QA" | "KW" | "WW";
+export type Currency = "USD" | "SYP" | "TRY" | "SAR" | "QAR" | "AED" | "KWD";
+export type CountryCode = "SY" | "TR" | "SA" | "QA" | "AE" | "KW" | "WW";
 
 export interface LocalizedText { en: string; ar: string }
 

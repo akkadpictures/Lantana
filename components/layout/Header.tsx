@@ -26,8 +26,9 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
-  const otherLocale = locale === "en" ? "ar" : "en";
-  const switchHref = pathname.replace(`/${locale}`, `/${otherLocale}`) || `/${otherLocale}`;
+  /* English lives at the bare path; Arabic keeps its /ar prefix. */
+  const stripped = pathname.replace(/^\/(en|ar)(?=\/|$)/, "") || "";
+  const switchHref = locale === "en" ? `/ar${stripped}` : stripped || "/";
 
   const nav = [
     { href: `/${locale}/shop`, label: dict.nav.shop },
@@ -41,53 +42,53 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     <header
       className={cn(
         "sticky top-0 z-50 transition-all duration-700 ease-luxe",
-        scrolled ? "bg-ivory/90 shadow-[0_1px_0_rgba(35,38,28,0.08)] backdrop-blur-md" : "bg-ivory"
+        scrolled ? "bg-ivory/92 shadow-[0_1px_0_rgba(35,38,28,0.08)] backdrop-blur-md" : "bg-ivory"
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
+      <div className="shell flex items-center justify-between py-5">
         {/* Mobile menu button */}
         <button
-          className="flex h-10 w-10 items-center justify-center lg:hidden"
+          className="flex h-11 w-11 items-center justify-center -ms-3 lg:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label={menuOpen ? dict.misc.close : dict.misc.menu}
           aria-expanded={menuOpen}
         >
-          <span className="relative block h-3 w-6">
+          <span className="relative block h-3.5 w-7">
             <span className={cn("absolute inset-x-0 top-0 h-px bg-ink transition-all duration-500", menuOpen && "top-1.5 rotate-45")} />
-            <span className={cn("absolute inset-x-0 bottom-0 h-px bg-ink transition-all duration-500", menuOpen && "bottom-1.5 -rotate-45")} />
+            <span className={cn("absolute inset-x-0 bottom-0 h-px bg-ink transition-all duration-500", menuOpen && "bottom-2 -rotate-45")} />
           </span>
         </button>
 
         {/* Left nav (desktop) */}
-        <nav className="hidden flex-1 items-center gap-7 lg:flex" aria-label="Primary">
+        <nav className="hidden flex-1 items-center gap-9 lg:flex" aria-label="Primary">
           {nav.slice(0, 3).map((n) => (
-            <Link key={n.href} href={n.href} className="link-reveal font-body text-[12px] uppercase tracking-wide2 text-ink/80 hover:text-ink">
+            <Link key={n.href} href={n.href} className="link-reveal t-nav tracking-wide2 text-ink/75 hover:text-ink">
               {n.label}
             </Link>
           ))}
         </nav>
 
-        {/* Center wordmark */}
-        <Link href={`/${locale}`} className="group flex flex-col items-center gap-1" aria-label="LANTANA — home">
-          <LantanaMark className="h-6 w-6 text-olive transition-transform duration-700 ease-luxe group-hover:rotate-[24deg]" />
-          <span className="font-display text-xl font-light tracking-luxe text-ink ltr:pl-1">LANTANA</span>
+        {/* Centre lockup */}
+        <Link href={`/${locale}`} className="group flex flex-col items-center gap-1.5" aria-label="LANTANA — home">
+          <LantanaMark className="h-7 w-7 text-olive transition-transform duration-700 ease-luxe group-hover:rotate-[24deg]" />
+          <span className="font-display text-d5 font-light tracking-luxe text-ink ltr:pl-1">LANTANA</span>
         </Link>
 
         {/* Right controls */}
-        <div className="flex flex-1 items-center justify-end gap-5">
-          <Link href={switchHref} className="link-reveal hidden font-body text-[12px] uppercase tracking-wide2 text-ink/80 sm:block" aria-label="Switch language">
+        <div className="flex flex-1 items-center justify-end gap-6">
+          <Link href={switchHref} className="link-reveal t-nav hidden tracking-wide2 text-ink/75 hover:text-ink sm:block" aria-label="Switch language">
             {dict.misc.language}
           </Link>
-          <Link href={`/${locale}/search`} aria-label={dict.nav.search} className="text-ink/80 hover:text-ink">
-            <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          <Link href={`/${locale}/search`} aria-label={dict.nav.search} className="text-ink/75 transition-colors hover:text-ink">
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
           </Link>
-          <Link href={`/${locale}/wishlist`} aria-label={dict.nav.wishlist} className="hidden text-ink/80 hover:text-ink sm:block">
-            <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 21s-7.5-4.7-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-1 4.3-8.5 9-8.5 9Z" /></svg>
+          <Link href={`/${locale}/wishlist`} aria-label={dict.nav.wishlist} className="hidden text-ink/75 transition-colors hover:text-ink sm:block">
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 21s-7.5-4.7-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-1 4.3-8.5 9-8.5 9Z" /></svg>
           </Link>
-          <button onClick={openCart} aria-label={`${dict.nav.cart} (${count})`} className="relative text-ink/80 hover:text-ink">
-            <svg className="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 8h12l-1 12H7L6 8Z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
+          <button onClick={openCart} aria-label={`${dict.nav.cart} (${count})`} className="relative text-ink/75 transition-colors hover:text-ink">
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 8h12l-1 12H7L6 8Z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
             {count > 0 && (
-              <span className="absolute -end-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-olive px-1 font-body text-[10px] text-ivory">
+              <span className="absolute -end-2 -top-2 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-olive px-1 font-body text-[11px] leading-none text-ivory">
                 {count}
               </span>
             )}
@@ -103,13 +104,14 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         )}
       >
         <nav className="min-h-0 overflow-hidden" aria-label="Mobile">
-          <div className="flex flex-col gap-1 px-6 py-6">
-            {nav.map((n, i) => (
-              <Link key={n.href} href={n.href} className="py-2.5 font-display text-2xl font-light text-ink" style={{ transitionDelay: `${i * 40}ms` }}>
+          <div className="flex flex-col gap-1 px-6 py-8">
+            <LantanaMark className="mb-4 h-8 w-8 text-olive" />
+            {nav.map((n) => (
+              <Link key={n.href} href={n.href} className="border-b hairline py-4 font-display text-d4 font-light text-ink">
                 {n.label}
               </Link>
             ))}
-            <Link href={switchHref} className="mt-4 font-body text-[12px] uppercase tracking-wide2 text-olive-deep">
+            <Link href={switchHref} className="t-nav mt-6 tracking-wide2 text-olive-deep">
               {dict.misc.language}
             </Link>
           </div>

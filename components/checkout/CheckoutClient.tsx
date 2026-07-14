@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useCart, cartSubtotalUSD } from "@/store/cart";
 import { Input, Textarea, Select, Label } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { SUPPORTED_COUNTRIES, COUNTRY_CURRENCY, convertUSD, formatPrice, toCountryCode } from "@/lib/currency";
+import { SUPPORTED_COUNTRIES, toCountryCode } from "@/lib/currency";
+import { useMarket } from "@/components/market/MarketProvider";
 import { cn, t } from "@/lib/utils";
 import type { CountryCode, Currency, Locale, PaymentMethod, ShippingRate } from "@/types";
 import type { Dictionary } from "@/lib/i18n";
@@ -26,14 +27,17 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
   const [busy, setBusy] = useState(false);
   const [serverError, setServerError] = useState("");
 
-  const currency = COUNTRY_CURRENCY[country];
+  /* Price tier and display currency come from the market, never from the
+     delivery-country field — that field says where a parcel goes, not where the
+     customer is standing. */
+  const { format, amount } = useMarket();
   const subtotalUSD = cartSubtotalUSD(items);
   const rate = rates.find((r) => r.country === country) ?? rates.find((r) => r.country === "WW")!;
   const shippingUSD = rate?.priceUSD ?? 0;
   const discountUSD = couponState?.discountUSD ?? 0;
   const totalUSD = Math.max(0, subtotalUSD + shippingUSD - discountUSD);
 
-  const fmt = (usd: number) => formatPrice(convertUSD(usd, currency), currency, locale);
+  const fmt = (usd: number) => format(amount(usd));
 
   const paymentOptions = useMemo(() => {
     const opts: { key: PaymentMethod; label: string; sub: string }[] = [

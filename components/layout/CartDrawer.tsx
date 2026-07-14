@@ -5,13 +5,14 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart, cartSubtotalUSD } from "@/store/cart";
 import { Button, ButtonLink } from "@/components/ui/Button";
-import { convertUSD, formatPrice } from "@/lib/currency";
+import { useMarket } from "@/components/market/MarketProvider";
 import { t } from "@/lib/utils";
 import type { Currency, Locale } from "@/types";
 import type { Dictionary } from "@/lib/i18n";
 
-export function CartDrawer({ locale, currency, dict }: { locale: Locale; currency: Currency; dict: Dictionary }) {
+export function CartDrawer({ locale, dict }: { locale: Locale; currency?: Currency; dict: Dictionary }) {
   const { items, isOpen, close, setQty, remove } = useCart();
+  const { amount, format } = useMarket();
   const subtotalUSD = cartSubtotalUSD(items);
   const isRTL = locale === "ar";
 
@@ -34,13 +35,13 @@ export function CartDrawer({ locale, currency, dict }: { locale: Locale; currenc
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="flex items-center justify-between border-b hairline px-6 py-5">
-              <h2 className="font-display text-xl font-light tracking-wide2">{dict.cart.title}</h2>
+              <h2 className="t-h4">{dict.cart.title}</h2>
               <button onClick={close} aria-label={dict.misc.close} className="text-2xl leading-none text-ink/60 hover:text-ink">×</button>
             </div>
 
             {items.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6 text-center">
-                <p className="font-body text-sm text-ink/60">{dict.cart.empty}</p>
+                <p className="t-body">{dict.cart.empty}</p>
                 <ButtonLink href={`/${locale}/shop`} variant="outline">{dict.cart.emptyCta}</ButtonLink>
               </div>
             ) : (
@@ -52,7 +53,7 @@ export function CartDrawer({ locale, currency, dict }: { locale: Locale; currenc
                         <Image src={item.image} alt={t(item.name, locale)} fill sizes="96px" className="object-cover" />
                       </Link>
                       <div className="flex flex-1 flex-col">
-                        <p className="font-display text-base font-light">{t(item.name, locale)}</p>
+                        <p className="font-display text-d5 font-light">{t(item.name, locale)}</p>
                         <p className="font-body text-xs text-ink/50">{item.size}</p>
                         <div className="mt-auto flex items-center justify-between">
                           <div className="flex items-center border border-ink/15 text-sm">
@@ -61,7 +62,7 @@ export function CartDrawer({ locale, currency, dict }: { locale: Locale; currenc
                             <button aria-label="+" className="px-2.5 py-1 text-ink/60" onClick={() => setQty(item.productId, item.qty + 1)}>+</button>
                           </div>
                           <p className="font-body text-sm text-olive-deep">
-                            {formatPrice(convertUSD(item.unitPriceUSD * item.qty, currency), currency, locale)}
+                            {format(amount(item.unitPriceUSD * item.qty))}
                           </p>
                         </div>
                         <button className="mt-1 self-start font-body text-[11px] uppercase tracking-wide2 text-ink/40 hover:text-ink" onClick={() => remove(item.productId)}>
@@ -74,7 +75,7 @@ export function CartDrawer({ locale, currency, dict }: { locale: Locale; currenc
                 <div className="border-t hairline px-6 py-5">
                   <div className="mb-1 flex justify-between font-body text-sm">
                     <span className="text-ink/60">{dict.cart.subtotal}</span>
-                    <span>{formatPrice(convertUSD(subtotalUSD, currency), currency, locale)}</span>
+                    <span className="tabular-nums">{format(amount(subtotalUSD))}</span>
                   </div>
                   <p className="mb-4 font-body text-xs text-ink/40">{dict.cart.shipping}: {dict.cart.shippingAtCheckout}</p>
                   <Link href={`/${locale}/checkout`} onClick={close} className="block">
