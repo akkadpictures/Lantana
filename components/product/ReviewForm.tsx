@@ -22,7 +22,7 @@ export function ReviewForm({ productId, dict }: { productId: string; dict: Dicti
     setState("done");
   }
 
-  if (state === "done") return <p className="text-center font-body text-sm text-olive-deep">{dict.product.reviewThanks}</p>;
+  if (state === "done") return <p className="text-center font-body text-base2 text-olive-deep">{dict.product.reviewThanks}</p>;
 
   return (
     <div className="space-y-4 border hairline bg-ivory-soft/60 p-6">
@@ -36,7 +36,7 @@ export function ReviewForm({ productId, dict }: { productId: string; dict: Dicti
           <Label>★</Label>
           <div className="flex gap-1 py-2.5" role="radiogroup" aria-label="Rating">
             {[1, 2, 3, 4, 5].map((n) => (
-              <button key={n} role="radio" aria-checked={rating === n} aria-label={`${n} / 5`} onClick={() => setRating(n)} className={`text-xl transition-colors ${n <= rating ? "text-olive" : "text-ink/20"}`}>
+              <button key={n} role="radio" aria-checked={rating === n} aria-label={`${n} / 5`} onClick={() => setRating(n)} className={`text-d5 transition-colors ${n <= rating ? "text-olive" : "text-ink/20"}`}>
                 ✦
               </button>
             ))}

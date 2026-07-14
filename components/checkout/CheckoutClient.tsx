@@ -116,15 +116,15 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-2xl px-5 py-32 text-center">
-        <h1 className="h-display text-4xl text-ink">{dict.checkout.title}</h1>
-        <p className="mt-6 font-body text-sm text-ink/60">{dict.cart.empty}</p>
+        <h1 className="h-display text-d2 text-ink">{dict.checkout.title}</h1>
+        <p className="mt-6 font-body text-base2 text-ink/60">{dict.cart.empty}</p>
       </div>
     );
   }
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-14 md:px-8">
-      <h1 className="h-display mb-12 text-center text-4xl text-ink">{dict.checkout.title}</h1>
+      <h1 className="h-display mb-12 text-center text-d2 text-ink">{dict.checkout.title}</h1>
       <div className="grid gap-14 lg:grid-cols-[1.4fr_1fr]">
         {/* Form */}
         <div className="space-y-10">
@@ -134,12 +134,12 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
               <div>
                 <Label htmlFor="co-name">{dict.checkout.name}</Label>
                 <Input id="co-name" autoComplete="name" value={form.name} onChange={set("name")} className={cn(errors.name && "border-red-700")} />
-                {errors.name && <p className="mt-1 font-body text-xs text-red-800">{dict.checkout.errors.required}</p>}
+                {errors.name && <p className="mt-1 font-body text-sm2 text-red-800">{dict.checkout.errors.required}</p>}
               </div>
               <div>
                 <Label htmlFor="co-email">{dict.checkout.email}</Label>
                 <Input id="co-email" type="email" autoComplete="email" dir="ltr" value={form.email} onChange={set("email")} className={cn(errors.email && "border-red-700")} />
-                {errors.email && <p className="mt-1 font-body text-xs text-red-800">{dict.checkout.errors.email}</p>}
+                {errors.email && <p className="mt-1 font-body text-sm2 text-red-800">{dict.checkout.errors.email}</p>}
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="co-phone">{dict.checkout.phone}</Label>
@@ -176,7 +176,7 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
                 <Textarea id="co-notes" value={form.notes} onChange={set("notes")} className="min-h-20" />
               </div>
             </div>
-            <p className="mt-3 font-body text-xs text-ink/50">
+            <p className="mt-3 font-body text-sm2 text-ink/50">
               {dict.checkout.eta}: {rate.etaDays[0]}–{rate.etaDays[1]} {dict.checkout.days} · {t(rate.label, locale)}
             </p>
           </section>
@@ -195,8 +195,8 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
                 >
                   <span className={cn("mt-1 block h-3.5 w-3.5 shrink-0 rounded-full border", payment === opt.key ? "border-olive bg-olive" : "border-ink/30")} />
                   <span>
-                    <span className="block font-body text-sm text-ink">{opt.label}</span>
-                    <span className="block font-body text-xs text-ink/50">{opt.sub}</span>
+                    <span className="block font-body text-base2 text-ink">{opt.label}</span>
+                    <span className="block font-body text-sm2 text-ink/50">{opt.sub}</span>
                   </span>
                 </button>
               ))}
@@ -208,7 +208,7 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
         <aside className="h-fit border hairline bg-ivory-soft/60 p-6 lg:sticky lg:top-28">
           <ul className="space-y-4 border-b hairline pb-5">
             {items.map((i) => (
-              <li key={i.productId} className="flex justify-between gap-3 font-body text-sm">
+              <li key={i.productId} className="flex justify-between gap-3 font-body text-base2">
                 <span className="text-ink/70">{t(i.name, locale)} × {i.qty}</span>
                 <span>{fmt(i.unitPriceUSD * i.qty)}</span>
               </li>
@@ -218,15 +218,15 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
             <Input placeholder={dict.checkout.coupon} value={coupon} onChange={(e) => { setCoupon(e.target.value); setCouponMsg(""); }} className="py-2.5" />
             <Button variant="outline" onClick={applyCoupon} className="shrink-0 px-4 py-2.5">{dict.checkout.apply}</Button>
           </div>
-          {couponMsg === "ok" && <p className="pt-2 font-body text-xs text-olive-deep">{dict.checkout.couponApplied}</p>}
-          {couponMsg === "bad" && <p className="pt-2 font-body text-xs text-red-800">{dict.checkout.couponInvalid}</p>}
-          <div className="space-y-2 py-5 font-body text-sm">
+          {couponMsg === "ok" && <p className="pt-2 font-body text-sm2 text-olive-deep">{dict.checkout.couponApplied}</p>}
+          {couponMsg === "bad" && <p className="pt-2 font-body text-sm2 text-red-800">{dict.checkout.couponInvalid}</p>}
+          <div className="space-y-2 py-5 font-body text-base2">
             <div className="flex justify-between"><span className="text-ink/60">{dict.cart.subtotal}</span><span>{fmt(subtotalUSD)}</span></div>
             <div className="flex justify-between"><span className="text-ink/60">{dict.cart.shipping}</span><span>{fmt(shippingUSD)}</span></div>
             {discountUSD > 0 && <div className="flex justify-between text-olive-deep"><span>{dict.cart.discount}</span><span>−{fmt(discountUSD)}</span></div>}
-            <div className="flex justify-between border-t hairline pt-3 text-base"><span>{dict.cart.total}</span><span className="text-olive-deep">{fmt(totalUSD)}</span></div>
+            <div className="flex justify-between border-t hairline pt-3 text-base2"><span>{dict.cart.total}</span><span className="text-olive-deep">{fmt(totalUSD)}</span></div>
           </div>
-          {serverError && <p className="mb-3 font-body text-xs text-red-800" role="alert">{serverError}</p>}
+          {serverError && <p className="mb-3 font-body text-sm2 text-red-800" role="alert">{serverError}</p>}
           <Button className="w-full" onClick={placeOrder} disabled={busy}>
             {busy ? dict.checkout.processing : dict.checkout.placeOrder}
           </Button>

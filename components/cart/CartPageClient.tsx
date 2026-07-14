@@ -41,12 +41,12 @@ export function CartPageClient({ locale, dict }: { locale: Locale; currency?: Cu
               <div className="mt-auto flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center border border-ink/15">
                   <button aria-label="−" className="px-3 py-1.5 text-ink/60" onClick={() => setQty(item.productId, item.qty - 1)}>−</button>
-                  <span className="w-8 text-center font-body text-sm">{item.qty}</span>
+                  <span className="w-8 text-center font-body text-base2">{item.qty}</span>
                   <button aria-label="+" className="px-3 py-1.5 text-ink/60" onClick={() => setQty(item.productId, item.qty + 1)}>+</button>
                 </div>
                 <p className="t-price">{format(amount(item.unitPriceUSD * item.qty))}</p>
               </div>
-              <button className="mt-2 self-start font-body text-[11px] uppercase tracking-wide2 text-ink/40 hover:text-ink" onClick={() => remove(item.productId)}>
+              <button className="mt-2 self-start font-body text-micro uppercase tracking-wide2 text-ink/40 hover:text-ink" onClick={() => remove(item.productId)}>
                 {dict.cart.remove}
               </button>
             </div>

@@ -25,16 +25,16 @@ export function SearchClient({ products, locale, currency, dict }: { products: P
 
   return (
     <div className="mx-auto max-w-7xl px-5 py-14 md:px-8">
-      <h1 className="h-display mb-8 text-center text-4xl text-ink">{dict.search.title}</h1>
+      <h1 className="h-display mb-8 text-center text-d2 text-ink">{dict.search.title}</h1>
       <div className="mx-auto mb-14 max-w-xl">
         <Input
           autoFocus type="search" value={q} onChange={(e) => setQ(e.target.value)}
           placeholder={dict.search.placeholder} aria-label={dict.search.placeholder}
-          className="py-4 text-center font-display text-lg"
+          className="py-4 text-center font-display text-lead"
         />
       </div>
       {results.length === 0 ? (
-        <p className="py-16 text-center font-body text-sm text-ink/50">{dict.search.empty} “{q}”</p>
+        <p className="py-16 text-center font-body text-base2 text-ink/50">{dict.search.empty} “{q}”</p>
       ) : (
         <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3 lg:grid-cols-4">
           {results.map((p) => <ProductCard key={p.id} product={p} locale={locale} currency={currency} />)}

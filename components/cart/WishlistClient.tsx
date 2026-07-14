@@ -12,10 +12,10 @@ export function WishlistClient({ products, locale, currency, dict }: { products:
 
   return (
     <div className="mx-auto max-w-7xl px-5 py-14 md:px-8">
-      <h1 className="h-display mb-12 text-center text-4xl text-ink">{dict.wishlist.title}</h1>
+      <h1 className="h-display mb-12 text-center text-d2 text-ink">{dict.wishlist.title}</h1>
       {saved.length === 0 ? (
         <div className="flex flex-col items-center gap-6 py-16 text-center">
-          <p className="font-body text-sm text-ink/60">{dict.wishlist.empty}</p>
+          <p className="font-body text-base2 text-ink/60">{dict.wishlist.empty}</p>
           <ButtonLink href={`/${locale}/shop`} variant="outline">{dict.cart.emptyCta}</ButtonLink>
         </div>
       ) : (

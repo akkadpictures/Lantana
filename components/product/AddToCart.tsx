@@ -30,7 +30,7 @@ export function AddToCart({ product, locale, dict }: { product: Product; locale:
       <div className="flex items-stretch gap-3">
         <div className="flex items-center border border-ink/20">
           <button aria-label="−" className="px-4 py-3 text-ink/60 hover:text-ink" onClick={() => setQty(Math.max(1, qty - 1))}>−</button>
-          <span className="w-8 text-center font-body text-sm" aria-live="polite">{qty}</span>
+          <span className="w-8 text-center font-body text-base2" aria-live="polite">{qty}</span>
           <button aria-label="+" className="px-4 py-3 text-ink/60 hover:text-ink" onClick={() => setQty(Math.min(20, qty + 1))}>+</button>
         </div>
         <Button
@@ -55,7 +55,7 @@ export function AddToCart({ product, locale, dict }: { product: Product; locale:
         </button>
       </div>
       {!out && product.inventory <= 10 && (
-        <p className="font-body text-xs uppercase tracking-wide2 text-olive-deep">{dict.product.lowStock}</p>
+        <p className="font-body text-sm2 uppercase tracking-wide2 text-olive-deep">{dict.product.lowStock}</p>
       )}
       <span className="sr-only" aria-live="polite">{added ? t(product.name, locale) + " — " + dict.product.added : ""}</span>
     </div>

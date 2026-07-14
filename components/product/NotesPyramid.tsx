@@ -24,7 +24,7 @@ export function NotesPyramid({ notes, locale, dict }: { notes: FragranceNotes; l
             <p className="eyebrow mb-3">{tier.label}</p>
             <ul className="space-y-1.5">
               {tier.items.map((note, i) => (
-                <li key={i} className="font-display text-lg font-light text-ink">{t(note, locale)}</li>
+                <li key={i} className="font-display text-lead font-light text-ink">{t(note, locale)}</li>
               ))}
             </ul>
           </div>
