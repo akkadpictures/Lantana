@@ -45,9 +45,9 @@ export function Social({
   labelled?: boolean;
   className?: string;
 }) {
-  const icon = size === "md" ? "h-5 w-5" : "h-[17px] w-[17px]";
+  const icon = size === "md" ? "h-[22px] w-[22px]" : "h-5 w-5";
   return (
-    <div className={cn("flex items-center gap-5", className)}>
+    <div className={cn("flex items-center gap-6", className)}>
       <a
         href={SOCIAL.instagram.url}
         target="_blank"
@@ -56,7 +56,7 @@ export function Social({
         className="inline-flex items-center gap-2 transition-opacity duration-300 hover:opacity-70"
       >
         <InstagramIcon className={icon} />
-        {labelled && <span className="font-body text-sm2">{SOCIAL.instagram.handle}</span>}
+        {labelled && <span className="font-body text-base2">{SOCIAL.instagram.handle}</span>}
       </a>
       <a
         href={SOCIAL.whatsapp.url}
@@ -66,7 +66,7 @@ export function Social({
         className="inline-flex items-center gap-2 transition-opacity duration-300 hover:opacity-70"
       >
         <WhatsAppIcon className={icon} />
-        {labelled && <span dir="ltr" className="font-body text-sm2 tabular-nums">{SOCIAL.whatsapp.number}</span>}
+        {labelled && <span dir="ltr" className="font-body text-base2 tabular-nums">{SOCIAL.whatsapp.number}</span>}
       </a>
     </div>
   );

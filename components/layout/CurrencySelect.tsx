@@ -36,11 +36,11 @@ export function CurrencySelect({ className }: { className?: string }) {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="inline-flex items-center gap-1.5 font-body text-micro uppercase tracking-wide2 transition-opacity duration-300 hover:opacity-70"
+        className="inline-flex items-center gap-2 font-body text-label uppercase tracking-wide2 transition-opacity duration-300 hover:opacity-70"
       >
         {currency}
         <svg
-          className={cn("h-3 w-3 transition-transform duration-300", open && "rotate-180")}
+          className={cn("h-4 w-4 transition-transform duration-300", open && "rotate-180")}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"

@@ -30,14 +30,14 @@ export function RegionBar({
 
   return (
     <div className="bg-olive text-ivory">
-      <div className="shell flex items-center justify-between gap-4 py-2.5">
-        <Social className="text-ivory/85" />
+      <div className="shell flex items-center justify-between gap-4 py-3">
+        <Social size="md" className="text-ivory/90" />
 
-        <p className="hidden font-body text-micro uppercase tracking-luxe text-ivory/85 md:block">
+        <p className="hidden font-body text-label uppercase tracking-luxe text-ivory/90 md:block">
           {country === "SY" ? dict.footer.madeIn : dict.hero.eyebrow}
         </p>
 
-        <CurrencySelect className="text-ivory/85" />
+        <CurrencySelect className="text-ivory/90" />
       </div>
     </div>
   );
