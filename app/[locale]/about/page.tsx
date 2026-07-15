@@ -41,7 +41,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       <section className="border-y hairline bg-ivory-deep/50">
         <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 text-center md:grid-cols-3 md:px-8 lg:py-20">
           {[
-            { t: ar ? "خلاصات نادرة" : "Rare essences", d: ar ? "زيوت فرنسية وسويسرية، تُنقَع لأسابيع." : "French & Swiss oils, macerated for weeks." },
+            { t: ar ? "خلاصات نادرة" : "Rare essences", d: ar ? "زيوت فرنسية تُنقَع لأسابيع." : "French oils, macerated for weeks." },
             { t: ar ? "صناعة يدوية" : "Hand-finished", d: ar ? "تُجمَّع وتُختَم يدوياً في دبي." : "Assembled and sealed by hand in Dubai." },
             { t: ar ? "روح دمشق" : "The soul of Damascus", d: ar ? "ورد وياسمين وعود من قلب الشام." : "Rose, jasmine and oud from the heart of Sham." },
           ].map((v, i) => (
