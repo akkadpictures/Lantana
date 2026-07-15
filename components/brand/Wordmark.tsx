@@ -28,8 +28,8 @@ export function Wordmark({
       className={cn("inline-block h-28 bg-current align-middle", tones[tone], className)}
       style={{
         aspectRatio: "1000 / 702",
-        WebkitMaskImage: "url(/images/brand/logo-mask.png)",
-        maskImage: "url(/images/brand/logo-mask.png)",
+        WebkitMaskImage: "url(/images/brand/logo-mask-v2.png)",
+        maskImage: "url(/images/brand/logo-mask-v2.png)",
         WebkitMaskRepeat: "no-repeat",
         maskRepeat: "no-repeat",
         WebkitMaskPosition: "center",

@@ -19,8 +19,8 @@ export function LantanaMark({ className, animated = false }: { className?: strin
       className={cn("inline-block bg-current align-middle", animated && "animate-bloom", className)}
       style={{
         aspectRatio: "1 / 1",
-        WebkitMaskImage: "url(/images/brand/emblem-mask.png)",
-        maskImage: "url(/images/brand/emblem-mask.png)",
+        WebkitMaskImage: "url(/images/brand/emblem-mask-v2.png)",
+        maskImage: "url(/images/brand/emblem-mask-v2.png)",
         WebkitMaskRepeat: "no-repeat",
         maskRepeat: "no-repeat",
         WebkitMaskPosition: "center",
