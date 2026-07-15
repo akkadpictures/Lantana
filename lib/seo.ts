@@ -22,8 +22,8 @@ export function baseMetadata(locale: Locale): Metadata {
   const isAr = locale === "ar";
   const title = isAr ? "لانتانا — دار عطور دمشق" : "LANTANA — Maison de Parfum, Damascus";
   const description = isAr
-    ? "عطور فاخرة مركّبة من خلاصات فرنسية وسويسرية، وُلدت في مدينة الياسمين. ثمانية عطور أصلية من دار لانتانا."
-    : "Luxury eaux de parfum composed with French and Swiss essences, born in Damascus — the city of jasmine. Eight signature fragrances by LANTANA.";
+    ? "عطور فاخرة مُركّبة من خلاصاتٍ فرنسية، تُصاغ في دبي وموطنها دمشق — مدينة الياسمين. ثمانية عطور أصلية من دار لانتانا."
+    : "Luxury eaux de parfum composed with French essences, crafted in Dubai and at home in Damascus — the city of jasmine. Eight signature fragrances by LANTANA.";
   const canonical = localeUrl(locale);
   return {
     metadataBase: new URL(SITE_URL),

@@ -234,8 +234,8 @@ export const BLOG_POSTS: BlogPost[] = [
     title: n("The city of jasmine", "مدينة الياسمين"),
     excerpt: n("Why Damascus is the only city where LANTANA could have been born.", "لماذا دمشق هي المدينة الوحيدة التي كان يمكن أن تولد فيها لانتانا."),
     body: n(
-      "Every fragrance house has an origin. Ours is a city. Damascus has perfumed the world for a thousand years — rose water from Ghouta, jasmine over every courtyard wall, oud in the covered souks. LANTANA begins where that history lives: not as nostalgia, but as raw material. Our compositions take the Levant's memory and set it in French and Swiss essences, macerated slowly and finished by hand in Dubai. The result is not a souvenir of Damascus. It is Damascus, worn.",
-      "لكل دار عطور أصل. أصلنا مدينة. عطّرت دمشق العالم لألف عام — ماء الورد من الغوطة، والياسمين فوق كل جدار، والعود في الأسواق المسقوفة. تبدأ لانتانا حيث تعيش تلك الذاكرة: ليس حنيناً، بل مادةً خام. تأخذ تركيباتنا ذاكرة الشام وتصوغها بخلاصات فرنسية وسويسرية، تُنقَع ببطء وتُنهى يدوياً في دبي. النتيجة ليست تذكاراً من دمشق. إنها دمشق، تُلبَس."
+      "Every fragrance house has an origin. Ours is a city. Damascus has perfumed the world for a thousand years — rose water from Ghouta, jasmine over every courtyard wall, oud in the covered souks. LANTANA begins where that history lives: not as nostalgia, but as raw material. Our compositions take the Levant's memory and set it in French essences, macerated slowly and finished by hand in Dubai. The result is not a souvenir of Damascus. It is Damascus, worn.",
+      "لكل دار عطور أصل. أصلنا مدينة. عطّرت دمشق العالم لألف عام — ماء الورد من الغوطة، والياسمين فوق كل جدار، والعود في الأسواق المسقوفة. تبدأ لانتانا حيث تعيش تلك الذاكرة: ليس حنيناً، بل مادةً خام. تأخذ تركيباتنا ذاكرة الشام وتصوغها بخلاصاتٍ فرنسية، تُنقَع ببطء وتُنهى يدوياً في دبي. النتيجة ليست تذكاراً من دمشق. إنها دمشق، تُلبَس."
     ),
     image: "/images/products/yasmeen.jpg", publishedAt: "2026-06-15T00:00:00Z",
   },
