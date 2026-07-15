@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCart, cartCount } from "@/store/cart";
-import { LantanaMark } from "@/components/brand/LantanaMark";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/types";
 import type { Dictionary } from "@/lib/i18n";
@@ -48,7 +48,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         scrolled ? "bg-ivory/92 shadow-[0_1px_0_rgba(35,38,28,0.08)] backdrop-blur-md" : "bg-ivory"
       )}
     >
-      <div className="shell flex items-center justify-between py-6 md:py-7">
+      <div className="shell flex items-center justify-between py-4 md:py-5">
         {/* Mobile menu button */}
         <button
           className="flex h-12 w-12 items-center justify-center -ms-3 lg:hidden"
@@ -71,10 +71,16 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           ))}
         </nav>
 
-        {/* Centre lockup */}
-        <Link href={`/${locale}`} className="group flex flex-col items-center gap-2" aria-label="LANTANA — home">
-          <LantanaMark className="h-10 w-10 text-olive transition-transform duration-700 ease-luxe group-hover:rotate-[24deg] md:h-11 md:w-11" />
-          <span className="font-display text-d4 font-light tracking-luxe text-ink ltr:pl-1">LANTANA</span>
+        {/* Centre lockup — official logo */}
+        <Link href={`/${locale}`} className="group flex items-center" aria-label="LANTANA — home">
+          <Image
+            src="/images/brand/logo-full.png"
+            alt="LANTANA — لانتانا"
+            width={1000}
+            height={702}
+            priority
+            className="h-16 w-auto transition-opacity duration-700 ease-luxe group-hover:opacity-80 md:h-20 lg:h-[5.5rem]"
+          />
         </Link>
 
         {/* Right controls */}
@@ -108,7 +114,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       >
         <nav className="min-h-0 overflow-hidden" aria-label="Mobile">
           <div className="flex flex-col gap-1 px-6 py-8">
-            <LantanaMark className="mb-4 h-11 w-11 text-olive" />
+            <Image src="/images/brand/logo-full.png" alt="LANTANA — لانتانا" width={1000} height={702} className="mb-4 h-14 w-auto" />
             {nav.map((n) => (
               <Link key={n.href} href={n.href} className="border-b hairline py-4 font-display text-d3 font-light text-ink">
                 {n.label}
