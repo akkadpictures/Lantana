@@ -114,7 +114,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       >
         <nav className="min-h-0 overflow-hidden" aria-label="Mobile">
           <div className="flex flex-col gap-1 px-6 py-8">
-            <Image src="/images/brand/logo-full.png" alt="LANTANA — لانتانا" width={1000} height={702} className="mb-4 h-14 w-auto" />
+            <Image src="/images/brand/logo-full.png" alt="LANTANA — لانتانا" width={1000} height={702} className="mb-4 h-16 w-auto self-start" />
             {nav.map((n) => (
               <Link key={n.href} href={n.href} className="border-b hairline py-4 font-display text-d3 font-light text-ink">
                 {n.label}
