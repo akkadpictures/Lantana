@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { LantanaMark } from "./LantanaMark";
 import type { Locale } from "@/types";
 
 const tones = {
@@ -9,11 +8,9 @@ const tones = {
 } as const;
 
 /**
- * The full lockup: floret, wordmark, Arabic calligraphy.
- *
- * Drawn rather than imported as a bitmap — the mark stays razor-sharp at every
- * size, inherits the brand palette through `currentColor`, and cannot rot the
- * way the old PNG masters did.
+ * The full official lockup — floret, LANTANA wordmark, Arabic calligraphy —
+ * rendered as a CSS mask over `currentColor` from the corrected master artwork,
+ * so it tints to ink, ivory or olive and stays razor-sharp at any size.
  */
 export function Wordmark({
   tone = "ink",
@@ -25,19 +22,21 @@ export function Wordmark({
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col items-start gap-3", tones[tone], className)}>
-      <LantanaMark className="h-9 w-9" />
-      <div className="leading-none">
-        <span className="block font-display text-d4 font-light tracking-luxe">LANTANA</span>
-        <span
-          className="mt-1.5 block text-lead opacity-70"
-          style={{ fontFamily: "var(--font-display-ar), serif" }}
-          lang="ar"
-          dir="rtl"
-        >
-          لانتانا
-        </span>
-      </div>
-    </div>
+    <span
+      role="img"
+      aria-label="LANTANA — لانتانا"
+      className={cn("inline-block h-28 bg-current align-middle", tones[tone], className)}
+      style={{
+        aspectRatio: "1000 / 702",
+        WebkitMaskImage: "url(/images/brand/logo-mask.png)",
+        maskImage: "url(/images/brand/logo-mask.png)",
+        WebkitMaskRepeat: "no-repeat",
+        maskRepeat: "no-repeat",
+        WebkitMaskPosition: "center",
+        maskPosition: "center",
+        WebkitMaskSize: "contain",
+        maskSize: "contain",
+      }}
+    />
   );
 }
