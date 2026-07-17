@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Table, Badge, Card } from "@/components/admin/ui";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea, Select, Label } from "@/components/ui/Input";
+import { ImageUpload, GalleryUpload } from "@/components/admin/ImageUpload";
 import { slugify } from "@/lib/utils";
 import type { Collection, Currency, Product } from "@/types";
 
@@ -72,8 +73,15 @@ export function ProductsClient({ initial, collections }: { initial: Product[]; c
               <option value="active">Active</option><option value="draft">Draft</option><option value="archived">Archived</option>
             </Select>
           </div>
-          <div><Label>Image path</Label><Input value={p.image} onChange={(e) => upd({ image: e.target.value })} /></div>
           <div><Label>Inventory</Label><Input type="number" value={p.inventory} onChange={(e) => upd({ inventory: parseInt(e.target.value) || 0 })} /></div>
+          <div className="sm:col-span-2">
+            <Label>Main image</Label>
+            <ImageUpload value={p.image} onChange={(url) => upd({ image: url })} label="Upload main image" />
+          </div>
+          <div className="sm:col-span-2">
+            <Label>Gallery</Label>
+            <GalleryUpload value={p.gallery ?? []} onChange={(gallery) => upd({ gallery })} />
+          </div>
         </div>
 
         <div className="mt-6">

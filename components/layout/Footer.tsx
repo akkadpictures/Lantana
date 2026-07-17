@@ -48,6 +48,10 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         <div className="mt-16 flex flex-col items-center gap-6 border-t hairline pt-10 sm:flex-row sm:justify-between">
           <p className="font-body text-micro tracking-wide2 text-ink/45">
             © {year} LANTANA. {dict.footer.rights}
+            <span className="mx-2 text-ink/25">·</span>
+            <Link href="/admin" className="text-ink/45 underline-offset-2 hover:text-ink hover:underline">
+              Admin
+            </Link>
           </p>
           <Social className="text-ink/55" />
         </div>
