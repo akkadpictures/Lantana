@@ -22,13 +22,13 @@ function content(slug: LegalSlug, locale: Locale) {
             "نحترم خصوصيتك. نجمع فقط المعلومات اللازمة لإتمام طلبك وتحسين تجربتك: الاسم، البريد الإلكتروني، الهاتف، وعنوان الشحن.",
             "لا نبيع بياناتك ولا نشاركها مع أطراف ثالثة إلا لأغراض تنفيذ الطلب (الشحن والدفع).",
             "تُعالَج المدفوعات عبر مزوّدين آمنين معتمدين. لا نخزّن بيانات بطاقتك على خوادمنا.",
-            "يمكنك طلب تعديل بياناتك أو حذفها في أي وقت عبر hello@lantana.com.",
+            "يمكنك طلب تعديل بياناتك أو حذفها في أي وقت عبر perfumeslantana@gmail.com.",
           ]
         : [
             "We respect your privacy. We collect only what we need to fulfil your order and improve your experience: name, email, phone and shipping address.",
             "We never sell your data, and we share it only where required to fulfil an order (shipping and payment).",
             "Payments are processed by certified, secure providers. We do not store card details on our servers.",
-            "You may request correction or deletion of your data at any time via hello@lantana.com.",
+            "You may request correction or deletion of your data at any time via perfumeslantana@gmail.com.",
           ],
     },
     terms: {
@@ -54,13 +54,13 @@ function content(slug: LegalSlug, locale: Locale) {
             "يُشحن كل طلب خلال ٤٨ ساعة من دمشق ودبي، مع تغليف هدايا مجاني.",
             "سوريا: ١–٣ أيام عمل · الخليج: ٢–٥ أيام · دولي: ٥–١٠ أيام.",
             "يُقبل الإرجاع خلال ١٤ يوماً على المنتجات غير المفتوحة وبحالتها الأصلية.",
-            "لبدء عملية إرجاع، تواصل مع hello@lantana.com مع رقم طلبك.",
+            "لبدء عملية إرجاع، تواصل مع perfumeslantana@gmail.com مع رقم طلبك.",
           ]
         : [
             "Every order ships within 48 hours from Damascus and Dubai, with complimentary gift wrapping.",
             "Syria: 1–3 business days · GCC: 2–5 days · International: 5–10 days.",
             "Returns are accepted within 14 days on unopened items in their original condition.",
-            "To start a return, contact hello@lantana.com with your order number.",
+            "To start a return, contact perfumeslantana@gmail.com with your order number.",
           ],
     },
   };

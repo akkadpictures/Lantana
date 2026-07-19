@@ -36,15 +36,15 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           </div>
           <div>
             <p className="eyebrow mb-2">{ar ? "البريد" : "Email"}</p>
-            <a href="mailto:hello@lantana.com" dir="ltr" className="link-reveal font-body text-base2 text-ink/70">hello@lantana.com</a>
+            <a href="mailto:perfumeslantana@gmail.com" dir="ltr" className="link-reveal font-body text-base2 text-ink/70">perfumeslantana@gmail.com</a>
           </div>
           <div>
             <p className="eyebrow mb-2">{ar ? "واتساب" : "WhatsApp"}</p>
-            <a href="https://wa.me/9710000000" dir="ltr" target="_blank" rel="noopener noreferrer" className="link-reveal font-body text-base2 text-ink/70">+971 00 000 0000</a>
+            <a href="https://wa.me/963984179484" dir="ltr" target="_blank" rel="noopener noreferrer" className="link-reveal font-body text-base2 text-ink/70">+963 984 179 484</a>
           </div>
           <div>
             <p className="eyebrow mb-2">Instagram</p>
-            <a href="https://instagram.com/lantana" target="_blank" rel="noopener noreferrer" className="link-reveal font-body text-base2 text-ink/70">@lantana</a>
+            <a href="https://instagram.com/Lantana.perfume" target="_blank" rel="noopener noreferrer" className="link-reveal font-body text-base2 text-ink/70">@Lantana.perfume</a>
           </div>
         </Reveal>
       </div>

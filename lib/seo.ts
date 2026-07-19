@@ -80,6 +80,6 @@ export function organizationJsonLd() {
     url: SITE_URL,
     logo: `${SITE_URL}/images/brand/logo-olive.png`,
     address: { "@type": "PostalAddress", addressLocality: "Damascus", addressCountry: "SY" },
-    sameAs: ["https://instagram.com/lantana"],
+    sameAs: ["https://instagram.com/Lantana.perfume"],
   };
 }
