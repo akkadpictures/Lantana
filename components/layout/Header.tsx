@@ -45,7 +45,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     <header
       className={cn(
         "sticky top-0 z-50 transition-all duration-700 ease-luxe",
-        scrolled ? "bg-ivory/92 shadow-[0_1px_0_rgba(35,38,28,0.08)] backdrop-blur-md" : "bg-ivory"
+        scrolled ? "bg-ivory shadow-[0_1px_0_rgba(35,38,28,0.08)]" : "bg-ivory"
       )}
     >
       <div className="shell flex items-center justify-between py-4 md:py-5">
