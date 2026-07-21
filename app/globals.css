@@ -21,7 +21,7 @@ body {
 }
 
 /* Arabic sets wider and needs no tracking — Latin tracking wrecks the joins. */
-[dir="rtl"] body, [dir="rtl"] { letter-spacing: 0 !important; }
+[dir="rtl"], [dir="rtl"] *, :lang(ar) { letter-spacing: 0 !important; }
 [dir="rtl"] .font-display { font-family: var(--font-display-ar), serif; }
 [dir="rtl"] .font-body { font-family: var(--font-body-ar), sans-serif; }
 [dir="rtl"] body { font-size: 18px; line-height: 1.9; }
