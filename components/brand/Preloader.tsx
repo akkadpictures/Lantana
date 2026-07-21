@@ -25,7 +25,7 @@ export function Preloader() {
           aria-hidden="true"
         >
           <div className="text-ivory">
-            <LantanaMark animated className="mx-auto h-32 w-32 sm:h-40 sm:w-40" />
+            <LantanaMark animated className="mx-auto h-24 w-24 sm:h-28 sm:w-28" />
           </div>
         </motion.div>
       )}
