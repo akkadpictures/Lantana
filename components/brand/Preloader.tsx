@@ -25,14 +25,7 @@ export function Preloader() {
           aria-hidden="true"
         >
           <div className="text-ivory">
-            <LantanaMark animated className="mx-auto h-20 w-20" />
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.9, duration: 0.6 } }}
-              className="mt-6 text-center font-body text-micro uppercase tracking-luxe"
-            >
-              Lantana
-            </motion.p>
+            <LantanaMark animated className="mx-auto h-32 w-32 sm:h-40 sm:w-40" />
           </div>
         </motion.div>
       )}
