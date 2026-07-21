@@ -54,7 +54,7 @@ export function CurrencySelect({ className }: { className?: string }) {
       {open && (
         <ul
           role="listbox"
-          className="absolute end-0 top-full z-50 mt-2 min-w-[13rem] border border-ink/10 bg-ivory py-1.5 shadow-[0_18px_50px_-18px_rgba(35,38,28,0.35)]"
+          className="absolute end-0 top-full z-[70] mt-2 min-w-[13rem] border border-ink/10 bg-ivory py-1.5 shadow-[0_18px_50px_-18px_rgba(35,38,28,0.35)]"
         >
           {SUPPORTED_CURRENCIES.map((c) => (
             <li key={c.code}>

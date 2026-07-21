@@ -29,7 +29,7 @@ export function RegionBar({
   const { country } = useMarket();
 
   return (
-    <div className="bg-olive text-ivory">
+    <div className="relative z-[60] bg-olive text-ivory">
       <div className="shell flex items-center justify-between gap-4 py-3">
         <Social size="md" className="text-ivory/90" />
 
