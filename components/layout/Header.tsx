@@ -39,7 +39,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
     { href: `/${locale}/contact`, label: dict.nav.contact },
   ];
 
-  const iconCls = "h-6 w-6";
+  const iconCls = "h-7 w-7 md:h-[30px] md:w-[30px]";
 
   return (
     <header
@@ -89,13 +89,13 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             {dict.misc.language}
           </Link>
           <Link href={`/${locale}/search`} aria-label={dict.nav.search} className="text-ink/80 transition-colors hover:text-ink">
-            <svg className={iconCls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+            <svg className={iconCls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m20.5 20.5-4-4" /></svg>
           </Link>
           <Link href={`/${locale}/wishlist`} aria-label={dict.nav.wishlist} className="hidden text-ink/80 transition-colors hover:text-ink sm:block">
-            <svg className={iconCls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 21s-7.5-4.7-9.5-9C1 8.5 3 5 6.5 5c2 0 3.5 1 4.5 2.5C12 6 13.5 5 15.5 5 19 5 21 8.5 20.5 12c-1 4.3-8.5 9-8.5 9Z" /></svg>
+            <svg className={iconCls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20.5s-7.2-4.35-9.2-8.6C1.4 8.6 3 5.3 6.3 5.3c2 0 3.6 1.15 4.7 2.9 1.1-1.75 2.7-2.9 4.7-2.9 3.3 0 4.9 3.3 3.5 6.6-2 4.25-9.2 8.6-9.2 8.6Z" /></svg>
           </Link>
           <button onClick={openCart} aria-label={`${dict.nav.cart} (${count})`} className="relative text-ink/80 transition-colors hover:text-ink">
-            <svg className={iconCls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 8h12l-1 12H7L6 8Z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
+            <svg className={iconCls} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round"><path d="M6.4 8.5h11.2l-.7 11a2 2 0 0 1-2 1.9H9.1a2 2 0 0 1-2-1.9l-.7-11Z" /><path d="M9.2 8.5V6.6a2.8 2.8 0 0 1 5.6 0v1.9" /></svg>
             {count > 0 && (
               <span className="absolute -end-2 -top-2 grid h-[20px] min-w-[20px] place-items-center rounded-full bg-olive px-1 font-body text-label leading-none text-ivory">
                 {count}
