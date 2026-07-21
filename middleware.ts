@@ -84,14 +84,14 @@ export async function middleware(req: NextRequest) {
     return setCommon(NextResponse.next({ request: { headers: requestHeaders } }), "ar");
   }
 
-  /* 3 — Bare path: honour a previously chosen Arabic preference… */
-  if (req.cookies.get(LOCALE_COOKIE)?.value === "ar") {
-    const url = req.nextUrl.clone();
-    url.pathname = `/ar${pathname === "/" ? "" : pathname}`;
-    return NextResponse.redirect(url);
-  }
-
-  /* 4 — …otherwise render English internally while the URL stays clean. */
+  /* 3 — Bare path: ALWAYS English, everywhere in the world.
+   *
+   * English is the universal default: the bare domain opens in English for
+   * every visitor regardless of country, browser language, or any locale they
+   * chose on a previous visit. Arabic is entered only by deliberate choice —
+   * the visitor taps «العربية», which routes to /ar and is held there by its
+   * own prefix. We no longer honour a stored `ar` preference on bare paths, so
+   * switching back to English never silently bounces to Arabic. */
   const url = req.nextUrl.clone();
   url.pathname = `/en${pathname === "/" ? "" : pathname}`;
   const requestHeaders = new Headers(req.headers);
