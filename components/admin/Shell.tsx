@@ -21,6 +21,7 @@ function Icon({ name, className }: { name: string; className?: string }) {
     reviews: <><path d="M12 3.5l2.6 5.3 5.9.8-4.3 4.1 1 5.8L12 17l-5.2 2.5 1-5.8L3.5 9.6l5.9-.8L12 3.5Z" /></>,
     journal: <><path d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V4Z" /><path d="M18 20a2 2 0 0 0 2-2V6" /><path d="M9 8h6M9 12h6" /></>,
     settings: <><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" /></>,
+    gallery: <><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9.5" r="1.5" /><path d="m4 17 4.5-4.5a2 2 0 0 1 2.8 0L20 21" /></>,
     logout: <><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" /><path d="M10 12h9M16 8l4 4-4 4" /></>,
     external: <><path d="M14 4h6v6" /><path d="M20 4 10 14" /><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" /></>,
   };
@@ -41,6 +42,7 @@ const GROUPS: { label: string; items: { href: string; label: string; icon: strin
     { href: "/admin/products", label: "Products", icon: "products" },
     { href: "/admin/inventory", label: "Inventory", icon: "inventory" },
     { href: "/admin/collections", label: "Collections", icon: "collections" },
+    { href: "/admin/gallery", label: "Gallery", icon: "gallery" },
     { href: "/admin/pricing", label: "Country pricing", icon: "pricing" },
   ] },
   { label: "Marketing", items: [
