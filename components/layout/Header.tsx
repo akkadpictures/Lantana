@@ -49,18 +49,20 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       )}
     >
       <div className="shell flex items-center justify-between py-4 md:py-5">
-        {/* Mobile menu button */}
-        <button
-          className="flex h-12 w-12 items-center justify-center -ms-3 lg:hidden"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? dict.misc.close : dict.misc.menu}
-          aria-expanded={menuOpen}
-        >
-          <span className="relative block h-4 w-8">
-            <span className={cn("absolute inset-x-0 top-0 h-px bg-ink transition-all duration-500", menuOpen && "top-2 rotate-45")} />
-            <span className={cn("absolute inset-x-0 bottom-0 h-px bg-ink transition-all duration-500", menuOpen && "bottom-2 -rotate-45")} />
-          </span>
-        </button>
+        {/* Mobile menu button — flex-1 region so the centre logo is truly centred on mobile */}
+        <div className="flex flex-1 items-center justify-start lg:hidden">
+          <button
+            className="flex h-12 w-12 items-center justify-center -ms-3"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? dict.misc.close : dict.misc.menu}
+            aria-expanded={menuOpen}
+          >
+            <span className="relative block h-4 w-8">
+              <span className={cn("absolute inset-x-0 top-0 h-px bg-ink transition-all duration-500", menuOpen && "top-2 rotate-45")} />
+              <span className={cn("absolute inset-x-0 bottom-0 h-px bg-ink transition-all duration-500", menuOpen && "bottom-2 -rotate-45")} />
+            </span>
+          </button>
+        </div>
 
         {/* Left nav (desktop) */}
         <nav className="hidden flex-1 items-center gap-8 lg:flex" aria-label="Primary">
@@ -74,7 +76,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         {/* Centre lockup — official logo */}
         <Link href={`/${locale}`} className="group flex items-center" aria-label="LANTANA — home">
           <Image
-            src="/images/brand/logo-full.png"
+            src="/images/brand/logo-full-olive.png"
             alt="LANTANA — لانتانا"
             width={1000}
             height={702}
@@ -85,7 +87,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
         {/* Right controls */}
         <div className="flex flex-1 items-center justify-end gap-6 md:gap-7">
-          <Link href={switchHref} className="link-reveal hidden text-nav tracking-wide2 text-ink/80 hover:text-ink sm:block" aria-label="Switch language">
+          <Link href={switchHref} lang={locale === "en" ? "ar" : "en"} className="link-reveal hidden text-nav tracking-wide2 text-ink/80 hover:text-ink sm:block" aria-label="Switch language">
             {dict.misc.language}
           </Link>
           <Link href={`/${locale}/search`} aria-label={dict.nav.search} className="text-ink/80 transition-colors hover:text-ink">
@@ -114,13 +116,13 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       >
         <nav className="min-h-0 overflow-hidden" aria-label="Mobile">
           <div className="flex flex-col gap-1 px-6 py-8">
-            <Image src="/images/brand/logo-full.png" alt="LANTANA — لانتانا" width={1000} height={702} className="mb-4 h-16 w-auto self-start" />
+            <Image src="/images/brand/logo-full-olive.png" alt="LANTANA — لانتانا" width={1000} height={702} className="mb-4 h-16 w-auto self-start" />
             {nav.map((n) => (
               <Link key={n.href} href={n.href} className="border-b hairline py-4 font-display text-d3 font-light text-ink">
                 {n.label}
               </Link>
             ))}
-            <Link href={switchHref} className="text-nav mt-6 tracking-wide2 text-olive-deep">
+            <Link href={switchHref} lang={locale === "en" ? "ar" : "en"} className="text-nav mt-6 tracking-wide2 text-olive-deep">
               {dict.misc.language}
             </Link>
           </div>
