@@ -21,6 +21,8 @@ import type { Locale } from "@/types";
 
 export const revalidate = 300;
 
+const SITE = "https://www.lantanaperfume.com";
+
 export async function generateStaticParams() {
   const products = await getProducts();
   return products.flatMap((p) => [{ locale: "en", slug: p.slug }, { locale: "ar", slug: p.slug }]);
@@ -31,10 +33,79 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const locale = (isLocale(raw) ? raw : "en") as Locale;
   const p = await getProductBySlug(slug);
   if (!p) return {};
+
+  const isAr = locale === "ar";
+  const name = t(p.name, locale);
+  const accord = t(p.accord, locale);
+  const tagline = t(p.tagline, locale);
+
+  // نوتات العطر كنص — تغذي الوصف بكلمات يبحث عنها الناس فعلاً
+  const noteLine = (arr: unknown[] = []) =>
+    arr.map((n) => t(n as never, locale)).filter(Boolean).join(isAr ? "، " : ", ");
+  const top = noteLine(p.notes?.top);
+  const heart = noteLine(p.notes?.heart);
+  const base = noteLine(p.notes?.base);
+
+  const title = isAr
+    ? `عطر ${name} | لانتانا — عطور دمشق الفاخرة`
+    : `${name} | LANTANA — Luxury Perfume Damascus`;
+
+  const description = isAr
+    ? `عطر ${name} من لانتانا — ${accord}، ${p.concentration} بحجم ${p.size}. ` +
+      `النوتات العلوية: ${top}. نوتات القلب: ${heart}. النوتات القاعدية: ${base}. ` +
+      `متوفر في محل لانتانا بالشعلان، دمشق، مع التوصيل داخل سوريا والخليج.`
+    : `${name} by LANTANA — ${accord}, ${p.concentration}, ${p.size}. ` +
+      `Top: ${top}. Heart: ${heart}. Base: ${base}. ` +
+      `Available at the Al-Shaalan boutique in Damascus, with delivery across Syria and the Gulf.`;
+
+  const path = `/${locale}/product/${slug}`;
+
   return {
-    title: t(p.name, locale),
-    description: t(p.description, locale).slice(0, 160),
-    openGraph: { images: [{ url: p.image }], title: t(p.name, locale), description: t(p.tagline, locale) },
+    metadataBase: new URL(SITE),
+    title,
+    description: description.replace(/\s+/g, " ").trim().slice(0, 300),
+    keywords: isAr
+      ? [
+          `عطر ${name}`,
+          `${name} لانتانا`,
+          "عطور دمشق",
+          "برفيوم دمشق",
+          "عطور فاخرة دمشق",
+          "عطور سورية",
+          accord,
+          "لانتانا",
+        ].filter(Boolean)
+      : [
+          `${name} perfume`,
+          `LANTANA ${name}`,
+          "luxury perfume Damascus",
+          "Syrian perfume",
+          "niche fragrance",
+          accord,
+        ].filter(Boolean),
+    alternates: {
+      canonical: `${SITE}${path}`,
+      languages: {
+        en: `${SITE}/en/product/${slug}`,
+        ar: `${SITE}/ar/product/${slug}`,
+        "x-default": `${SITE}/en/product/${slug}`,
+      },
+    },
+    openGraph: {
+      type: "website",
+      siteName: "LANTANA",
+      locale: isAr ? "ar_SY" : "en_US",
+      url: `${SITE}${path}`,
+      title,
+      description: tagline || description.slice(0, 160),
+      images: [{ url: p.image, alt: name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: tagline || description.slice(0, 160),
+      images: [p.image],
+    },
   };
 }
 
