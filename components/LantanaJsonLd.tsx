@@ -1,4 +1,4 @@
-// components/LantanaJsonLd.tsx
+components/LantanaJsonLd.tsx// components/LantanaJsonLd.tsx
 // ملف جديد — انسخه كما هو. لا يحتاج أي import.
 // ✅ جاهز — العنوان والإحداثيات مضبوطة على محل الشعلان بدمشق.
 
