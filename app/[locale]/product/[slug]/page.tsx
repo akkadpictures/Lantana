@@ -23,6 +23,105 @@ export const revalidate = 300;
 
 const SITE = "https://www.lantanaperfume.com";
 
+/**
+ * يصلّح روابط الصور المكسورة القادمة من productJsonLd.
+ * المشكلة: صور المنتجات مخزّنة على Supabase برابط مطلق،
+ * لكن الدالة تضيف دومين الموقع أمامه فينتج:
+ *   https://www.lantanaperfume.comhttps://xxx.supabase.co/...
+ * وغوغل يرفض السكيمة كاملة بسبب ذلك.
+ */
+function absUrl(u?: string): string | undefined {
+  if (!u || typeof u !== "string") return undefined;
+  const s = u.trim();
+  // رابط مطلق ملتصق بدومين آخر → خذ الرابط المطلق الأخير فقط
+  const i = Math.max(s.indexOf("https://", 1), s.indexOf("http://", 1));
+  if (i > 0) return s.slice(i);
+  if (s.startsWith("http://") || s.startsWith("https://")) return s;
+  return `${SITE}${s.startsWith("/") ? "" : "/"}${s}`;
+}
+
+/** يصلّح الصور ويغني السكيمة بحقول ترفع فرص ظهور النتائج الغنية. */
+function enrichProductJsonLd(
+  base: Record<string, unknown>,
+  product: any,
+  locale: Locale,
+  price: number,
+  currency: string
+) {
+  const isAr = locale === "ar";
+  const url = `${SITE}/${locale}/product/${product.slug}`;
+
+  const images = Array.from(
+    new Set(
+      [product.image, ...(product.gallery ?? [])]
+        .map((s: string) => absUrl(s))
+        .filter(Boolean) as string[]
+    )
+  );
+
+  const notes = product.notes ?? {};
+  const noteLine = (arr: unknown[] = []) =>
+    arr.map((n) => t(n as never, locale)).filter(Boolean).join(isAr ? "، " : ", ");
+
+  const props = [
+    { name: isAr ? "التركيز" : "Concentration", value: product.concentration },
+    { name: isAr ? "الحجم" : "Size", value: product.size },
+    { name: isAr ? "العائلة العطرية" : "Olfactive family", value: t(product.accord, locale) },
+    { name: isAr ? "النوتات العلوية" : "Top notes", value: noteLine(notes.top) },
+    { name: isAr ? "نوتات القلب" : "Heart notes", value: noteLine(notes.heart) },
+    { name: isAr ? "النوتات القاعدية" : "Base notes", value: noteLine(notes.base) },
+  ]
+    .filter((p) => p.value)
+    .map((p) => ({ "@type": "PropertyValue", name: p.name, value: p.value }));
+
+  const baseOffers = (base.offers ?? {}) as Record<string, unknown>;
+
+  return {
+    ...base,
+    "@id": `${url}#product`,
+    image: images.length ? images : undefined,
+    url,
+    inLanguage: locale,
+    brand: { "@type": "Brand", name: "LANTANA", "@id": `${SITE}/#brand` },
+    countryOfOrigin: { "@type": "Country", name: "Syria" },
+    additionalProperty: props.length ? props : undefined,
+    offers: {
+      ...baseOffers,
+      "@type": "Offer",
+      url,
+      price: Number(price).toFixed(2),
+      priceCurrency: currency,
+      priceValidUntil: `${new Date().getFullYear() + 1}-12-31`,
+      itemCondition: "https://schema.org/NewCondition",
+      availability:
+        (product.inventory ?? 0) > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      seller: { "@type": "Organization", name: "LANTANA", "@id": `${SITE}/#store` },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingDestination: ["SY", "SA", "AE", "QA", "KW"].map((c) => ({
+          "@type": "DefinedRegion",
+          addressCountry: c,
+        })),
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 2, unitCode: "DAY" },
+          transitTime: { "@type": "QuantitativeValue", minValue: 2, maxValue: 10, unitCode: "DAY" },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "SY",
+        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 14,
+        returnMethod: "https://schema.org/ReturnByMail",
+        returnFees: "https://schema.org/FreeReturn",
+      },
+    },
+  };
+}
+
 export async function generateStaticParams() {
   const products = await getProducts();
   return products.flatMap((p) => [{ locale: "en", slug: p.slug }, { locale: "ar", slug: p.slug }]);
@@ -132,7 +231,17 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
     <article className="shell py-14 md:py-20">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd(product, locale, price, market.currency)) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            enrichProductJsonLd(
+              productJsonLd(product, locale, price, market.currency) as Record<string, unknown>,
+              product,
+              locale,
+              price,
+              market.currency
+            )
+          ),
+        }}
       />
       <TrackRecent slug={product.slug} />
 
