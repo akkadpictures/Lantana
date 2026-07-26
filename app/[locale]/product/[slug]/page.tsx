@@ -46,7 +46,8 @@ function enrichProductJsonLd(
   product: any,
   locale: Locale,
   price: number,
-  currency: string
+  currency: string,
+  reviews: any[] = []
 ) {
   const isAr = locale === "ar";
   const url = `${SITE}/${locale}/product/${product.slug}`;
@@ -76,6 +77,38 @@ function enrichProductJsonLd(
 
   const baseOffers = (base.offers ?? {}) as Record<string, unknown>;
 
+  /* ── التقييمات ──
+     تُضاف فقط إذا وُجدت تقييمات حقيقية معروضة على الصفحة.
+     غوغل يعاقب aggregateRating بدون تقييمات ظاهرة. */
+  const valid = (reviews ?? []).filter(
+    (r) => r && typeof r.rating === "number" && r.rating > 0 && r.rating <= 5
+  );
+
+  const reviewNodes = valid.slice(0, 20).map((r) => ({
+    "@type": "Review",
+    author: { "@type": "Person", name: r.author || (isAr ? "زبون" : "Customer") },
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: r.rating,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    ...(r.body ? { reviewBody: r.body } : {}),
+    ...(r.createdAt ? { datePublished: String(r.createdAt).slice(0, 10) } : {}),
+  }));
+
+  const aggregate = valid.length
+    ? {
+        "@type": "AggregateRating",
+        ratingValue: (
+          valid.reduce((s: number, r: any) => s + r.rating, 0) / valid.length
+        ).toFixed(1),
+        reviewCount: valid.length,
+        bestRating: 5,
+        worstRating: 1,
+      }
+    : undefined;
+
   return {
     ...base,
     "@id": `${url}#product`,
@@ -85,6 +118,8 @@ function enrichProductJsonLd(
     brand: { "@type": "Brand", name: "LANTANA", "@id": `${SITE}/#brand` },
     countryOfOrigin: { "@type": "Country", name: "Syria" },
     additionalProperty: props.length ? props : undefined,
+    ...(aggregate ? { aggregateRating: aggregate } : {}),
+    ...(reviewNodes.length ? { review: reviewNodes } : {}),
     offers: {
       ...baseOffers,
       "@type": "Offer",
@@ -238,7 +273,8 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
               product,
               locale,
               price,
-              market.currency
+              market.currency,
+              reviews
             )
           ),
         }}
