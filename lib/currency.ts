@@ -51,7 +51,7 @@ export function toCurrency(raw: string | undefined | null): Currency | null {
  * which currency they happen to be reading in. A visitor in Dubai pays the
  * export price whether they view it in AED, USD or SYP.
  */
-export const EXPORT_MULTIPLIER = 3;
+export const EXPORT_MULTIPLIER = 1;
 
 export function multiplierFor(country: CountryCode): number {
   return country === "SY" ? 1 : EXPORT_MULTIPLIER;
