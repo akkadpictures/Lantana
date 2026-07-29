@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { revalidatePath } from "next/cache";
 import { productSchema } from "@/lib/validation";
 import { getProducts, upsertProduct, deleteProduct } from "@/lib/db";
 import type { Product } from "@/types";
@@ -11,6 +12,7 @@ export async function POST(req: NextRequest) {
   let input;
   try { input = productSchema.parse(await req.json()); } catch (e) { return NextResponse.json({ error: "invalid_input", detail: String(e) }, { status: 400 }); }
   await upsertProduct(input as Product);
+  revalidatePath("/", "layout");
   return NextResponse.json({ ok: true });
 }
 
@@ -18,5 +20,6 @@ export async function DELETE(req: NextRequest) {
   const id = new URL(req.url).searchParams.get("id");
   if (!id) return NextResponse.json({ error: "missing_id" }, { status: 400 });
   await deleteProduct(id);
+  revalidatePath("/", "layout");
   return NextResponse.json({ ok: true });
 }
