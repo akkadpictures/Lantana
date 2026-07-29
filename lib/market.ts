@@ -31,7 +31,9 @@ export async function getMarket(): Promise<Market> {
   const country = toCountryCode(geo || c.get(COUNTRY_COOKIE)?.value);
 
   const chosen = toCurrency(c.get(CURRENCY_COOKIE)?.value);
-  const currency: Currency = chosen ?? (country === "SY" ? COUNTRY_CURRENCY.SY : "USD");
+  // No manual choice yet → default to the visitor's own country currency
+  // (SA→SAR, AE→AED, SY→SYP, TR→TRY…), falling back to USD elsewhere.
+  const currency: Currency = chosen ?? toCurrency(COUNTRY_CURRENCY[country]) ?? "USD";
 
   return {
     country,
