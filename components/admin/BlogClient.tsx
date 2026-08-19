@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Card } from "@/components/admin/ui";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea, Label } from "@/components/ui/Input";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import { slugify } from "@/lib/utils";
 import type { BlogPost } from "@/types";
 
@@ -13,7 +14,7 @@ export function BlogClient({ initial }: { initial: BlogPost[] }) {
   const [saving, setSaving] = useState(false);
 
   function blank(): BlogPost {
-    return { id: `b-${crypto.randomUUID().slice(0, 8)}`, slug: "", title: { en: "", ar: "" }, excerpt: { en: "", ar: "" }, body: { en: "", ar: "" }, image: "/images/products/yasmeen.jpg", publishedAt: new Date().toISOString() };
+    return { id: `b-${crypto.randomUUID().slice(0, 8)}`, slug: "", title: { en: "", ar: "" }, excerpt: { en: "", ar: "" }, body: { en: "", ar: "" }, image: "", publishedAt: new Date().toISOString() };
   }
   async function save(b: BlogPost) {
     setSaving(true);
@@ -45,10 +46,10 @@ export function BlogClient({ initial }: { initial: BlogPost[] }) {
           <div className="sm:col-span-2"><Label>Body (EN)</Label><Textarea className="min-h-40" value={b.body.en} onChange={(e) => upd({ body: { ...b.body, en: e.target.value } })} /></div>
           <div className="sm:col-span-2"><Label>Body (AR)</Label><Textarea dir="rtl" className="min-h-40" value={b.body.ar} onChange={(e) => upd({ body: { ...b.body, ar: e.target.value } })} /></div>
           <div><Label>Slug</Label><Input value={b.slug} placeholder={slugify(b.title.en)} onChange={(e) => upd({ slug: e.target.value })} /></div>
-          <div><Label>Image path</Label><Input value={b.image} onChange={(e) => upd({ image: e.target.value })} /></div>
+          <div className="sm:col-span-2"><Label>Cover image</Label><ImageUpload value={b.image} onChange={(url) => upd({ image: url })} label="Upload cover image" /></div>
         </div>
         <div className="mt-6 flex gap-3">
-          <Button onClick={() => save(b)} disabled={saving || !b.title.en}>{saving ? "Saving…" : "Publish"}</Button>
+          <Button onClick={() => save(b)} disabled={saving || !b.title.en || !b.image}>{saving ? "Saving…" : "Publish"}</Button>
           <button onClick={() => setEditing(null)} className="font-body text-base2 text-ink/50">Cancel</button>
         </div>
       </Card>
