@@ -7,7 +7,7 @@ import { Input, Textarea, Select, Label } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { SUPPORTED_COUNTRIES, toCountryCode } from "@/lib/currency";
 import { useMarket } from "@/components/market/MarketProvider";
-import { cn, t } from "@/lib/utils";
+import { cn, daysRange, t } from "@/lib/utils";
 import type { CountryCode, Currency, Locale, PaymentMethod, ShippingRate } from "@/types";
 import type { Dictionary } from "@/lib/i18n";
 
@@ -177,7 +177,12 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
               </div>
             </div>
             <p className="mt-3 font-body text-sm2 text-ink/50">
-              {dict.checkout.eta}: {rate.etaDays[0]}–{rate.etaDays[1]} {dict.checkout.days} · {t(rate.label, locale)}
+              {dict.checkout.eta}: {daysRange(rate.etaDays[0], rate.etaDays[1], locale, {
+                one: dict.checkout.dayOne,
+                two: dict.checkout.dayTwo,
+                few: dict.checkout.dayFew,
+                many: dict.checkout.days,
+              })} · {t(rate.label, locale)}
             </p>
           </section>
 

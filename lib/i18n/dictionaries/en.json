@@ -16,7 +16,7 @@
   "hero": {
     "eyebrow": "Damascus · Est. 2026",
     "title": "Scent is memory",
-    "sub": "Eight eaux de parfum composed with French essences, crafted in Dubai — born in the city of jasmine.",
+    "sub": "Eight eaux de parfum composed from French essences, crafted in Dubai — born in the city of jasmine.",
     "cta": "Discover the collection",
     "cta2": "Our story"
   },
@@ -24,7 +24,7 @@
     "featured": "The Collection",
     "featuredSub": "Eight compositions. One signature.",
     "hero_product": "The Damascus flower",
-    "ritual": "The ritual",
+    "ritual": "The making",
     "ritualBody": "Worn quietly. Remembered always. Each LANTANA composition is macerated for weeks, hand-finished, and sealed in Dubai with essences from Grasse.",
     "journal": "From the Journal",
     "newsletter": "The private list",
@@ -42,7 +42,10 @@
     "sortPriceDesc": "Price · high to low",
     "all": "All",
     "results": "results",
-    "empty": "No fragrances match your selection."
+    "empty": "No fragrances match your selection.",
+    "resultOne": "result",
+    "resultTwo": "results",
+    "resultFew": "results"
   },
   "product": {
     "notes": "Olfactive pyramid",
@@ -119,7 +122,10 @@
       "required": "This field is required",
       "email": "Enter a valid email",
       "generic": "Something needs attention — please review the form."
-    }
+    },
+    "dayOne": "business day",
+    "dayTwo": "business days",
+    "dayFew": "business days"
   },
   "wishlist": {
     "title": "Wishlist",
@@ -146,9 +152,10 @@
   },
   "about": {
     "title": "The city of jasmine, in a bottle",
-    "body1": "LANTANA was born in Damascus — the oldest continuously inhabited city on earth, where jasmine climbs the courtyard walls and every evening carries a different memory.",
-    "body2": "Our compositions are built from French essences, macerated slowly and finished by hand in Dubai. Each bottle carries a fragment of the Levant: rose from the gardens, oud from the old souk, jasmine from the city itself.",
-    "body3": "We believe in fragrances worn quietly — felt before they are noticed, remembered after they are gone."
+    "body1": "LANTANA was born in Damascus — one of the oldest continuously inhabited cities in the world, where jasmine climbs the courtyard walls and every evening carries a different memory. From Al-Shaalan, the maison opened its doors with fragrances worthy of the city that made them.",
+    "body2": "Our compositions are built from French essences from Grasse, macerated slowly for weeks and finished by hand in Dubai, at an eau de parfum concentration that holds for six to eight hours. Eight signature compositions for women and men — each bottle carrying a fragment of the Levant: rose from the gardens, oud from the old souk, jasmine from the city itself.",
+    "body3": "We believe in fragrances worn quietly — felt before they are noticed, remembered after they are gone. Visit the maison in Al-Shaalan to try the collection on skin, or order online with delivery across Syria and to Saudi Arabia, the UAE, Qatar and Kuwait.",
+    "heroAlt": "LANTANA bottles at the maison in Al-Shaalan, Damascus"
   },
   "contactPage": {
     "title": "Contact",

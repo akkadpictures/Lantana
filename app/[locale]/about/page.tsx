@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n/config";
+import { lantanaAlternates } from "@/lib/seoLantana";
 import { Reveal } from "@/components/motion/Reveal";
 import { LantanaMark } from "@/components/brand/LantanaMark";
 import { ButtonLink } from "@/components/ui/Button";
@@ -9,7 +10,12 @@ import type { Locale } from "@/types";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  return { title: locale === "ar" ? "الدار" : "The Maison" };
+  const alternates = lantanaAlternates(locale, "/about");
+  return {
+    title: locale === "ar" ? "الدار" : "The Maison",
+    alternates,
+    openGraph: { url: alternates.canonical },
+  };
 }
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -21,7 +27,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   return (
     <div>
       <section className="relative flex min-h-[62vh] items-center justify-center overflow-hidden bg-ink text-ivory">
-        <Image src="/images/products/yasmeen.jpg" alt="" fill sizes="100vw" className="object-cover opacity-25" priority />
+        <Image src="/images/products/yasmeen.jpg" alt={dict.about.heroAlt} fill sizes="100vw" className="object-cover opacity-25" priority />
         <div className="relative mx-auto max-w-3xl px-5 text-center">
           <Reveal>
             <LantanaMark className="mx-auto mb-8 h-10 w-10 text-olive-mist" />

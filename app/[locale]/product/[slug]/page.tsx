@@ -16,7 +16,7 @@ import { ReviewForm } from "@/components/product/ReviewForm";
 import { Price } from "@/components/product/Price";
 import { Gallery, type GalleryImage } from "@/components/product/Gallery";
 import { Reveal } from "@/components/motion/Reveal";
-import { t } from "@/lib/utils";
+import { daysRange, formatSize, t } from "@/lib/utils";
 import type { Locale } from "@/types";
 
 export const revalidate = 300;
@@ -66,7 +66,7 @@ function enrichProductJsonLd(
 
   const props = [
     { name: isAr ? "التركيز" : "Concentration", value: product.concentration },
-    { name: isAr ? "الحجم" : "Size", value: product.size },
+    { name: isAr ? "الحجم" : "Size", value: product.size },  // schema.org stays in Latin units
     { name: isAr ? "العائلة العطرية" : "Olfactive family", value: t(product.accord, locale) },
     { name: isAr ? "النوتات العلوية" : "Top notes", value: noteLine(notes.top) },
     { name: isAr ? "نوتات القلب" : "Heart notes", value: noteLine(notes.heart) },
@@ -185,8 +185,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     : `${name} | LANTANA — Luxury Perfume Damascus`;
 
   const description = isAr
-    ? `عطر ${name} من لانتانا — ${accord}، ${p.concentration} بحجم ${p.size}. ` +
-      `النوتات العلوية: ${top}. نوتات القلب: ${heart}. النوتات القاعدية: ${base}. ` +
+    ? `عطر ${name} من لانتانا — ${accord}، أو دو بارفان بحجم ${formatSize(p.size, locale)}. ` +
+      `المقدمة: ${top}. القلب: ${heart}. القاعدة: ${base}. ` +
       `متوفر في محل لانتانا بالشعلان، دمشق، مع التوصيل داخل سوريا والخليج.`
     : `${name} by LANTANA — ${accord}, ${p.concentration}, ${p.size}. ` +
       `Top: ${top}. Heart: ${heart}. Base: ${base}. ` +
@@ -292,7 +292,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
 
         {/* Details */}
         <Reveal delay={0.1} className="lg:py-8">
-          <p className="eyebrow mb-4">{product.concentration} · {product.size}</p>
+          <p className="eyebrow mb-4">{locale === "ar" ? dict.product.eau : product.concentration} · {formatSize(product.size, locale)}</p>
           <h1 className="t-h1 text-ink">{name}</h1>
           <p className="mt-4 font-display text-d4 font-light italic text-olive-deep">{t(product.tagline, locale)}</p>
 
@@ -313,7 +313,14 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
             <summary className="t-label cursor-pointer tracking-wide2 text-ink/70">{dict.product.shippingReturns}</summary>
             <p className="t-small mt-4">
               {dict.product.shippingBody}
-              {rate && <> {dict.checkout.eta}: {rate.etaDays[0]}–{rate.etaDays[1]} {dict.checkout.days}.</>}
+              {rate && (
+                <> {dict.checkout.eta}: {daysRange(rate.etaDays[0], rate.etaDays[1], locale, {
+                  one: dict.checkout.dayOne,
+                  two: dict.checkout.dayTwo,
+                  few: dict.checkout.dayFew,
+                  many: dict.checkout.days,
+                })}.</>
+              )}
             </p>
           </details>
         </Reveal>

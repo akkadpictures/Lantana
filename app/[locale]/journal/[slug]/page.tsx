@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n/config";
+import { lantanaAlternates } from "@/lib/seoLantana";
 import { getBlogPost, getBlogPosts } from "@/lib/db";
 import { Reveal } from "@/components/motion/Reveal";
 import { LantanaMark } from "@/components/brand/LantanaMark";
@@ -22,7 +23,22 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const locale = (isLocale(raw) ? raw : "en") as Locale;
   const post = await getBlogPost(slug);
   if (!post) return {};
-  return { title: t(post.title, locale), description: t(post.excerpt, locale), openGraph: { images: [{ url: post.image }] } };
+  const title = t(post.title, locale);
+  const description = t(post.excerpt, locale);
+  const alternates = lantanaAlternates(locale, `/journal/${slug}`);
+  return {
+    title,
+    description,
+    alternates,
+    openGraph: {
+      type: "article",
+      url: alternates.canonical,
+      title,
+      description,
+      images: [{ url: post.image, alt: title }],
+    },
+    twitter: { card: "summary_large_image", title, description, images: [post.image] },
+  };
 }
 
 export default async function JournalPostPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {

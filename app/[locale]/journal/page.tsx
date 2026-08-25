@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n/config";
+import { lantanaAlternates } from "@/lib/seoLantana";
 import { getBlogPosts } from "@/lib/db";
 import { Reveal } from "@/components/motion/Reveal";
 import { t } from "@/lib/utils";
@@ -12,7 +13,12 @@ export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  return { title: locale === "ar" ? "المدوّنة" : "Journal" };
+  const alternates = lantanaAlternates(locale, "/journal");
+  return {
+    title: locale === "ar" ? "المدوّنة" : "Journal",
+    alternates,
+    openGraph: { url: alternates.canonical },
+  };
 }
 
 export default async function JournalPage({ params }: { params: Promise<{ locale: string }> }) {

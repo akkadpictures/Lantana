@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Price } from "./Price";
-import { t } from "@/lib/utils";
+import { formatSize, t } from "@/lib/utils";
 import type { Currency, Locale, Product } from "@/types";
 
 export function ProductCard({
@@ -42,7 +42,7 @@ export function ProductCard({
           {t(product.name, locale)}
         </h3>
         <p className="t-small mt-2">
-          {t(product.accord, locale)} · {product.size}
+          {t(product.accord, locale)} · {formatSize(product.size, locale)}
         </p>
         <p className="t-price mt-3">
           <Price product={product} />

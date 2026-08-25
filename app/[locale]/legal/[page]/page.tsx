@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n/config";
+import { lantanaAlternates } from "@/lib/seoLantana";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Locale } from "@/types";
 
@@ -71,7 +72,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale: raw, page } = await params;
   const locale = (isLocale(raw) ? raw : "en") as Locale;
   if (!PAGES.includes(page as LegalSlug)) return {};
-  return { title: content(page as LegalSlug, locale).title };
+  const alternates = lantanaAlternates(locale, `/legal/${page}`);
+  return {
+    title: content(page as LegalSlug, locale).title,
+    alternates,
+    openGraph: { url: alternates.canonical },
+  };
 }
 
 export default async function LegalPage({ params }: { params: Promise<{ locale: string; page: string }> }) {

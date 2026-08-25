@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n/config";
+import { lantanaAlternates } from "@/lib/seoLantana";
 import { getCollections, getProducts } from "@/lib/db";
 import { COUNTRY_CURRENCY, toCountryCode } from "@/lib/currency";
 import { ProductCard } from "@/components/product/ProductCard";
@@ -16,7 +17,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale: raw, slug } = await params;
   const locale = (isLocale(raw) ? raw : "en") as Locale;
   const c = (await getCollections()).find((x) => x.slug === slug);
-  return c ? { title: t(c.name, locale), description: t(c.description, locale) } : {};
+  if (!c) return {};
+  const alternates = lantanaAlternates(locale, `/collections/${slug}`);
+  return {
+    title: t(c.name, locale),
+    description: t(c.description, locale),
+    alternates,
+    openGraph: { url: alternates.canonical, title: t(c.name, locale), description: t(c.description, locale) },
+    twitter: { title: t(c.name, locale), description: t(c.description, locale) },
+  };
 }
 
 export default async function CollectionPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {

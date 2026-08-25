@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n/config";
+import { lantanaAlternates } from "@/lib/seoLantana";
 import { getProducts } from "@/lib/db";
 import { supa, hasDB } from "@/lib/supabase";
 import { ImmersiveGallery, type Slide } from "@/components/gallery/ImmersiveGallery";
@@ -35,12 +36,17 @@ async function getGallerySlides(locale: Locale): Promise<Slide[]> {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const l = isLocale(locale) ? locale : "en";
+  const description =
+    l === "ar"
+      ? "لوحة عطرية — تنقّل داخل دار لانتانا عبر مشاهد من العطر والضوء والمادة."
+      : "An olfactive portrait — move through the house of Lantana in scent, light and material.";
+  const alternates = lantanaAlternates(l, "/gallery");
   return {
     title: l === "ar" ? "المعرض" : "Gallery",
-    description:
-      l === "ar"
-        ? "لوحة عطرية — تنقّل داخل دار لانتانا عبر مشاهد من العطر والضوء والمادة."
-        : "An olfactive portrait — move through the house of Lantana in scent, light and material.",
+    description,
+    alternates,
+    openGraph: { url: alternates.canonical, description },
+    twitter: { description },
   };
 }
 

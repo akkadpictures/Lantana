@@ -3,19 +3,25 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/i18n";
 import { isLocale } from "@/lib/i18n/config";
+import { lantanaAlternates } from "@/lib/seoLantana";
 import { getProducts, getCollections } from "@/lib/db";
 import { COUNTRY_CURRENCY, toCountryCode, priceOf } from "@/lib/currency";
 import { getMarket } from "@/lib/market";
 import { ProductCard } from "@/components/product/ProductCard";
 import { Reveal } from "@/components/motion/Reveal";
-import { cn, t } from "@/lib/utils";
+import { cn, countLabel, t } from "@/lib/utils";
 import type { Locale, Product } from "@/types";
 
 export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  return { title: locale === "ar" ? "جميع العطور" : "All Fragrances" };
+  const alternates = lantanaAlternates(locale, "/shop");
+  return {
+    title: locale === "ar" ? "جميع العطور" : "All Fragrances",
+    alternates,
+    openGraph: { url: alternates.canonical },
+  };
 }
 
 export default async function ShopPage({
@@ -50,7 +56,14 @@ export default async function ShopPage({
     <div className="mx-auto max-w-7xl px-5 py-14 md:px-8">
       <Reveal className="mb-10 text-center">
         <h1 className="h-display text-d2 text-ink sm:text-d2">{dict.shop.title}</h1>
-        <p className="mt-3 font-body text-base2 text-ink/50">{products.length} {dict.shop.results}</p>
+        <p className="mt-3 font-body text-base2 text-ink/50">
+          {countLabel(products.length, locale, {
+            one: dict.shop.resultOne,
+            two: dict.shop.resultTwo,
+            few: dict.shop.resultFew,
+            many: dict.shop.results,
+          })}
+        </p>
       </Reveal>
 
       <div className="mb-12 flex flex-col items-center justify-between gap-5 border-y hairline py-4 sm:flex-row">
