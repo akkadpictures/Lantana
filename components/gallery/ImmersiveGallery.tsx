@@ -135,22 +135,28 @@ export function ImmersiveGallery({
             aria-modal="true"
             aria-label={current.title}
           >
-            {/* Close */}
+            {/* Close — must sit ABOVE the nav strips: they span the full
+                viewport height at both edges, and this button lives inside
+                the "next" strip's band. Equal z-index let the later-painted
+                strip swallow the click and advance the slide instead. */}
             <button
-              onClick={close}
+              onClick={(e) => { e.stopPropagation(); close(); }}
               aria-label="Close"
-              className="absolute end-5 top-5 z-10 grid h-11 w-11 place-items-center rounded-full border border-ivory/25 text-ivory transition-colors duration-300 hover:border-ivory/60 hover:bg-ivory/10"
+              className="absolute end-5 top-5 z-50 grid h-12 w-12 place-items-center rounded-full border border-ivory/25 bg-ink/40 text-ivory backdrop-blur-sm transition-colors duration-300 hover:border-ivory/60 hover:bg-ivory/10"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
             </button>
 
-            {/* Prev / Next */}
+            {/* Prev / Next — the strips start well below the close button.
+                In RTL `end-0` puts the "next" strip on the LEFT, the same side
+                as the close button, so the vertical gap (not just z-index) is
+                what keeps a tap on ✕ from advancing the slide. */}
             <button
               onClick={(e) => { e.stopPropagation(); go(rtl ? 1 : -1); }}
               aria-label="Previous"
-              className="group absolute inset-y-0 start-0 z-10 flex w-16 items-center justify-center sm:w-24"
+              className="group absolute bottom-0 start-0 top-32 z-10 flex w-16 items-center justify-center sm:w-24"
             >
               <span className="grid h-11 w-11 place-items-center rounded-full border border-ivory/25 text-ivory transition-all duration-300 group-hover:border-ivory/60 group-hover:bg-ivory/10">
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -161,7 +167,7 @@ export function ImmersiveGallery({
             <button
               onClick={(e) => { e.stopPropagation(); go(rtl ? -1 : 1); }}
               aria-label="Next"
-              className="group absolute inset-y-0 end-0 z-10 flex w-16 items-center justify-center sm:w-24"
+              className="group absolute bottom-0 end-0 top-32 z-10 flex w-16 items-center justify-center sm:w-24"
             >
               <span className="grid h-11 w-11 place-items-center rounded-full border border-ivory/25 text-ivory transition-all duration-300 group-hover:border-ivory/60 group-hover:bg-ivory/10">
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

@@ -328,7 +328,7 @@ export default async function ProductPage({ params }: { params: Promise<{ locale
 
       {/* Olfactive pyramid */}
       <Reveal className="mx-auto mt-28 max-w-4xl md:mt-36">
-        <NotesPyramid notes={product.notes} locale={locale} dict={dict} />
+        <NotesPyramid notes={product.notes} locale={locale} dict={dict} slug={product.slug} />
       </Reveal>
 
       {/* Reviews */}
