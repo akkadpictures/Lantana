@@ -3,15 +3,21 @@
 import { useEffect, useRef, useState } from "react";
 import { Shell } from "@/components/admin/Shell";
 import { Card } from "@/components/admin/ui";
+import { supaBrowser } from "@/lib/supabaseBrowser";
+import { uploadImage } from "@/lib/uploadImage";
 
 interface Item { image: string; title_en: string; title_ar: string; caption_en: string; caption_ar: string; href: string; active: boolean; }
 const blank: Item = { image: "", title_en: "", title_ar: "", caption_en: "", caption_ar: "", href: "", active: true };
+
+/** Placeholder held in `image` while a file is being uploaded. */
+const PENDING = "…";
 
 export default function AdminGallery() {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
+  const [pct, setPct] = useState<Record<number, number>>({});
   const forIdx = useRef<number | null>(null);
   const file = useRef<HTMLInputElement>(null);
 
@@ -24,20 +30,59 @@ export default function AdminGallery() {
   const set = (i: number, p: Partial<Item>) => setItems((a) => a.map((it, k) => (k === i ? { ...it, ...p } : it)));
   const move = (i: number, d: number) => setItems((a) => { const n = [...a]; const j = i + d; if (j < 0 || j >= n.length) return n; [n[i], n[j]] = [n[j], n[i]]; return n; });
 
+  /**
+   * Uploads straight from the browser to Supabase Storage. The old path posted
+   * the file to /api/admin/upload, where Vercel's 4.5MB serverless body limit
+   * silently rejected anything larger. The API route stays as a fallback for
+   * when the public Supabase env vars are missing.
+   */
   async function upload(e: React.ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0]; const i = forIdx.current; e.target.value = "";
+    const f = e.target.files?.[0];
+    const i = forIdx.current;
+    e.target.value = "";
     if (!f || i == null) return;
-    set(i, { image: "…" });
-    const fd = new FormData(); fd.append("file", f);
-    const r = await fetch("/api/admin/upload", { method: "POST", body: fd }).then((x) => x.json()).catch(() => null);
-    set(i, { image: r?.url ?? "" });
-    if (!r?.url) setMsg("Upload failed (use JPG/PNG/WebP under 5MB).");
+
+    const previous = items[i]?.image ?? "";
+    setMsg("");
+    set(i, { image: PENDING });
+    setPct((p) => ({ ...p, [i]: 0 }));
+
+    const track = (n: number) => setPct((p) => ({ ...p, [i]: n }));
+
+    try {
+      const client = supaBrowser();
+      let url: string;
+
+      if (client) {
+        url = (await uploadImage(client, f, { onProgress: track })).url;
+      } else {
+        const fd = new FormData();
+        fd.append("file", f);
+        const r = await fetch("/api/admin/upload", { method: "POST", body: fd }).then((x) => x.json());
+        if (!r?.url) throw new Error(r?.error || "upload_failed");
+        url = r.url as string;
+      }
+
+      set(i, { image: url });
+      setMsg("Image uploaded — remember to save.");
+    } catch (err) {
+      // Restore whatever was there before so a failed upload never wipes the row.
+      set(i, { image: previous });
+      setMsg(err instanceof Error && err.message ? err.message : "Upload failed — try another image.");
+    } finally {
+      setPct((p) => { const n = { ...p }; delete n[i]; return n; });
+    }
   }
 
   async function save() {
+    if (items.some((it) => it.image === PENDING)) {
+      setMsg("Wait for uploads to finish before saving.");
+      return;
+    }
     setSaving(true); setMsg("");
     const r = await fetch("/api/admin/gallery", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ items }) }).then((x) => x.json()).catch(() => null);
-    setSaving(false); setMsg(r?.ok ? "Saved — live gallery updates within a minute." : "Save failed, try again.");
+    setSaving(false);
+    setMsg(r?.ok ? "Saved — live gallery updates within a minute." : (r?.error ? `Save failed: ${r.error}` : "Save failed, try again."));
   }
 
   return (
@@ -64,10 +109,10 @@ export default function AdminGallery() {
                     <button onClick={() => move(i, 1)} disabled={i === items.length - 1} className="grid h-7 w-7 place-items-center rounded-md border border-ink/10 hover:bg-ink/5 disabled:opacity-30">↓</button>
                   </div>
                   <div className="h-28 w-24 shrink-0 overflow-hidden rounded-lg border border-ink/10 bg-[#f6f4ee]">
-                    {it.image && it.image !== "…"
+                    {it.image && it.image !== PENDING
                       // eslint-disable-next-line @next/next/no-img-element
                       ? <img src={it.image} alt="" className="h-full w-full object-cover" />
-                      : <span className="grid h-full w-full place-items-center text-[10px] text-ink/40">{it.image === "…" ? "…" : "no image"}</span>}
+                      : <span className="grid h-full w-full place-items-center text-[10px] text-ink/40">{it.image === PENDING ? `${pct[i] ?? 0}%` : "no image"}</span>}
                   </div>
                 </div>
                 <div className="grid flex-1 gap-3 sm:grid-cols-2">

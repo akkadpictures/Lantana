@@ -18,25 +18,24 @@ export async function POST(req: NextRequest) {
   if (!list) return NextResponse.json({ error: "invalid_input" }, { status: 400 });
 
   const rows = list
-    .map((it: Record<string, unknown>, i: number) => ({
+    .map((it: Record<string, unknown>) => ({
       image: String(it.image ?? "").trim(),
       title_en: String(it.title_en ?? "").trim(),
       title_ar: String(it.title_ar ?? "").trim(),
       caption_en: String(it.caption_en ?? "").trim(),
       caption_ar: String(it.caption_ar ?? "").trim(),
       href: String(it.href ?? "").trim().replace(/^\/+/, ""),
-      sort: i,
       active: it.active !== false,
     }))
     .filter((r: { image: string }) => r.image);
 
-  const db = supa();
-  const { error: delErr } = await db.from("gallery").delete().neq("id", "00000000-0000-0000-0000-000000000000");
-  if (delErr) return NextResponse.json({ error: delErr.message }, { status: 500 });
+  // replace_gallery() clears and refills the table inside one transaction, so a
+  // failure rolls back the delete and the existing gallery survives untouched.
+  // The previous delete-then-insert pair could wipe the gallery permanently if
+  // the insert failed after the delete had already committed.
+  const { data, error } = await supa().rpc("replace_gallery", { items: rows });
 
-  if (rows.length) {
-    const { error: insErr } = await db.from("gallery").insert(rows);
-    if (insErr) return NextResponse.json({ error: insErr.message }, { status: 500 });
-  }
-  return NextResponse.json({ ok: true, count: rows.length });
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+  return NextResponse.json({ ok: true, count: typeof data === "number" ? data : rows.length });
 }
