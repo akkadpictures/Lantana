@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { LantanaMark } from "@/components/brand/LantanaMark";
-import { cn } from "@/lib/utils";
 
 export interface Slide {
   src: string;
@@ -16,21 +15,31 @@ export interface Slide {
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/** Frames per justified row on desktop. Rows are chunked, not wrapped, so each
+ *  row can be balanced independently. */
+const PER_ROW = 3;
+
+function chunk<T>(arr: T[], size: number): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
+
 /**
- * The gallery — a staggered editorial hang.
+ * The gallery — justified rows.
  *
- * Each frame occupies its own row and alternates side to side, so the empty
- * space beside it reads as deliberate margin rather than a gap left over by a
- * column algorithm. Nothing is cropped: every image keeps its native ratio, and
- * a portrait, a landscape and a square can sit in the same sequence without one
- * distorting the rhythm of the others.
+ * Frames sit side by side at one shared height, and each frame's WIDTH is
+ * derived from that image's true aspect ratio: a landscape shot takes a wider
+ * slot, a portrait a narrower one. Because the slot ratio matches the image
+ * ratio, nothing is cropped or stretched, and the row fills edge to edge with
+ * no leftover gap.
+ *
+ * The ratio is measured from the image itself once it loads, so any mix of
+ * portrait, landscape and square uploaded later composes correctly with no
+ * hand-tuning. Until a ratio is known the frame falls back to 1:1.
  *
  * This replaces a `columns-3` masonry wall, which balanced column HEIGHTS and
- * therefore stranded a hole in the middle whenever the source ratios differed —
- * unavoidable with a small, mixed set.
- *
- * Order is curated upstream (the `slides` array). Tapping any frame opens the
- * full uncropped view with caption and a way back into the piece.
+ * stranded a hole mid-page whenever the source ratios differed.
  */
 export function ImmersiveGallery({
   slides,
@@ -44,6 +53,7 @@ export function ImmersiveGallery({
   const rtl = locale === "ar";
   const reduce = useReducedMotion();
   const [active, setActive] = useState<number | null>(null);
+  const [ratios, setRatios] = useState<Record<number, number>>({});
   const isOpen = active !== null;
 
   const close = useCallback(() => setActive(null), []);
@@ -73,97 +83,80 @@ export function ImmersiveGallery({
   }, [isOpen, go, close, rtl]);
 
   const current = active !== null ? slides[active] : null;
+  const rows = chunk(slides.map((s, i) => ({ s, i })), PER_ROW);
 
   return (
     <section className="relative" aria-roledescription="gallery">
       <div className="shell">
-        <div className="flex flex-col gap-24 sm:gap-32 lg:gap-40">
-          {slides.map((s, i) => {
-            // Alternating hang: even frames sit toward the start edge, odd
-            // frames toward the end edge and dropped slightly, so the eye
-            // travels diagonally down the page instead of scanning a grid.
-            const flip = i % 2 === 1;
-
-            return (
-              <motion.div
-                key={s.src}
-                initial={reduce ? { opacity: 0 } : { opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-12%" }}
-                transition={{ duration: 1.1, ease: EASE }}
-                className={cn(
-                  "flex flex-col gap-6 lg:flex-row lg:items-end lg:gap-14",
-                  flip && "lg:flex-row-reverse",
-                  // The drop that turns a row into a hang.
-                  flip && "lg:mt-8"
-                )}
-              >
-                {/* Frame */}
-                <button
+        <div className="flex flex-col gap-4 sm:gap-5">
+          {rows.map((row, r) => (
+            <div
+              key={r}
+              /* On mobile the row unstacks: each frame gets its own full-width
+                 block at natural height. From `sm` up it becomes a justified
+                 band at one shared height. */
+              className="flex flex-col gap-4 sm:h-[46vh] sm:flex-row sm:gap-5 lg:h-[62vh]"
+            >
+              {row.map(({ s, i }) => (
+                <motion.button
+                  key={s.src}
                   type="button"
                   onClick={() => setActive(i)}
                   aria-label={s.title || `View image ${i + 1}`}
-                  className="group relative block w-full overflow-hidden rounded-md bg-ink/[0.03] text-start shadow-[0_20px_60px_-30px_rgba(20,24,18,0.4)] ring-1 ring-ink/5 transition-shadow duration-700 hover:shadow-[0_40px_100px_-34px_rgba(20,24,18,0.5)] lg:w-[62%]"
+                  initial={reduce ? { opacity: 0 } : { opacity: 0, y: 26 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{ duration: 0.9, ease: EASE, delay: (i % PER_ROW) * 0.09 }}
+                  /* flexGrow carries the aspect ratio: with flexBasis 0, each
+                     frame's share of the row width is proportional to its
+                     ratio, which is exactly what makes the slot match the
+                     image and keeps the crop at zero. */
+                  style={{ flexGrow: ratios[i] ?? 1, flexBasis: 0 }}
+                  className="group relative block w-full overflow-hidden rounded-md bg-ink/[0.03] text-start shadow-[0_20px_60px_-30px_rgba(20,24,18,0.4)] ring-1 ring-ink/5 transition-shadow duration-700 hover:shadow-[0_34px_90px_-32px_rgba(20,24,18,0.5)] sm:h-full sm:w-auto"
                 >
                   <Image
                     src={s.src}
                     alt={s.title || ""}
                     width={1600}
                     height={2000}
-                    sizes="(min-width: 1024px) 62vw, 100vw"
-                    className="h-auto w-full transition-transform duration-[1400ms] ease-luxe group-hover:scale-[1.03]"
+                    sizes="(min-width: 1024px) 40vw, (min-width: 640px) 50vw, 100vw"
+                    onLoad={(e) => {
+                      const el = e.currentTarget;
+                      if (!el.naturalWidth || !el.naturalHeight) return;
+                      const ratio = el.naturalWidth / el.naturalHeight;
+                      setRatios((prev) =>
+                        prev[i] === ratio ? prev : { ...prev, [i]: ratio }
+                      );
+                    }}
+                    className="h-auto w-full transition-transform duration-[1100ms] ease-luxe group-hover:scale-[1.035] sm:h-full sm:object-cover"
                     priority={i === 0}
                   />
-                  {/* Veil resolves on hover — only when there is something to say. */}
-                  {s.title && (
-                    <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ink/70 via-ink/0 to-ink/0 p-6 opacity-0 transition-opacity duration-700 group-hover:opacity-100 sm:p-8">
+
+                  {/* Caption veil — resolves on hover, sits on tone not on busy pixels. */}
+                  <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ink/75 via-ink/0 to-ink/0 p-5 opacity-0 transition-opacity duration-700 group-hover:opacity-100 sm:p-6">
+                    <p className="eyebrow mb-1.5 text-ivory/70">
+                      {String(i + 1).padStart(2, "0")} —{" "}
+                      {String(slides.length).padStart(2, "0")}
+                    </p>
+                    {s.title && (
                       <h3 className="font-display text-d3 font-light leading-[1.05] text-ivory">
                         {s.title}
                       </h3>
-                    </div>
-                  )}
-                  <div className="pointer-events-none absolute start-5 top-5 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+                    )}
+                  </div>
+
+                  {/* Corner mark for the maison signature. */}
+                  <div className="pointer-events-none absolute start-4 top-4 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
                     <LantanaMark className="h-7 w-7 text-ivory/85" />
                   </div>
-                </button>
-
-                {/* Margin — carries the index, and the words when they exist.
-                    With no title this stays a numeral over a hairline, which
-                    reads as intentional restraint rather than an empty slot. */}
-                <div className="lg:w-[38%] lg:pb-2">
-                  <p className="eyebrow text-ink/40">
-                    {String(i + 1).padStart(2, "0")} —{" "}
-                    {String(slides.length).padStart(2, "0")}
-                  </p>
-                  <div className="mt-4 h-px w-16 bg-ink/15" />
-
-                  {s.title && (
-                    <h3 className="mt-6 font-display text-d2 font-light leading-[1.08] text-ink">
-                      {s.title}
-                    </h3>
-                  )}
-                  {s.caption && (
-                    <p className="mt-3 max-w-sm font-body text-lead text-ink/60">
-                      {s.caption}
-                    </p>
-                  )}
-                  {s.href && (
-                    <Link
-                      href={s.href}
-                      className="mt-6 inline-flex items-center gap-3 border-b border-ink/25 pb-1 font-body text-nav uppercase tracking-wide2 text-ink transition-colors hover:border-ink"
-                    >
-                      {labels.cta}
-                      <span aria-hidden className={rtl ? "rotate-180" : ""}>→</span>
-                    </Link>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
+                </motion.button>
+              ))}
+            </div>
+          ))}
         </div>
 
         {labels.swipe && (
-          <p className="mt-24 text-center font-body text-label uppercase tracking-luxe text-ink/40">
+          <p className="mt-10 text-center font-body text-label uppercase tracking-luxe text-ink/45">
             {labels.swipe}
           </p>
         )}
