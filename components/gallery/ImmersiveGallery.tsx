@@ -17,17 +17,20 @@ export interface Slide {
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /**
- * The gallery — an editorial wall.
+ * The gallery — a staggered editorial hang.
  *
- * Every frame is shown at once in a masonry column layout, so a portrait shot
- * stays portrait and a landscape shot stays landscape: nothing is stretched or
- * over-zoomed to fit a fixed stage. The images carry their own proportions the
- * way prints hung together carry theirs — different heights, one rhythm.
- * Tapping any frame opens a full, uncropped view (`object-contain`) with
- * caption and a way back into the piece.
+ * Each frame occupies its own row and alternates side to side, so the empty
+ * space beside it reads as deliberate margin rather than a gap left over by a
+ * column algorithm. Nothing is cropped: every image keeps its native ratio, and
+ * a portrait, a landscape and a square can sit in the same sequence without one
+ * distorting the rhythm of the others.
  *
- * Order is curated upstream (the `slides` array): reorder that array and the
- * wall re-composes in the same sequence, left-to-right, top-to-bottom.
+ * This replaces a `columns-3` masonry wall, which balanced column HEIGHTS and
+ * therefore stranded a hole in the middle whenever the source ratios differed —
+ * unavoidable with a small, mixed set.
+ *
+ * Order is curated upstream (the `slides` array). Tapping any frame opens the
+ * full uncropped view with caption and a way back into the piece.
  */
 export function ImmersiveGallery({
   slides,
@@ -74,48 +77,93 @@ export function ImmersiveGallery({
   return (
     <section className="relative" aria-roledescription="gallery">
       <div className="shell">
-        {/* The wall — every frame at its own true proportion. */}
-        <div className="[column-fill:balance] gap-5 sm:columns-2 sm:gap-6 lg:columns-3">
-          {slides.map((s, i) => (
-            <motion.button
-              key={s.src}
-              type="button"
-              onClick={() => setActive(i)}
-              aria-label={s.title}
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              transition={{ duration: 0.9, ease: EASE, delay: (i % 3) * 0.08 }}
-              className="group relative mb-5 block w-full break-inside-avoid overflow-hidden rounded-md bg-ink/[0.03] text-start shadow-[0_20px_60px_-30px_rgba(20,24,18,0.4)] ring-1 ring-ink/5 transition-shadow duration-700 hover:shadow-[0_34px_90px_-32px_rgba(20,24,18,0.5)] sm:mb-6"
-            >
-              <Image
-                src={s.src}
-                alt={s.title}
-                width={1200}
-                height={1500}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="h-auto w-full transition-transform duration-[1100ms] ease-luxe group-hover:scale-[1.035]"
-              />
-              {/* Caption veil — resolves on hover, sits on tone not on busy pixels. */}
-              <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ink/75 via-ink/0 to-ink/0 p-5 opacity-0 transition-opacity duration-700 group-hover:opacity-100 sm:p-6">
-                <p className="eyebrow mb-1.5 text-ivory/70">
-                  {String(i + 1).padStart(2, "0")} —{" "}
-                  {String(slides.length).padStart(2, "0")}
-                </p>
-                <h3 className="font-display text-d3 font-light leading-[1.05] text-ivory">
-                  {s.title}
-                </h3>
-              </div>
-              {/* Corner mark for the maison signature. */}
-              <div className="pointer-events-none absolute start-4 top-4 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
-                <LantanaMark className="h-7 w-7 text-ivory/85" />
-              </div>
-            </motion.button>
-          ))}
+        <div className="flex flex-col gap-24 sm:gap-32 lg:gap-40">
+          {slides.map((s, i) => {
+            // Alternating hang: even frames sit toward the start edge, odd
+            // frames toward the end edge and dropped slightly, so the eye
+            // travels diagonally down the page instead of scanning a grid.
+            const flip = i % 2 === 1;
+
+            return (
+              <motion.div
+                key={s.src}
+                initial={reduce ? { opacity: 0 } : { opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-12%" }}
+                transition={{ duration: 1.1, ease: EASE }}
+                className={cn(
+                  "flex flex-col gap-6 lg:flex-row lg:items-end lg:gap-14",
+                  flip && "lg:flex-row-reverse",
+                  // The drop that turns a row into a hang.
+                  flip && "lg:mt-8"
+                )}
+              >
+                {/* Frame */}
+                <button
+                  type="button"
+                  onClick={() => setActive(i)}
+                  aria-label={s.title || `View image ${i + 1}`}
+                  className="group relative block w-full overflow-hidden rounded-md bg-ink/[0.03] text-start shadow-[0_20px_60px_-30px_rgba(20,24,18,0.4)] ring-1 ring-ink/5 transition-shadow duration-700 hover:shadow-[0_40px_100px_-34px_rgba(20,24,18,0.5)] lg:w-[62%]"
+                >
+                  <Image
+                    src={s.src}
+                    alt={s.title || ""}
+                    width={1600}
+                    height={2000}
+                    sizes="(min-width: 1024px) 62vw, 100vw"
+                    className="h-auto w-full transition-transform duration-[1400ms] ease-luxe group-hover:scale-[1.03]"
+                    priority={i === 0}
+                  />
+                  {/* Veil resolves on hover — only when there is something to say. */}
+                  {s.title && (
+                    <div className="pointer-events-none absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ink/70 via-ink/0 to-ink/0 p-6 opacity-0 transition-opacity duration-700 group-hover:opacity-100 sm:p-8">
+                      <h3 className="font-display text-d3 font-light leading-[1.05] text-ivory">
+                        {s.title}
+                      </h3>
+                    </div>
+                  )}
+                  <div className="pointer-events-none absolute start-5 top-5 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+                    <LantanaMark className="h-7 w-7 text-ivory/85" />
+                  </div>
+                </button>
+
+                {/* Margin — carries the index, and the words when they exist.
+                    With no title this stays a numeral over a hairline, which
+                    reads as intentional restraint rather than an empty slot. */}
+                <div className="lg:w-[38%] lg:pb-2">
+                  <p className="eyebrow text-ink/40">
+                    {String(i + 1).padStart(2, "0")} —{" "}
+                    {String(slides.length).padStart(2, "0")}
+                  </p>
+                  <div className="mt-4 h-px w-16 bg-ink/15" />
+
+                  {s.title && (
+                    <h3 className="mt-6 font-display text-d2 font-light leading-[1.08] text-ink">
+                      {s.title}
+                    </h3>
+                  )}
+                  {s.caption && (
+                    <p className="mt-3 max-w-sm font-body text-lead text-ink/60">
+                      {s.caption}
+                    </p>
+                  )}
+                  {s.href && (
+                    <Link
+                      href={s.href}
+                      className="mt-6 inline-flex items-center gap-3 border-b border-ink/25 pb-1 font-body text-nav uppercase tracking-wide2 text-ink transition-colors hover:border-ink"
+                    >
+                      {labels.cta}
+                      <span aria-hidden className={rtl ? "rotate-180" : ""}>→</span>
+                    </Link>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
         {labels.swipe && (
-          <p className="mt-8 text-center font-body text-label uppercase tracking-luxe text-ink/45">
+          <p className="mt-24 text-center font-body text-label uppercase tracking-luxe text-ink/40">
             {labels.swipe}
           </p>
         )}
@@ -208,9 +256,11 @@ export function ImmersiveGallery({
                   {String((active ?? 0) + 1).padStart(2, "0")} —{" "}
                   {String(slides.length).padStart(2, "0")}
                 </p>
-                <h2 className="font-display text-d3 font-light leading-[1.1] text-ivory">
-                  {current.title}
-                </h2>
+                {current.title && (
+                  <h2 className="font-display text-d3 font-light leading-[1.1] text-ivory">
+                    {current.title}
+                  </h2>
+                )}
                 {current.caption && (
                   <p className="mt-2 font-body text-lead text-ivory/75">{current.caption}</p>
                 )}
