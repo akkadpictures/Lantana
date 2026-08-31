@@ -47,6 +47,10 @@ export async function getRates(): Promise<Record<Currency, number>> {
       const data = (await res.json()) as { result?: string; rates?: Record<string, number> };
       if (data.result === "success" && data.rates) {
         for (const c of CURRENCIES) {
+          /* The pound is never taken from the feed. Public feeds publish the
+             official peg, which the market ignores — accepting it would move
+             every shelf price in Syria without anyone deciding to. */
+          if (c === "SYP") continue;
           const v = data.rates[c];
           if (typeof v === "number" && Number.isFinite(v) && v > 0) rates[c] = v;
         }
