@@ -209,7 +209,7 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const SHIPPING_RATES: ShippingRate[] = [
-  { country: "SY", label: n("Damascus & Syria — courier", "دمشق وسوريا — مندوب توصيل"), priceUSD: 3, etaDays: [1, 3] },
+  { country: "SY", label: n("Damascus & Syria — complimentary courier", "دمشق وسوريا — توصيل مجاني"), priceUSD: 0, etaDays: [1, 3] },
   { country: "AE", label: n("United Arab Emirates — express", "الإمارات — سريع"), priceUSD: 12, etaDays: [2, 4] },
   { country: "SA", label: n("Saudi Arabia — express", "السعودية — سريع"), priceUSD: 14, etaDays: [3, 5] },
   { country: "QA", label: n("Qatar — express", "قطر — سريع"), priceUSD: 14, etaDays: [3, 5] },

@@ -11,6 +11,12 @@ import { cn, daysRange, t } from "@/lib/utils";
 import type { CountryCode, Currency, Locale, PaymentMethod, ShippingRate } from "@/types";
 import type { Dictionary } from "@/lib/i18n";
 
+/** Syrian mobiles: 09XXXXXXXX / +9639XXXXXXXX / 9639XXXXXXXX. Mirrors the API. */
+function isSyrianMobile(phone: string): boolean {
+  const d = phone.replace(/\D/g, "");
+  return /^(963)?0?9\d{8}$/.test(d);
+}
+
 export function CheckoutClient({ locale, country: initialCountry, rates, dict }: {
   locale: Locale; country: CountryCode; currency: Currency; rates: ShippingRate[]; dict: Dictionary;
 }) {
@@ -18,8 +24,9 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
   const router = useRouter();
 
   const [form, setForm] = useState({ name: "", email: "", phone: "", address: "", city: "", notes: "" });
+  const [company, setCompany] = useState(""); // honeypot — humans never see it
   const [country, setCountry] = useState<CountryCode>(initialCountry);
-  const [payment, setPayment] = useState<PaymentMethod>(initialCountry === "SY" ? "cod" : "stripe");
+  const [payment, setPayment] = useState<PaymentMethod>(initialCountry === "SY" ? "whatsapp" : "stripe");
   const [coupon, setCoupon] = useState("");
   const [couponState, setCouponState] = useState<{ code: string; discountUSD: number } | null>(null);
   const [couponMsg, setCouponMsg] = useState<"" | "ok" | "bad">("");
@@ -38,13 +45,19 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
   const totalUSD = Math.max(0, subtotalUSD + shippingUSD - discountUSD);
 
   const fmt = (usd: number) => format(amount(usd));
+  /* A zero shipping line reads as a gift, not as a price of nothing. */
+  const shippingLabel = shippingUSD > 0 ? fmt(shippingUSD) : dict.checkout.freeShipping;
 
   const paymentOptions = useMemo(() => {
-    const opts: { key: PaymentMethod; label: string; sub: string }[] = [
-      { key: "stripe", label: dict.checkout.payCard, sub: dict.checkout.payCardSub },
-    ];
-    if (["AE", "SA", "QA", "KW"].includes(country)) opts.push({ key: "myfatoorah", label: dict.checkout.payMyFatoorah, sub: dict.checkout.payMyFatoorahSub });
-    if (country === "SY") opts.unshift({ key: "cod", label: dict.checkout.payCod, sub: dict.checkout.payCodSub });
+    const opts: { key: PaymentMethod; label: string; sub: string }[] = [];
+    if (country === "SY") {
+      opts.push({ key: "whatsapp", label: dict.checkout.payWhatsapp, sub: dict.checkout.payWhatsappSub });
+    } else {
+      opts.push({ key: "stripe", label: dict.checkout.payCard, sub: dict.checkout.payCardSub });
+      if (["AE", "SA", "QA", "KW"].includes(country)) {
+        opts.push({ key: "myfatoorah", label: dict.checkout.payMyFatoorah, sub: dict.checkout.payMyFatoorahSub });
+      }
+    }
     opts.push({ key: "bank_transfer", label: dict.checkout.payBank, sub: dict.checkout.payBankSub });
     return opts;
   }, [country, dict]);
@@ -52,15 +65,15 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
   function applyCoupon() {
     const code = coupon.trim().toUpperCase();
     if (!code) return;
-    // Front-end coupon table (mirrors the catalog). Server re-validates once the backend is connected.
+    // Front-end coupon table (mirrors the catalog). The server always re-validates.
     const table: Record<string, { type: "percent" | "fixed"; value: number; min: number }> = {
       DAMASCUS10: { type: "percent", value: 10, min: 0 },
       MAISON25: { type: "fixed", value: 25, min: 200 },
     };
     const c = table[code];
     if (c && subtotalUSD >= c.min) {
-      const discountUSD = c.type === "percent" ? Math.round(subtotalUSD * (c.value / 100) * 100) / 100 : c.value;
-      setCouponState({ code, discountUSD });
+      const d = c.type === "percent" ? Math.round(subtotalUSD * (c.value / 100) * 100) / 100 : c.value;
+      setCouponState({ code, discountUSD: d });
       setCouponMsg("ok");
     } else {
       setCouponState(null);
@@ -75,41 +88,69 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
     };
   }
 
+  function messageFor(code: string): string {
+    const e = dict.checkout.errors;
+    switch (code) {
+      case "invalid_phone": return e.phoneSy;
+      case "too_many_orders": return e.tooMany;
+      case "duplicate_order": return e.duplicate;
+      case "insufficient_stock": return e.stock;
+      case "product_unavailable": return e.stock;
+      default: return e.network;
+    }
+  }
+
   async function placeOrder() {
     const errs: Record<string, boolean> = {};
     if (form.name.trim().length < 2) errs.name = true;
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) errs.email = true;
     if (form.phone.trim().length < 6) errs.phone = true;
+    if (country === "SY" && !isSyrianMobile(form.phone)) errs.phone = true;
     if (form.address.trim().length < 4) errs.address = true;
     if (form.city.trim().length < 2) errs.city = true;
     setErrors(errs);
-    if (Object.keys(errs).length) { setServerError(dict.checkout.errors.generic); return; }
+    if (Object.keys(errs).length) {
+      setServerError(errs.phone && country === "SY" ? dict.checkout.errors.phoneSy : dict.checkout.errors.generic);
+      return;
+    }
 
     setBusy(true);
     setServerError("");
-    // Front-end order flow. When the backend is connected, POST /api/checkout returns the order
-    // number (and a redirectUrl for Stripe / MyFatoorah); this block will defer to it automatically.
+
+    /* No silent fallback. If the order cannot be written, the customer is told —
+       a success screen without a stored order is worse than an honest error. */
     try {
       const res = await fetch("/api/checkout", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...form, country, paymentMethod: payment, locale,
+          ...form, company, country, paymentMethod: payment, locale,
           couponCode: couponState?.code ?? "",
           items: items.map((i) => ({ productId: i.productId, qty: i.qty })),
         }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.redirectUrl) { window.location.href = data.redirectUrl; return; }
-        clear();
-        router.push(`/${locale}/checkout/success?order=${encodeURIComponent(data.orderNumber)}&method=${payment}`);
+
+      if (!res.ok) {
+        let code = "network";
+        try { code = (await res.json())?.error ?? "network"; } catch { /* keep default */ }
+        setServerError(messageFor(code));
+        setBusy(false);
         return;
       }
-      throw new Error("no_backend");
-    } catch {
-      const num = `LTN-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, "0")}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+
+      const data = await res.json();
+      if (data.redirectUrl) { window.location.href = data.redirectUrl; return; }
+
+      /* Hand the pre-filled WhatsApp message to the success page without putting
+         customer details in the URL. sessionStorage is same-tab and short-lived. */
+      if (data.whatsappUrl) {
+        try { sessionStorage.setItem(`lantana_wa_${data.orderNumber}`, data.whatsappUrl); } catch { /* private mode */ }
+      }
+
       clear();
-      router.push(`/${locale}/checkout/success?order=${num}&method=${payment}`);
+      router.push(`/${locale}/checkout/success?order=${encodeURIComponent(data.orderNumber)}&method=${payment}`);
+    } catch {
+      setServerError(dict.checkout.errors.network);
+      setBusy(false);
     }
   }
 
@@ -143,7 +184,17 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="co-phone">{dict.checkout.phone}</Label>
-                <Input id="co-phone" type="tel" autoComplete="tel" dir="ltr" value={form.phone} onChange={set("phone")} className={cn(errors.phone && "border-red-700")} />
+                <Input
+                  id="co-phone" type="tel" autoComplete="tel" dir="ltr"
+                  placeholder={country === "SY" ? "09XX XXX XXX" : undefined}
+                  value={form.phone} onChange={set("phone")}
+                  className={cn(errors.phone && "border-red-700")}
+                />
+                {errors.phone && (
+                  <p className="mt-1 font-body text-sm2 text-red-800">
+                    {country === "SY" ? dict.checkout.errors.phoneSy : dict.checkout.errors.required}
+                  </p>
+                )}
               </div>
             </div>
           </section>
@@ -164,7 +215,8 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
                 <Select id="co-country" value={country} onChange={(e) => {
                   const c = toCountryCode(e.target.value);
                   setCountry(c);
-                  setPayment(c === "SY" ? "cod" : "stripe");
+                  setPayment(c === "SY" ? "whatsapp" : "stripe");
+                  setServerError("");
                 }}>
                   {SUPPORTED_COUNTRIES.map((c) => (
                     <option key={c.code} value={c.code}>{locale === "ar" ? c.ar : c.en}</option>
@@ -176,6 +228,14 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
                 <Textarea id="co-notes" value={form.notes} onChange={set("notes")} className="min-h-20" />
               </div>
             </div>
+
+            {/* Honeypot. Off-screen rather than display:none — some bots skip hidden inputs. */}
+            <div aria-hidden className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden">
+              <label htmlFor="co-company">Company</label>
+              <input id="co-company" name="company" type="text" tabIndex={-1} autoComplete="off"
+                value={company} onChange={(e) => setCompany(e.target.value)} />
+            </div>
+
             <p className="mt-3 font-body text-sm2 text-ink/50">
               {dict.checkout.eta}: {daysRange(rate.etaDays[0], rate.etaDays[1], locale, {
                 one: dict.checkout.dayOne,
@@ -206,6 +266,11 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
                 </button>
               ))}
             </div>
+            {payment === "whatsapp" && (
+              <p className="mt-4 border-s-2 border-olive/40 ps-4 font-body text-sm2 leading-relaxed text-ink/55">
+                {dict.checkout.whatsappNotice}
+              </p>
+            )}
           </section>
         </div>
 
@@ -227,13 +292,16 @@ export function CheckoutClient({ locale, country: initialCountry, rates, dict }:
           {couponMsg === "bad" && <p className="pt-2 font-body text-sm2 text-red-800">{dict.checkout.couponInvalid}</p>}
           <div className="space-y-2 py-5 font-body text-base2">
             <div className="flex justify-between"><span className="text-ink/60">{dict.cart.subtotal}</span><span>{fmt(subtotalUSD)}</span></div>
-            <div className="flex justify-between"><span className="text-ink/60">{dict.cart.shipping}</span><span>{fmt(shippingUSD)}</span></div>
+            <div className="flex justify-between">
+              <span className="text-ink/60">{dict.cart.shipping}</span>
+              <span className={cn(shippingUSD === 0 && "text-olive-deep")}>{shippingLabel}</span>
+            </div>
             {discountUSD > 0 && <div className="flex justify-between text-olive-deep"><span>{dict.cart.discount}</span><span>−{fmt(discountUSD)}</span></div>}
             <div className="flex justify-between border-t hairline pt-3 text-base2"><span>{dict.cart.total}</span><span className="text-olive-deep">{fmt(totalUSD)}</span></div>
           </div>
           {serverError && <p className="mb-3 font-body text-sm2 text-red-800" role="alert">{serverError}</p>}
           <Button className="w-full" onClick={placeOrder} disabled={busy}>
-            {busy ? dict.checkout.processing : dict.checkout.placeOrder}
+            {busy ? dict.checkout.processing : payment === "whatsapp" ? dict.checkout.placeOrderWhatsapp : dict.checkout.placeOrder}
           </Button>
         </aside>
       </div>

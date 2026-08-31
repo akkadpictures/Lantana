@@ -1,12 +1,33 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { checkoutSchema } from "@/lib/validation";
-import { getProductById, getShippingRates, getCoupon, createOrder, adjustInventory } from "@/lib/db";
+import { getProductById, getShippingRates, getCoupon, createOrder, recentOrderCounts } from "@/lib/db";
 import { toCountryCode, priceOf, amountOf, multiplierFor, toCurrency } from "@/lib/currency";
 import { getRates } from "@/lib/rates";
 import { hasStripe, stripe, toStripeAmount, STRIPE_SUPPORTED } from "@/lib/stripe";
+import { whatsappOrderLink } from "@/lib/whatsapp";
 import { orderNumber, t } from "@/lib/utils";
 import { SITE_URL } from "@/lib/seo";
-import type { Currency, Order } from "@/types";
+import type { Currency, Order, PaymentMethod } from "@/types";
+
+/* Methods where no money moves at checkout. These reserve nothing: the order is
+   recorded, a human confirms it on WhatsApp, and only then is stock deducted. */
+const UNPAID: PaymentMethod[] = ["cod", "bank_transfer", "whatsapp"];
+
+/* Throttle ceilings. Deliberately generous for a real customer, tight for a bot. */
+const MAX_ORDERS_PER_IP_HOUR = 3;
+const MAX_ORDERS_PER_PHONE_10MIN = 1;
+
+function clientIp(req: NextRequest): string | null {
+  const fwd = req.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  return req.headers.get("x-real-ip");
+}
+
+/** Syrian mobiles: 09XXXXXXXX / +9639XXXXXXXX / 9639XXXXXXXX. */
+function isSyrianMobile(phone: string): boolean {
+  const d = phone.replace(/\D/g, "");
+  return /^(963)?0?9\d{8}$/.test(d);
+}
 
 export async function POST(req: NextRequest) {
   let input;
@@ -15,6 +36,10 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: "invalid_input" }, { status: 400 });
   }
+
+  /* Honeypot — a filled `company` field means an automated submission. Answer
+     with a plain 400 rather than anything a script could learn from. */
+  if (input.company) return NextResponse.json({ error: "invalid_input" }, { status: 400 });
 
   /* The delivery country decides shipping and payment rails. The *price tier*
      is decided by where the customer actually is, read from the edge geo header,
@@ -28,6 +53,20 @@ export async function POST(req: NextRequest) {
     toCurrency(req.cookies.get("lantana_currency")?.value) ?? (geoCountry === "SY" ? "SYP" : "USD");
   const rates = await getRates();
   const country = shipTo;
+
+  if (country === "SY" && !isSyrianMobile(input.phone)) {
+    return NextResponse.json({ error: "invalid_phone" }, { status: 400 });
+  }
+
+  /* Abuse throttle, before any write. */
+  const ip = clientIp(req);
+  const recent = await recentOrderCounts(ip, input.phone);
+  if (recent.byIp >= MAX_ORDERS_PER_IP_HOUR) {
+    return NextResponse.json({ error: "too_many_orders" }, { status: 429 });
+  }
+  if (recent.byPhone >= MAX_ORDERS_PER_PHONE_10MIN) {
+    return NextResponse.json({ error: "duplicate_order" }, { status: 429 });
+  }
 
   /* Server-side pricing — the client total is never trusted. */
   const lines: Order["items"] = [];
@@ -63,10 +102,12 @@ export async function POST(req: NextRequest) {
   const total = Math.max(0, Math.round((subtotal + shipping - discount) * 100) / 100);
   const totalUSD = Math.max(0, Math.round((subtotalUSD + shippingUSD - discountUSD) * 100) / 100);
 
+  const unpaid = UNPAID.includes(input.paymentMethod);
+
   const order: Order = {
     id: crypto.randomUUID(),
     number: orderNumber(),
-    status: "pending",
+    status: unpaid ? "awaiting_confirmation" : "pending",
     paymentMethod: input.paymentMethod,
     currency, country, subtotal, shipping, discount, total, couponCode,
     customer: {
@@ -74,6 +115,7 @@ export async function POST(req: NextRequest) {
       address: input.address, city: input.city, country, notes: input.notes || "",
     },
     items: lines,
+    ip,
     createdAt: new Date().toISOString(),
   };
 
@@ -130,8 +172,12 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  /* ── COD / bank transfer: confirm immediately, decrement stock ─ */
+  /* ── Unpaid rails: record the order, reserve nothing ────────────
+     Stock is deducted in the admin, the moment a human confirms the
+     order on WhatsApp. Until then this record costs us nothing. */
   await createOrder(order);
-  for (const l of lines) await adjustInventory(l.productId, -l.qty);
-  return NextResponse.json({ orderNumber: order.number });
+  return NextResponse.json({
+    orderNumber: order.number,
+    whatsappUrl: whatsappOrderLink(order, input.locale),
+  });
 }

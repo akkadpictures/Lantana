@@ -7,12 +7,16 @@ import type { Currency, OrderStatus } from "@/types";
 export const dynamic = "force-dynamic";
 
 const statusTone: Record<OrderStatus, "amber" | "green" | "olive" | "red" | "grey"> = {
+  awaiting_confirmation: "grey",
   pending: "amber", paid: "green", processing: "olive", shipped: "olive", delivered: "green", cancelled: "red",
 };
 
 export default async function AdminOverview() {
   const [orders, products, reviews, customers] = await Promise.all([getOrders(), getProducts({ includeDrafts: true }), getAllReviews(), getCustomers()]);
-  const revenue = orders.filter((o) => o.status !== "cancelled").reduce((n, o) => n + o.total, 0);
+  /* An unconfirmed order is not revenue — it is an intention. */
+  const revenue = orders
+    .filter((o) => o.status !== "cancelled" && o.status !== "awaiting_confirmation")
+    .reduce((n, o) => n + o.total, 0);
   const pendingReviews = reviews.filter((r) => !r.approved).length;
   const lowStock = products.filter((p) => p.status === "active" && p.inventory <= 10);
   const recent = orders.slice(0, 8);
@@ -21,8 +25,8 @@ export default async function AdminOverview() {
   return (
     <Shell title="Overview">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Orders" value={String(orders.length)} sub={`${orders.filter((o) => o.status === "pending").length} awaiting action`} />
-        <Stat label="Revenue" value={orders.length ? formatPrice(revenue, mainCurrency, "en") : "—"} sub="Excludes cancelled" />
+        <Stat label="Orders" value={String(orders.length)} sub={`${orders.filter((o) => o.status === "pending" || o.status === "awaiting_confirmation").length} awaiting action`} />
+        <Stat label="Revenue" value={orders.length ? formatPrice(revenue, mainCurrency, "en") : "—"} sub="Confirmed orders only" />
         <Stat label="Customers" value={String(customers.length)} />
         <Stat label="Products" value={String(products.filter((p) => p.status === "active").length)} sub={`${products.length} total`} />
       </div>

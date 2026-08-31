@@ -228,12 +228,49 @@ export async function createOrder(o: Order): Promise<void> {
       id: o.id, number: o.number, status: o.status, payment_method: o.paymentMethod,
       currency: o.currency, country: o.country, subtotal: o.subtotal, shipping: o.shipping,
       discount: o.discount, total: o.total, coupon_code: o.couponCode ?? null,
-      customer: o.customer, items: o.items, created_at: o.createdAt,
+      customer: o.customer, items: o.items, ip: o.ip ?? null, created_at: o.createdAt,
     });
     if (error) throw error;
     return;
   }
   mem.orders.unshift(o);
+}
+
+/**
+ * Abuse throttle. Counts how many orders this IP has placed in the last hour and
+ * how many this phone number has placed in the last ten minutes, so a bored
+ * visitor cannot fill the admin with a hundred fictional orders.
+ */
+export async function recentOrderCounts(
+  ip: string | null,
+  phone: string
+): Promise<{ byIp: number; byPhone: number }> {
+  const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+  const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+  const normalised = phone.replace(/\D/g, "");
+
+  if (hasDB) {
+    let byIp = 0;
+    if (ip) {
+      const { count } = await supa()
+        .from("orders").select("id", { count: "exact", head: true })
+        .eq("ip", ip).gte("created_at", hourAgo);
+      byIp = count ?? 0;
+    }
+    const { data } = await supa()
+      .from("orders").select("customer").gte("created_at", tenMinAgo);
+    const byPhone = (data ?? []).filter((r: Record<string, unknown>) => {
+      const c = r.customer as { phone?: string } | null;
+      return (c?.phone ?? "").replace(/\D/g, "") === normalised;
+    }).length;
+    return { byIp, byPhone };
+  }
+
+  const byIp = ip ? mem.orders.filter((o) => o.ip === ip && o.createdAt >= hourAgo).length : 0;
+  const byPhone = mem.orders.filter(
+    (o) => o.createdAt >= tenMinAgo && o.customer.phone.replace(/\D/g, "") === normalised
+  ).length;
+  return { byIp, byPhone };
 }
 export async function getOrders(): Promise<Order[]> {
   if (hasDB) {
@@ -316,6 +353,7 @@ function rowToOrder(r: Record<string, unknown>): Order {
     country: r.country as string, subtotal: Number(r.subtotal), shipping: Number(r.shipping),
     discount: Number(r.discount), total: Number(r.total), couponCode: (r.coupon_code as string) ?? null,
     customer: r.customer as Order["customer"], items: r.items as Order["items"],
+    ip: (r.ip as string) ?? null,
     createdAt: r.created_at as string,
   };
 }

@@ -8,7 +8,9 @@ export const checkoutSchema = z.object({
   city: z.string().min(2).max(120),
   country: z.string().min(2).max(3),
   notes: z.string().max(1000).optional().or(z.literal("")),
-  paymentMethod: z.enum(["stripe", "myfatoorah", "cod", "bank_transfer"]),
+  paymentMethod: z.enum(["stripe", "myfatoorah", "cod", "bank_transfer", "whatsapp"]),
+  /* Honeypot. Rendered off-screen and left empty by humans; bots fill it. */
+  company: z.string().max(0).optional().or(z.literal("")),
   couponCode: z.string().max(40).optional().or(z.literal("")),
   locale: z.enum(["en", "ar"]),
   items: z.array(z.object({ productId: z.string().min(1), qty: z.number().int().min(1).max(20) })).min(1).max(40),

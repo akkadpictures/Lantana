@@ -50,8 +50,20 @@ export interface CartItem {
   qty: number;
 }
 
-export type PaymentMethod = "stripe" | "myfatoorah" | "cod" | "bank_transfer";
-export type OrderStatus = "pending" | "paid" | "processing" | "shipped" | "delivered" | "cancelled";
+export type PaymentMethod = "stripe" | "myfatoorah" | "cod" | "bank_transfer" | "whatsapp";
+/**
+ * `awaiting_confirmation` is the resting state of every unpaid Syrian order:
+ * the record exists, but no stock is reserved until a human confirms it on
+ * WhatsApp. Nothing else in the app may decrement inventory.
+ */
+export type OrderStatus =
+  | "awaiting_confirmation"
+  | "pending"
+  | "paid"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
 
 export interface Order {
   id: string;
@@ -70,6 +82,8 @@ export interface Order {
     address: string; city: string; country: string; notes?: string;
   };
   items: { productId: string; name: string; qty: number; unitPrice: number }[];
+  /** Origin IP, kept only for abuse throttling. Never shown to customers. */
+  ip?: string | null;
   createdAt: string;
 }
 
