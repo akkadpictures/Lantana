@@ -142,6 +142,10 @@ td.n,th.n{text-align:left;font-variant-numeric:tabular-nums}
 #modal h3{font-weight:600;font-size:16px;padding:18px 22px;border-bottom:1px solid var(--line)}
 #modal .mbody{padding:22px}
 #modal .mfoot{padding:16px 22px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-start}
+#sync{position:fixed;bottom:14px;left:14px;font-size:11.5px;color:var(--ink-60);background:#fff;border:1px solid var(--line);border-radius:20px;padding:4px 13px;z-index:40;display:flex;align-items:center;gap:7px}
+#sync i{width:6px;height:6px;border-radius:50%;background:var(--sage);flex:none}
+#sync.off i{background:var(--beige)} #sync.bad i{background:var(--minus)}
+@media print{#sync{display:none}}
 #toast{position:fixed;bottom:26px;right:26px;background:var(--ink);color:var(--ivory);padding:11px 20px;border-radius:var(--r);font-size:13px;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none;z-index:90}
 #toast.on{opacity:1;transform:none}
 
@@ -219,6 +223,7 @@ body.embed main{padding:26px 26px 60px}
 </div>
 
 <div id="modal"><div class="sheet"><h3 id="mtitle"></h3><div class="mbody" id="mbody"></div><div class="mfoot" id="mfoot"></div></div></div>
+<div id="sync"><i></i><span></span></div>
 <div id="toast"></div>
 <div id="print"></div>
 
@@ -233,7 +238,38 @@ var LS=canLS();
 function load(){
   try{ var raw = LS? localStorage.getItem(KEY) : mem; return raw? JSON.parse(raw):null; }catch(e){return null}
 }
-function save(){ var s=JSON.stringify(DB); if(LS){try{localStorage.setItem(KEY,s)}catch(e){toast("تعذّر الحفظ: الذاكرة ممتلئة")}} else mem=s; }
+function save(){ var s=JSON.stringify(DB); if(LS){try{localStorage.setItem(KEY,s)}catch(e){toast("تعذّر الحفظ: الذاكرة ممتلئة")}} else mem=s; push(); }
+
+
+/* ===================== cloud sync ===================== */
+var API = (location.protocol.indexOf("http")===0 && location.pathname.indexOf("/admin/")===0) ? "/api/admin/accounting" : null;
+var BOOTING=true, pushT=null, lastSync="";
+function setSync(mode,txt){
+  var el=document.getElementById("sync"); if(!el) return;
+  el.className = mode==="bad"?"bad" : mode==="off"?"off" : "";
+  el.querySelector("span").textContent = txt;
+}
+function pull(cb){
+  if(!API){ setSync("off","محفوظ على هذا الجهاز"); return cb(false); }
+  setSync("","جاري التحميل…");
+  fetch(API,{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+    if(d && d.state && d.state.products && d.state.products.length){
+      DB=d.state; if(!DB.capital)DB.capital=[]; if(!DB.cashmoves)DB.cashmoves=[];
+      if(!DB.settings.holders)DB.settings.holders=["المحل","زيد","بلال"];
+      lastSync=d.updated_at||""; cb(true);
+    } else cb(false);
+  }).catch(function(){ setSync("bad","تعذّر الاتصال — محفوظ محلياً"); cb(false) });
+}
+function push(){
+  if(!API||BOOTING) return;
+  setSync("","جاري الحفظ…");
+  clearTimeout(pushT);
+  pushT=setTimeout(function(){
+    fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({state:DB})})
+      .then(function(r){ if(r.ok){lastSync=new Date().toISOString(); setSync("","محفوظ بالسحابة")} else setSync("bad","لم يُحفظ — أعد المحاولة") })
+      .catch(function(){ setSync("bad","لا يوجد اتصال — محفوظ محلياً") });
+  },700);
+}
 
 /* ===================== seed ===================== */
 function seed(){
@@ -963,10 +999,16 @@ VIEWS.settings=function(){
   '</div>'+
   '<div class="panel"><h3>البيانات</h3><div class="body">'+
     '<p style="font-size:13px;color:var(--ink-60);margin-bottom:14px">البيانات محفوظة داخل هذا المتصفح على هذا الجهاز. نزّل نسخة احتياطية بشكل دوري.'+(LS?"":" <b style=\'color:var(--minus)\'>تنبيه: التخزين الدائم غير متاح في هذه النافذة — البيانات ستضيع عند الإغلاق. افتح الملف من الموقع أو من الجهاز مباشرة.</b>")+'</p>'+
+    '<p style="font-size:13px;margin-bottom:14px">'+(API? 'حالة الربط: <b>متصل بقاعدة بيانات لانتانا</b> — كل تعديل بينحفظ بالسحابة تلقائياً وبتشوفه من أي جهاز.' : 'حالة الربط: <b>غير متصل</b> — هالنسخة بتحفظ على هذا الجهاز فقط. افتحها من داخل لوحة الأدمن ليشتغل الحفظ السحابي.')+'</p>'+
+    '<div class="actions" style="margin-bottom:14px">'+(API?'<button class="btn ghost" id="sy">سحب آخر نسخة من السحابة</button><button class="btn ghost" id="sp">رفع النسخة الحالية</button>':'')+'</div>'+
     '<div class="actions"><button class="btn ghost" id="bk">تنزيل نسخة احتياطية</button><button class="btn ghost" id="rs">استعادة من ملف</button><button class="btn danger" id="wipe">مسح كل البيانات</button></div>'+
     '<input type="file" id="file" accept="application/json" style="display:none">'+
   '</div></div>';
 
+  if(API){
+    $("#sy").onclick=function(){ pull(function(ok){ if(ok){ toast("تم سحب آخر نسخة"); route(); } else toast("لا توجد نسخة بالسحابة بعد") }) };
+    $("#sp").onclick=function(){ BOOTING=false; push(); toast("جاري الرفع…") };
+  }
   $("#s_save").onclick=function(){
     s.branch=$("#s_b").value.trim(); s.phone=$("#s_ph").value.trim();
     s.base=$("#s_base").value.split(" ")[0]; s.invNo=+$("#s_inv").value||1001;
@@ -1048,9 +1090,16 @@ $("#lock").onclick=function(){try{sessionStorage.removeItem("lantana_open")}catc
 if(EMBED) document.body.classList.add("embed");
 renderNav();
 $("#today").textContent=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
-if(EMBED||sessionOpen()){ $("#gate").style.display="none"; $("#app").classList.add("on"); route(); }
-else { $("#pin").focus(); }
-save();
+function start(){
+  if(EMBED||sessionOpen()){ $("#gate").style.display="none"; $("#app").classList.add("on"); route(); }
+  else { $("#pin").focus(); }
+}
+pull(function(fromCloud){
+  BOOTING=false;
+  start();
+  if(fromCloud){ if(LS){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}} setSync("","محفوظ بالسحابة"); }
+  else if(API){ push(); }
+});
 })();
 </script>
 </body>
