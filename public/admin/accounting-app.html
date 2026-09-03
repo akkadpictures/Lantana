@@ -243,7 +243,7 @@ function seed(){
       pin:"1234", brand:"LANTANA", brandAr:"لانتانا",
       branch:"دمشق · شارع الشعلان", phone:"", base:"USD", min:12,
       rates:{USD:1, SYP:13000, AED:3.67, SAR:3.75, EUR:0.92, GBP:0.79, TRY:34},
-      cashOpen:0, invNo:1001, footer:"شكراً لثقتكم · لانتانا للعطور"
+      cashOpen:0, invNo:1001, holders:["المحل","زيد","بلال"], footer:"شكراً لثقتكم · لانتانا للعطور"
     },
     products:[
       P("barq","BARQ","برق","50ml",25,9.64,0),
@@ -264,6 +264,7 @@ function seed(){
 var DB = load() || seed();
 if(!DB.settings.rates) DB.settings={...seed().settings,...DB.settings};
 if(!DB.capital) DB.capital=[];
+if(!DB.settings.holders) DB.settings.holders=["المحل","زيد","بلال"];
 
 /* ===================== helpers ===================== */
 var EMBED=/[?&]embed=1/.test(location.search)||(function(){try{return window.self!==window.top}catch(e){return true}})();
@@ -317,12 +318,45 @@ function cashBalance(){
   DB.sales.forEach(function(x){ if(x.method!=="آجل") s+=x.totalUSD });
   DB.purchases.forEach(function(x){ if(x.paid) s-=x.totalUSD });
   DB.expenses.forEach(function(x){ s-=x.amountUSD });
-  DB.cashmoves.forEach(function(m){ s+= (m.type==="in"? m.amountUSD : -m.amountUSD) });
+  DB.cashmoves.forEach(function(m){ if(m.type==="transfer") return; s+= (m.type==="in"? m.amountUSD : -m.amountUSD) });
   DB.capital.forEach(function(c){ s+= (c.type==="draw"? -c.amountUSD : c.amountUSD) });
   return s;
 }
 function receivables(){return DB.sales.filter(function(s){return s.method==="آجل" && !s.settled}).reduce(function(t,s){return t+s.totalUSD},0)}
 function payables(){return DB.purchases.filter(function(p){return !p.paid}).reduce(function(t,p){return t+p.totalUSD},0)}
+
+
+function HOLDERS(){var h=(DB.settings.holders||[]).slice(); if(!h.length)h=["المحل"]; return h}
+function holderSel(id,val){return '<select id="'+id+'">'+HOLDERS().map(function(x){return '<option '+(x===val?"selected":"")+'>'+esc(x)+'</option>'}).join("")+'</select>'}
+function boxBalances(){
+  var B={};
+  function add(h,cur,v){ h=h||"المحل"; if(!v) return; B[h]=B[h]||{}; B[h][cur]=(B[h][cur]||0)+v; }
+  if(DB.settings.cashOpen) add("المحل","USD",DB.settings.cashOpen);
+  DB.sales.forEach(function(s){ if(s.method!=="آجل"||s.settled) add(s.holder,s.cur,s.total) });
+  DB.purchases.forEach(function(p){ if(p.paid) add(p.holder,p.cur||"USD",-(p.unit*p.qty)) });
+  DB.expenses.forEach(function(e){ add(e.holder,e.cur,-e.amount) });
+  DB.capital.forEach(function(c){ add(c.holder||c.partner,c.cur, c.type==="draw"? -c.amount : c.amount) });
+  DB.cashmoves.forEach(function(m){
+    if(m.type==="transfer"){ add(m.from,m.cur,-m.amount); add(m.to,m.cur,m.amount); }
+    else add(m.holder,m.cur, m.type==="in"? m.amount : -m.amount);
+  });
+  return B;
+}
+function boxRows(){
+  var B=boxBalances(), out=[];
+  Object.keys(B).forEach(function(h){
+    Object.keys(B[h]).forEach(function(c){ if(Math.abs(B[h][c])>0.004) out.push({h:h,cur:c,v:B[h][c]}) });
+  });
+  return out.sort(function(a,b){return toUSD(b.v,b.cur)-toUSD(a.v,a.cur)});
+}
+function boxPanel(title){
+  var rows=boxRows();
+  return '<div class="panel"><h3>'+title+'</h3><table><thead><tr><th>الصندوق</th><th>العملة</th><th class="n">الرصيد</th></tr></thead><tbody>'+
+    (rows.length? rows.map(function(r){
+      return '<tr><td>'+esc(r.h)+'</td><td><span class="tag">'+r.cur+'</span></td><td class="n '+(r.v<0?"down":"")+'">'+nfmt(r.v,r.cur)+' '+r.cur+'</td></tr>';
+    }).join("") : emptyRow(3,"لا أرصدة بعد."))+
+  '</tbody></table></div>';
+}
 
 /* ===================== nav ===================== */
 var ROUTES=[
@@ -381,12 +415,22 @@ VIEWS.dash=function(){
   $("#view").innerHTML=
   head("لوحة القيادة","حركة اليوم والشهر الحالي · العملة "+base,
     '<a class="btn" href="#pos">فاتورة جديدة</a><button class="btn ghost" id="pr">طباعة الملخص</button>')+
-  '<div class="strip">'+
+  '<div class="strip" style="grid-template-columns:repeat(6,1fr)">'+
     '<div><div class="k">مبيعات اليوم</div><div class="v num">'+nfmt(fromUSD(dayR,base),base)+' <small>'+base+'</small></div><div class="d">'+salesIn(t,t).length+' فاتورة</div></div>'+
     '<div><div class="k">مبيعات الشهر</div><div class="v num">'+nfmt(fromUSD(monR,base),base)+' <small>'+base+'</small></div><div class="d">'+salesIn(ms,t).length+' فاتورة</div></div>'+
     '<div><div class="k">مجمل الربح</div><div class="v num '+(gross<0?"down":"")+'">'+nfmt(fromUSD(gross,base),base)+' <small>'+base+'</small></div><div class="d">هامش '+(monR? Math.round(gross/monR*100):0)+'٪</div></div>'+
     '<div><div class="k">صافي الربح</div><div class="v num '+(net<0?"down":"up")+'">'+nfmt(fromUSD(net,base),base)+' <small>'+base+'</small></div><div class="d">بعد مصاريف '+nfmt(fromUSD(monE,base),base)+'</div></div>'+
+    '<div><div class="k">إجمالي المبيعات</div><div class="v num">'+nfmt(fromUSD(revenue("",""),base),base)+' <small>'+base+'</small></div><div class="d">'+DB.sales.length+' فاتورة منذ البداية</div></div>'+
     '<div><div class="k">رصيد الصندوق</div><div class="v num">'+nfmt(fromUSD(cashBalance(),base),base)+' <small>'+base+'</small></div><div class="d">قيمة المخزون '+nfmt(fromUSD(stockValue(),base),base)+'</div></div>'+
+  '</div>'+
+  '<div class="cols">'+boxPanel("الصناديق · أين المال الآن")+
+    '<div class="panel"><h3>الوضع المالي</h3><table><tbody>'+
+      '<tr><td>قيمة المخزون بالتكلفة</td><td class="n">'+money(stockValue())+'</td></tr>'+
+      '<tr><td>قيمة المخزون بسعر البيع</td><td class="n">'+money(DB.products.reduce(function(t,p){return t+(p.active?p.stock*p.price:0)},0))+'</td></tr>'+
+      '<tr><td>ذمم العملاء (آجل)</td><td class="n">'+money(receivables())+'</td></tr>'+
+      '<tr><td>مستحق للموردين</td><td class="n">'+money(payables())+'</td></tr>'+
+      '<tr><td>رأس المال المدفوع</td><td class="n">'+money(DB.capital.filter(function(c){return c.type!=="draw"}).reduce(function(t,c){return t+c.amountUSD},0))+'</td></tr>'+
+    '</tbody></table></div>'+
   '</div>'+
   '<div class="cols">'+
     '<div class="panel"><h3>المبيعات · آخر ١٤ يوم</h3><div class="chart-wrap"><div class="chart">'+
@@ -430,6 +474,7 @@ VIEWS.pos=function(){
       '<div><label class="f">طريقة الدفع</label><select id="meth">'+["نقدي","تحويل","بطاقة","واتساب","آجل"].map(function(m){return '<option '+(m===posMethod?"selected":"")+'>'+m+'</option>'}).join("")+'</select></div>'+
       '<div><label class="f">اسم العميل</label><input id="cust" type="text" placeholder="اختياري"></div>'+
       '<div><label class="f">الهاتف</label><input id="phone" type="text" placeholder="اختياري"></div>'+
+      '<div style="grid-column:1/-1"><label class="f">المال يدخل صندوق</label>'+holderSel("hold",HOLDERS()[0])+'</div>'+
       '<div style="grid-column:1/-1"><label class="f">خصم ('+posCur+')</label><input id="disc" type="number" min="0" value="'+posDisc+'"></div>'+
     '</div>'+
     '<div class="sum" id="sum"></div>'+
@@ -474,7 +519,7 @@ function saveSale(){
   var s={
     id:uid(), no:DB.settings.invNo++, date:today(), time:new Date().toTimeString().slice(0,5),
     customer:$("#cust").value.trim(), phone:$("#phone").value.trim(),
-    cur:cur, rate:rate(cur), method:$("#meth").value, discount:disc, total:tot, totalUSD:toUSD(tot,cur), settled:false,
+    cur:cur, rate:rate(cur), method:$("#meth").value, holder:$("#hold").value, discount:disc, total:tot, totalUSD:toUSD(tot,cur), settled:false,
     items:cart.map(function(c){var p=prod(c.id);return{id:p.id,name:p.ar,en:p.en,size:p.size,qty:c.qty,priceUSD:p.price,costUSD:p.cost,price:fromUSD(p.price,cur)}})
   };
   s.items.forEach(function(i){var p=prod(i.id); p.stock=Math.max(0,p.stock-i.qty)});
@@ -622,6 +667,7 @@ function addPurchase(){
     '<div><label class="f">التاريخ</label><input id="q_d" type="date" value="'+today()+'"></div>'+
     '<div><label class="f">المورّد</label><input id="q_s" placeholder="اسم المورّد"></div>'+
     '<div><label class="f">الحالة</label><select id="q_st"><option value="1">مدفوع</option><option value="0">آجل</option></select></div>'+
+    '<div><label class="f">مدفوع من صندوق</label>'+holderSel("q_h",HOLDERS()[0])+'</div>'+
     '<div style="grid-column:1/-1"><label class="f"><input type="checkbox" id="q_up" checked style="width:auto;margin-left:6px">تحديث تكلفة المنتج بهذه التكلفة</label></div>'+
     '</div>',
     [{t:"حفظ",fn:function(){
@@ -629,7 +675,7 @@ function addPurchase(){
       if(qty<=0) return toast("أدخل كمية صحيحة");
       var uUSD=toUSD(unit,cur);
       var x={id:uid(),pid:p.id,name:p.ar+" · "+p.size,date:$("#q_d").value,supplier:$("#q_s").value.trim(),
-        qty:qty,cur:cur,unit:unit,unitUSD:uUSD,totalUSD:uUSD*qty,paid:$("#q_st").value==="1"};
+        qty:qty,cur:cur,unit:unit,unitUSD:uUSD,totalUSD:uUSD*qty,paid:$("#q_st").value==="1",holder:$("#q_h").value};
       p.stock+=qty; if($("#q_up").checked && uUSD>0) p.cost=uUSD;
       DB.purchases.push(x); save(); closeModal(); toast("تم تسجيل التوريد"); VIEWS.purchases();
     }},{t:"إلغاء",cls:"btn ghost",fn:closeModal}]);
@@ -667,12 +713,13 @@ function addExpense(){
     '<div><label class="f">التاريخ</label><input id="e_d" type="date" value="'+today()+'"></div>'+
     '<div><label class="f">العملة</label><select id="e_cu">'+CUR.map(function(c){return '<option '+(c===DB.settings.base?"selected":"")+'>'+c+'</option>'}).join("")+'</select></div>'+
     '<div><label class="f">المبلغ</label><input id="e_a" type="number" step="0.01" value="0"></div>'+
-    '<div style="grid-column:1/-1"><label class="f">الوصف</label><input id="e_n" placeholder="اختياري"></div>'+
+    '<div><label class="f">مدفوع من صندوق</label>'+holderSel("e_h",HOLDERS()[0])+'</div>'+
+    '<div><label class="f">الوصف</label><input id="e_n" placeholder="اختياري"></div>'+
     '<div style="grid-column:1/-1"><label class="f"><input type="checkbox" id="e_cap" style="width:auto;margin-left:6px">مصروف تأسيسي أو أصل ثابت — يخصم من الصندوق ولا يدخل في الأرباح والخسائر</label></div></div>',
     [{t:"حفظ",fn:function(){
       var a=+$("#e_a").value||0, cur=$("#e_cu").value;
       if(a<=0) return toast("أدخل مبلغاً صحيحاً");
-      DB.expenses.push({id:uid(),date:$("#e_d").value,cat:$("#e_c").value,note:$("#e_n").value.trim(),cur:cur,amount:a,amountUSD:toUSD(a,cur),capex:$("#e_cap").checked});
+      DB.expenses.push({id:uid(),date:$("#e_d").value,cat:$("#e_c").value,note:$("#e_n").value.trim(),cur:cur,amount:a,amountUSD:toUSD(a,cur),capex:$("#e_cap").checked,holder:$("#e_h").value});
       save(); closeModal(); toast("تم تسجيل المصروف"); VIEWS.expenses();
     }},{t:"إلغاء",cls:"btn ghost",fn:closeModal}]);
 }
@@ -681,37 +728,64 @@ function addExpense(){
 VIEWS.cash=function(){
   var base=DB.settings.base;
   var led=[];
-  DB.sales.forEach(function(s){if(s.method!=="آجل"||s.settled) led.push({d:s.date,t:"مبيعات · فاتورة #"+s.no,v:s.totalUSD})});
+  DB.sales.forEach(function(s){if(s.method!=="آجل"||s.settled) led.push({d:s.date,t:"مبيعات · فاتورة #"+s.no+" → "+(s.holder||"المحل"),v:s.totalUSD})});
   DB.purchases.forEach(function(p){if(p.paid) led.push({d:p.date,t:"توريد · "+p.name,v:-p.totalUSD})});
-  DB.expenses.forEach(function(e){led.push({d:e.date,t:"مصروف · "+e.cat+(e.note?" · "+e.note:""),v:-e.amountUSD})});
-  DB.cashmoves.forEach(function(m){led.push({d:m.date,t:(m.type==="in"?"إيداع · ":"سحب · ")+(m.note||""),v:m.type==="in"?m.amountUSD:-m.amountUSD})});
+  DB.expenses.forEach(function(e){led.push({d:e.date,t:"مصروف · "+e.cat+(e.note?" · "+e.note:"")+" ← "+(e.holder||"المحل"),v:-e.amountUSD})});
+  DB.capital.forEach(function(c){led.push({d:c.date,t:(c.type==="draw"?"سحب شريك · ":"رأس مال · ")+c.partner+(c.note?" · "+c.note:""),v:(c.type==="draw"?-1:1)*c.amountUSD})});
+  DB.cashmoves.forEach(function(m){
+    if(m.type==="transfer") led.push({d:m.date,t:"نقل · "+m.from+" ← "+m.to+(m.note?" · "+m.note:""),v:0,x:m});
+    else led.push({d:m.date,t:(m.type==="in"?"إيداع · ":"سحب · ")+(m.holder||"المحل")+(m.note?" · "+m.note:""),v:m.type==="in"?m.amountUSD:-m.amountUSD});
+  });
   led.sort(function(a,b){return a.d<b.d?1:-1});
   var inSum=led.filter(function(x){return x.v>0}).reduce(function(t,x){return t+x.v},0);
   var outSum=-led.filter(function(x){return x.v<0}).reduce(function(t,x){return t+x.v},0);
 
   $("#view").innerHTML=
-  head("الصندوق","حركة الداخل والخارج · العملة "+base,'<button class="btn ghost" id="mv">حركة يدوية</button>')+
+  head("الصندوق","أرصدة الصناديق وحركة الداخل والخارج",'<button class="btn ghost" id="tr">نقل بين الصناديق</button><button class="btn ghost" id="mv">حركة يدوية</button>')+
   '<div class="strip" style="grid-template-columns:repeat(4,1fr)">'+
     '<div><div class="k">الرصيد الحالي</div><div class="v num">'+nfmt(fromUSD(cashBalance(),base),base)+' <small>'+base+'</small></div><div class="d">رصيد افتتاحي '+nfmt(fromUSD(DB.settings.cashOpen,base),base)+'</div></div>'+
     '<div><div class="k">إجمالي الداخل</div><div class="v num up">'+nfmt(fromUSD(inSum,base),base)+'</div></div>'+
     '<div><div class="k">إجمالي الخارج</div><div class="v num down">'+nfmt(fromUSD(outSum,base),base)+'</div></div>'+
     '<div><div class="k">ذمم العملاء (آجل)</div><div class="v num">'+nfmt(fromUSD(receivables(),base),base)+'</div><div class="d">مستحق للموردين '+nfmt(fromUSD(payables(),base),base)+'</div></div>'+
   '</div>'+
+  '<div class="cols">'+boxPanel("الصناديق")+
+    '<div class="panel"><h3>ملخص</h3><table><tbody>'+
+      '<tr><td>إجمالي الأرصدة بالدولار</td><td class="n">'+money(cashBalance())+'</td></tr>'+
+      '<tr><td>ذمم العملاء (آجل)</td><td class="n">'+money(receivables())+'</td></tr>'+
+      '<tr><td>مستحق للموردين</td><td class="n">'+money(payables())+'</td></tr>'+
+    '</tbody></table></div>'+
+  '</div>'+
   '<div class="panel"><h3>دفتر الحركة</h3><table><thead><tr><th>التاريخ</th><th>البيان</th><th class="n">داخل</th><th class="n">خارج</th></tr></thead><tbody>'+
     (led.length? led.slice(0,80).map(function(x){
       return '<tr><td>'+dfmt(x.d)+'</td><td>'+esc(x.t)+'</td><td class="n up">'+(x.v>0?nfmt(fromUSD(x.v,base),base):"—")+'</td><td class="n down">'+(x.v<0?nfmt(fromUSD(-x.v,base),base):"—")+'</td></tr>';
     }).join("") : emptyRow(4,"لا حركة على الصندوق بعد."))+
   '</tbody></table></div>';
+  $("#tr").onclick=function(){
+    openModal("نقل بين الصناديق",
+      '<div class="grid2"><div><label class="f">من صندوق</label>'+holderSel("t_f",HOLDERS()[0])+'</div>'+
+      '<div><label class="f">إلى صندوق</label>'+holderSel("t_t",HOLDERS()[1]||HOLDERS()[0])+'</div>'+
+      '<div><label class="f">العملة</label><select id="t_c">'+CUR.map(function(c){return '<option '+(c===base?"selected":"")+'>'+c+'</option>'}).join("")+'</select></div>'+
+      '<div><label class="f">المبلغ</label><input id="t_a" type="number" step="0.01" value="0"></div>'+
+      '<div style="grid-column:1/-1"><label class="f">البيان</label><input id="t_n" placeholder="اختياري"></div></div>',
+      [{t:"حفظ",fn:function(){
+        var a=+$("#t_a").value||0, cur=$("#t_c").value, f=$("#t_f").value, tt=$("#t_t").value;
+        if(a<=0) return toast("أدخل مبلغاً صحيحاً");
+        if(f===tt) return toast("اختر صندوقين مختلفين");
+        DB.cashmoves.push({id:uid(),date:today(),type:"transfer",from:f,to:tt,cur:cur,amount:a,amountUSD:toUSD(a,cur),note:$("#t_n").value.trim()});
+        save(); closeModal(); toast("تم النقل"); VIEWS.cash();
+      }},{t:"إلغاء",cls:"btn ghost",fn:closeModal}]);
+  };
   $("#mv").onclick=function(){
     openModal("حركة صندوق يدوية",
       '<div class="grid2"><div><label class="f">النوع</label><select id="c_t"><option value="in">إيداع</option><option value="out">سحب</option></select></div>'+
       '<div><label class="f">التاريخ</label><input id="c_d" type="date" value="'+today()+'"></div>'+
       '<div><label class="f">العملة</label><select id="c_c">'+CUR.map(function(c){return '<option '+(c===base?"selected":"")+'>'+c+'</option>'}).join("")+'</select></div>'+
       '<div><label class="f">المبلغ</label><input id="c_a" type="number" step="0.01" value="0"></div>'+
+      '<div><label class="f">الصندوق</label>'+holderSel("c_h",HOLDERS()[0])+'</div>'+
       '<div style="grid-column:1/-1"><label class="f">البيان</label><input id="c_n" placeholder="مثال: سحب شخصي، إيداع رأس مال"></div></div>',
       [{t:"حفظ",fn:function(){
         var a=+$("#c_a").value||0, cur=$("#c_c").value; if(a<=0) return toast("أدخل مبلغاً صحيحاً");
-        DB.cashmoves.push({id:uid(),date:$("#c_d").value,type:$("#c_t").value,cur:cur,amount:a,amountUSD:toUSD(a,cur),note:$("#c_n").value.trim()});
+        DB.cashmoves.push({id:uid(),date:$("#c_d").value,type:$("#c_t").value,cur:cur,amount:a,amountUSD:toUSD(a,cur),note:$("#c_n").value.trim(),holder:$("#c_h").value});
         save(); closeModal(); VIEWS.cash();
       }},{t:"إلغاء",cls:"btn ghost",fn:closeModal}]);
   };
@@ -772,12 +846,13 @@ VIEWS.capital=function(){
       '<div><label class="f">العملة</label><select id="k_c">'+CUR.map(function(c){return '<option '+(c===base?"selected":"")+'>'+c+'</option>'}).join("")+'</select></div>'+
       '<div><label class="f">المبلغ</label><input id="k_a" type="number" step="0.01" value="0"></div>'+
       '<div><label class="f">التاريخ</label><input id="k_d" type="date" value="'+today()+'"></div>'+
-      '<div><label class="f">البيان</label><input id="k_n" placeholder="مثال: دفعة بضاعة"></div></div>',
+      '<div><label class="f">دخل صندوق</label>'+holderSel("k_h",HOLDERS()[0])+'</div>'+
+      '<div style="grid-column:1/-1"><label class="f">البيان</label><input id="k_n" placeholder="مثال: دفعة بضاعة"></div></div>',
       [{t:"حفظ",fn:function(){
         var a=+$("#k_a").value||0, cur=$("#k_c").value, p=$("#k_p").value.trim();
         if(!p) return toast("اكتب اسم الشريك");
         if(a<=0) return toast("أدخل مبلغاً صحيحاً");
-        DB.capital.push({id:uid(),date:$("#k_d").value,partner:p,type:$("#k_t").value,cur:cur,amount:a,amountUSD:toUSD(a,cur),note:$("#k_n").value.trim()});
+        DB.capital.push({id:uid(),date:$("#k_d").value,partner:p,type:$("#k_t").value,cur:cur,amount:a,amountUSD:toUSD(a,cur),note:$("#k_n").value.trim(),holder:$("#k_h").value});
         save(); closeModal(); VIEWS.capital();
       }},{t:"إلغاء",cls:"btn ghost",fn:closeModal}]);
   };
@@ -875,6 +950,7 @@ VIEWS.settings=function(){
       '<div><label class="f">الرصيد الافتتاحي للصندوق (USD)</label><input id="s_open" type="number" step="0.01" value="'+s.cashOpen+'"></div>'+
       '<div><label class="f">رمز الدخول</label><input id="s_pin" value="'+esc(s.pin)+'"></div>'+
       '<div style="grid-column:1/-1"><label class="f">سطر أسفل الفاتورة</label><input id="s_ft" value="'+esc(s.footer)+'"></div>'+
+      '<div style="grid-column:1/-1"><label class="f">الصناديق (افصل بفاصلة)</label><input id="s_hd" value="'+esc((s.holders||[]).join("، "))+'"></div>'+
       '<div style="grid-column:1/-1"><button class="btn" id="s_save">حفظ الإعدادات</button></div>'+
     '</div></div>'+
     '<div class="panel"><h3>أسعار الصرف · مقابل ١ دولار</h3><div class="body">'+
@@ -894,7 +970,8 @@ VIEWS.settings=function(){
   $("#s_save").onclick=function(){
     s.branch=$("#s_b").value.trim(); s.phone=$("#s_ph").value.trim();
     s.base=$("#s_base").value.split(" ")[0]; s.invNo=+$("#s_inv").value||1001;
-    s.cashOpen=+$("#s_open").value||0; s.pin=$("#s_pin").value.trim()||"1234"; s.footer=$("#s_ft").value;
+    s.cashOpen=+$("#s_open").value||0;
+    s.holders=$("#s_hd").value.split(/[،,]/).map(function(x){return x.trim()}).filter(Boolean); if(!s.holders.length) s.holders=["المحل"]; s.pin=$("#s_pin").value.trim()||"1234"; s.footer=$("#s_ft").value;
     save(); toast("تم حفظ الإعدادات"); VIEWS.settings();
   };
   $("#r_save").onclick=function(){
