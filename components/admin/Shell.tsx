@@ -34,6 +34,9 @@ function Icon({ name, className }: { name: string; className?: string }) {
 }
 
 const GROUPS: { label: string; items: { href: string; label: string; icon: string }[] }[] = [
+  { label: "Finance", items: [
+    { href: "/admin/accounting", label: "Accounting", icon: "accounting" },
+  ] },
   { label: "Store", items: [
     { href: "/admin", label: "Overview", icon: "overview" },
     { href: "/admin/orders", label: "Orders", icon: "orders" },
@@ -50,9 +53,6 @@ const GROUPS: { label: string; items: { href: string; label: string; icon: strin
     { href: "/admin/coupons", label: "Coupons", icon: "coupons" },
     { href: "/admin/reviews", label: "Reviews", icon: "reviews" },
     { href: "/admin/blog", label: "Journal", icon: "journal" },
-  ] },
-  { label: "Finance", items: [
-    { href: "/admin/accounting", label: "Accounting", icon: "accounting" },
   ] },
   { label: "System", items: [
     { href: "/admin/shipping", label: "Shipping", icon: "shipping" },
