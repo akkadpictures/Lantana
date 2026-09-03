@@ -237,31 +237,33 @@ function save(){ var s=JSON.stringify(DB); if(LS){try{localStorage.setItem(KEY,s
 
 /* ===================== seed ===================== */
 function seed(){
-  var P=function(id,en,ar,size,price,cost){return{id:id,en:en,ar:ar,size:size,price:price,cost:cost,stock:0,min:6,active:true}};
+  var P=function(id,en,ar,size,price,cost,stock){return{id:id,en:en,ar:ar,size:size,price:price,cost:cost,stock:stock||0,min:12,active:true}};
   return {
     settings:{
       pin:"1234", brand:"LANTANA", brandAr:"لانتانا",
-      branch:"دمشق · شارع الشعلان", phone:"", base:"USD", min:6,
+      branch:"دمشق · شارع الشعلان", phone:"", base:"USD", min:12,
       rates:{USD:1, SYP:13000, AED:3.67, SAR:3.75, EUR:0.92, GBP:0.79, TRY:34},
       cashOpen:0, invNo:1001, footer:"شكراً لثقتكم · لانتانا للعطور"
     },
     products:[
-      P("moon","MOON","مون","50ml",45,14),
-      P("asrar","ASRAR","أسرار","50ml",45,14),
-      P("layal","LAYAL","ليال","50ml",45,14),
-      P("lunea","LUNÉA","لونيا","50ml",45,14),
-      P("yasmeen","YASMEEN","ياسمين","50ml",45,14),
-      P("barq","BARQ","برق","50ml",45,14),
-      P("misk","MISK","مسك","50ml",45,14),
-      P("waqar","WAQAR","وقار","50ml",45,14),
-      P("lunea100","LUNÉA","لونيا","100ml",70,22),
-      P("giftset","GIFT SET","طقم الهدايا","4×30ml",60,20)
+      P("barq","BARQ","برق","50ml",25,9.64,0),
+      P("asrar","ASRAR","أسرار","50ml",25,9.64,0),
+      P("layal","LAYAL","ليال","50ml",25,9.64,0),
+      P("waqar","WAQAR","وقار","50ml",25,9.64,0),
+      P("moon","MOON","مون","50ml",25,9.64,0),
+      P("lunea","LUNÉA","لونيا","50ml",25,9.64,0),
+      P("yasmeen","YASMEEN","ياسمين","50ml",25,10.14,0),
+      P("misk","MISK","مسك","50ml",25,10.14,0),
+      P("lunea100","LUNÉA","لونيا","100ml",35,12.14,0),
+      P("giftset","GIFT SET","سيت الهدية","4×30ml",45,28.86,0),
+      P("mini30","30 ML","قنينة مفردة","30ml",15,5.80,0)
     ],
-    sales:[], purchases:[], expenses:[], customers:[], cashmoves:[]
+    sales:[], purchases:[], expenses:[], customers:[], cashmoves:[], capital:[]
   };
 }
 var DB = load() || seed();
 if(!DB.settings.rates) DB.settings={...seed().settings,...DB.settings};
+if(!DB.capital) DB.capital=[];
 
 /* ===================== helpers ===================== */
 var EMBED=/[?&]embed=1/.test(location.search)||(function(){try{return window.self!==window.top}catch(e){return true}})();
@@ -307,7 +309,8 @@ function inRange(d,a,b){return (!a||d>=a)&&(!b||d<=b)}
 function salesIn(a,b){return DB.sales.filter(function(s){return inRange(s.date,a,b)})}
 function revenue(a,b){return salesIn(a,b).reduce(function(t,s){return t+s.totalUSD},0)}
 function cogs(a,b){return salesIn(a,b).reduce(function(t,s){return t+s.items.reduce(function(x,i){return x+i.costUSD*i.qty},0)},0)}
-function expensesIn(a,b){return DB.expenses.filter(function(e){return inRange(e.date,a,b)}).reduce(function(t,e){return t+e.amountUSD},0)}
+function expensesIn(a,b){return DB.expenses.filter(function(e){return !e.capex && inRange(e.date,a,b)}).reduce(function(t,e){return t+e.amountUSD},0)}
+function capexIn(a,b){return DB.expenses.filter(function(e){return e.capex && inRange(e.date,a,b)}).reduce(function(t,e){return t+e.amountUSD},0)}
 function stockValue(){return DB.products.reduce(function(t,p){return t+p.stock*p.cost},0)}
 function cashBalance(){
   var s=DB.settings.cashOpen||0;
@@ -315,6 +318,7 @@ function cashBalance(){
   DB.purchases.forEach(function(x){ if(x.paid) s-=x.totalUSD });
   DB.expenses.forEach(function(x){ s-=x.amountUSD });
   DB.cashmoves.forEach(function(m){ s+= (m.type==="in"? m.amountUSD : -m.amountUSD) });
+  DB.capital.forEach(function(c){ s+= (c.type==="draw"? -c.amountUSD : c.amountUSD) });
   return s;
 }
 function receivables(){return DB.sales.filter(function(s){return s.method==="آجل" && !s.settled}).reduce(function(t,s){return t+s.totalUSD},0)}
@@ -332,6 +336,7 @@ var ROUTES=[
   {sep:"المال"},
   {id:"expenses",t:"المصاريف"},
   {id:"cash",t:"الصندوق"},
+  {id:"capital",t:"رأس المال والشركاء"},
   {id:"customers",t:"العملاء"},
   {sep:"التقارير"},
   {id:"reports",t:"التقارير المحاسبية"},
@@ -631,17 +636,17 @@ function addPurchase(){
 }
 
 /* ---------- expenses ---------- */
-var ECATS=["إيجار","رواتب","تسويق وإعلان","شحن وتوصيل","تعبئة وتغليف","مواد أولية","كهرباء واتصالات","صيانة","رسوم وضرائب","أخرى"];
+var ECATS=["إيجار","رواتب","تسويق وإعلان","تصميم وهوية","تأسيس وديكور","معدات وأجهزة","تعبئة ومواد","شحن وتوصيل","كهرباء واتصالات","رسوم وضرائب","صيانة","أخرى"];
 VIEWS.expenses=function(){
   var ms=monthStart(), t=today(), rows=DB.expenses.slice().reverse();
-  var byCat={}; DB.expenses.filter(function(e){return inRange(e.date,ms,t)}).forEach(function(e){byCat[e.cat]=(byCat[e.cat]||0)+e.amountUSD});
+  var byCat={}; DB.expenses.filter(function(e){return !e.capex && inRange(e.date,ms,t)}).forEach(function(e){byCat[e.cat]=(byCat[e.cat]||0)+e.amountUSD});
   var cats=Object.keys(byCat).sort(function(a,b){return byCat[b]-byCat[a]});
   $("#view").innerHTML=
-  head("المصاريف","مصاريف الشهر "+money(expensesIn(ms,t)),'<button class="btn ghost" id="ex">تصدير CSV</button><button class="btn" id="add">تسجيل مصروف</button>')+
+  head("المصاريف","تشغيلية هذا الشهر "+money(expensesIn(ms,t))+" · تأسيسية إجمالاً "+money(capexIn("","")),'<button class="btn ghost" id="ex">تصدير CSV</button><button class="btn" id="add">تسجيل مصروف</button>')+
   '<div class="cols">'+
     '<div class="panel"><h3>السجل</h3><table><thead><tr><th>التاريخ</th><th>البند</th><th>الوصف</th><th class="n">المبلغ</th><th></th></tr></thead><tbody>'+
       (rows.length? rows.map(function(e){
-        return '<tr><td>'+dfmt(e.date)+'</td><td><span class="tag">'+esc(e.cat)+'</span></td><td style="color:var(--ink-60)">'+esc(e.note||"—")+'</td>'+
+        return '<tr><td>'+dfmt(e.date)+'</td><td><span class="tag'+(e.capex?" low":"")+'">'+esc(e.cat)+(e.capex?" · تأسيس":"")+'</span></td><td style="color:var(--ink-60)">'+esc(e.note||"—")+'</td>'+
         '<td class="n">'+nfmt(e.amount,e.cur)+' '+e.cur+'</td><td class="n"><button class="btn sm danger" data-del="'+e.id+'">حذف</button></td></tr>';
       }).join("") : emptyRow(5,"لا مصاريف مسجّلة."))+
     '</tbody></table></div>'+
@@ -662,11 +667,12 @@ function addExpense(){
     '<div><label class="f">التاريخ</label><input id="e_d" type="date" value="'+today()+'"></div>'+
     '<div><label class="f">العملة</label><select id="e_cu">'+CUR.map(function(c){return '<option '+(c===DB.settings.base?"selected":"")+'>'+c+'</option>'}).join("")+'</select></div>'+
     '<div><label class="f">المبلغ</label><input id="e_a" type="number" step="0.01" value="0"></div>'+
-    '<div style="grid-column:1/-1"><label class="f">الوصف</label><input id="e_n" placeholder="اختياري"></div></div>',
+    '<div style="grid-column:1/-1"><label class="f">الوصف</label><input id="e_n" placeholder="اختياري"></div>'+
+    '<div style="grid-column:1/-1"><label class="f"><input type="checkbox" id="e_cap" style="width:auto;margin-left:6px">مصروف تأسيسي أو أصل ثابت — يخصم من الصندوق ولا يدخل في الأرباح والخسائر</label></div></div>',
     [{t:"حفظ",fn:function(){
       var a=+$("#e_a").value||0, cur=$("#e_cu").value;
       if(a<=0) return toast("أدخل مبلغاً صحيحاً");
-      DB.expenses.push({id:uid(),date:$("#e_d").value,cat:$("#e_c").value,note:$("#e_n").value.trim(),cur:cur,amount:a,amountUSD:toUSD(a,cur)});
+      DB.expenses.push({id:uid(),date:$("#e_d").value,cat:$("#e_c").value,note:$("#e_n").value.trim(),cur:cur,amount:a,amountUSD:toUSD(a,cur),capex:$("#e_cap").checked});
       save(); closeModal(); toast("تم تسجيل المصروف"); VIEWS.expenses();
     }},{t:"إلغاء",cls:"btn ghost",fn:closeModal}]);
 }
@@ -709,6 +715,76 @@ VIEWS.cash=function(){
         save(); closeModal(); VIEWS.cash();
       }},{t:"إلغاء",cls:"btn ghost",fn:closeModal}]);
   };
+};
+
+
+/* ---------- capital & partners ---------- */
+VIEWS.capital=function(){
+  var base=DB.settings.base;
+  var rows=DB.capital.slice().sort(function(a,b){return a.date<b.date?1:-1});
+  var by={};
+  DB.capital.forEach(function(c){ by[c.partner]=(by[c.partner]||0)+(c.type==="draw"?-c.amountUSD:c.amountUSD) });
+  var names=Object.keys(by).sort(function(a,b){return by[b]-by[a]});
+  var totIn=DB.capital.filter(function(c){return c.type!=="draw"}).reduce(function(t,c){return t+c.amountUSD},0);
+  var totDraw=DB.capital.filter(function(c){return c.type==="draw"}).reduce(function(t,c){return t+c.amountUSD},0);
+  var net=revenue("","")-cogs("","")-expensesIn("","");
+  var equity=totIn-totDraw+net;
+  var gap=names.length>1? by[names[0]]-by[names[names.length-1]] : 0;
+  function f(v){return nfmt(fromUSD(v,base),base)+" "+base}
+
+  $("#view").innerHTML=
+  head("رأس المال والشركاء","مساهمات الشركاء والسحوبات وحقوق الملكية",'<button class="btn ghost" id="ex">تصدير CSV</button><button class="btn" id="add">تسجيل دفعة</button>')+
+  '<div class="strip" style="grid-template-columns:repeat(4,1fr)">'+
+    '<div><div class="k">رأس المال المدفوع</div><div class="v num">'+nfmt(fromUSD(totIn,base),base)+' <small>'+base+'</small></div><div class="d">'+names.length+' شريك</div></div>'+
+    '<div><div class="k">السحوبات</div><div class="v num '+(totDraw?"down":"")+'">'+nfmt(fromUSD(totDraw,base),base)+'</div></div>'+
+    '<div><div class="k">الأرباح المحتجزة</div><div class="v num '+(net<0?"down":"up")+'">'+nfmt(fromUSD(net,base),base)+'</div><div class="d">من بداية النشاط</div></div>'+
+    '<div><div class="k">حقوق الشركاء</div><div class="v num">'+nfmt(fromUSD(equity,base),base)+'</div><div class="d">'+(Math.abs(gap)<1?"الشركاء متعادلون":"فرق بين الشركاء "+nfmt(fromUSD(Math.abs(gap),base),base))+'</div></div>'+
+  '</div>'+
+  '<div class="cols">'+
+    '<div class="panel"><h3>حصة كل شريك</h3><table><thead><tr><th>الشريك</th><th class="n">صافي المساهمة</th><th class="n">النسبة</th></tr></thead><tbody>'+
+      (names.length? names.map(function(n){
+        return '<tr><td>'+esc(n)+'</td><td class="n">'+f(by[n])+'</td><td class="n">'+(totIn-totDraw? Math.round(by[n]/(totIn-totDraw)*100):0)+'٪</td></tr>';
+      }).join("") : emptyRow(3,"لا مساهمات مسجّلة."))+
+      (names.length>1&&Math.abs(gap)>=1? '<tr style="background:#fbfaf5"><td>لتعادل الشركاء</td><td class="n" colspan="2">على '+esc(names[names.length-1])+' دفع '+f(Math.abs(gap))+'</td></tr>':'')+
+    '</tbody></table></div>'+
+    '<div class="panel"><h3>أين ذهب رأس المال</h3><table><tbody>'+
+      '<tr><td>بضاعة (مخزون قائم)</td><td class="n">'+f(stockValue())+'</td></tr>'+
+      '<tr><td>تأسيس وأصول ثابتة</td><td class="n">'+f(capexIn("",""))+'</td></tr>'+
+      '<tr><td>مصاريف تشغيلية</td><td class="n">'+f(expensesIn("",""))+'</td></tr>'+
+      '<tr><td>مستحق للموردين</td><td class="n">'+f(payables())+'</td></tr>'+
+      '<tr style="background:#f4f6ee"><td><b>رصيد الصندوق</b></td><td class="n"><b>'+f(cashBalance())+'</b></td></tr>'+
+    '</tbody></table></div>'+
+  '</div>'+
+  '<div class="panel"><h3>سجل الدفعات</h3><table><thead><tr><th>التاريخ</th><th>الشريك</th><th>البيان</th><th>النوع</th><th class="n">المبلغ</th><th></th></tr></thead><tbody>'+
+    (rows.length? rows.map(function(c){
+      return '<tr><td>'+dfmt(c.date)+'</td><td>'+esc(c.partner)+'</td><td style="color:var(--ink-60)">'+esc(c.note||"—")+'</td>'+
+      '<td><span class="tag '+(c.type==="draw"?"low":"ok")+'">'+(c.type==="draw"?"سحب":"مساهمة")+'</span></td>'+
+      '<td class="n">'+nfmt(c.amount,c.cur)+' '+c.cur+'</td>'+
+      '<td class="n"><button class="btn sm danger" data-del="'+c.id+'">حذف</button></td></tr>';
+    }).join("") : emptyRow(6,"سجّل أول دفعة شريك."))+
+  '</tbody></table></div>';
+
+  $("#add").onclick=function(){
+    openModal("تسجيل دفعة شريك",
+      '<div class="grid2">'+
+      '<div><label class="f">الشريك</label><input id="k_p" list="k_list" placeholder="الاسم"><datalist id="k_list">'+names.map(function(n){return '<option value="'+esc(n)+'">'}).join("")+'</datalist></div>'+
+      '<div><label class="f">النوع</label><select id="k_t"><option value="in">مساهمة</option><option value="draw">سحب</option></select></div>'+
+      '<div><label class="f">العملة</label><select id="k_c">'+CUR.map(function(c){return '<option '+(c===base?"selected":"")+'>'+c+'</option>'}).join("")+'</select></div>'+
+      '<div><label class="f">المبلغ</label><input id="k_a" type="number" step="0.01" value="0"></div>'+
+      '<div><label class="f">التاريخ</label><input id="k_d" type="date" value="'+today()+'"></div>'+
+      '<div><label class="f">البيان</label><input id="k_n" placeholder="مثال: دفعة بضاعة"></div></div>',
+      [{t:"حفظ",fn:function(){
+        var a=+$("#k_a").value||0, cur=$("#k_c").value, p=$("#k_p").value.trim();
+        if(!p) return toast("اكتب اسم الشريك");
+        if(a<=0) return toast("أدخل مبلغاً صحيحاً");
+        DB.capital.push({id:uid(),date:$("#k_d").value,partner:p,type:$("#k_t").value,cur:cur,amount:a,amountUSD:toUSD(a,cur),note:$("#k_n").value.trim()});
+        save(); closeModal(); VIEWS.capital();
+      }},{t:"إلغاء",cls:"btn ghost",fn:closeModal}]);
+  };
+  $$("[data-del]").forEach(function(b){b.onclick=function(){
+    confirmBox("حذف هذه الدفعة؟",function(){DB.capital=DB.capital.filter(function(c){return c.id!==b.dataset.del});save();VIEWS.capital()});
+  }});
+  $("#ex").onclick=function(){csv("lantana-capital",[["تاريخ","شريك","نوع","بيان","عملة","مبلغ","USD"]].concat(rows.map(function(c){return[c.date,c.partner,c.type==="draw"?"سحب":"مساهمة",c.note,c.cur,c.amount,c.amountUSD.toFixed(2)]})))};
 };
 
 /* ---------- customers ---------- */
@@ -754,6 +830,7 @@ VIEWS.reports=function(){
       '<tr style="background:#fbfaf5"><td><b>مجمل الربح</b></td><td class="n"><b>'+f(G)+'</b> <span class="tag">'+(R?Math.round(G/R*100):0)+'٪</span></td></tr>'+
       '<tr><td>المصاريف التشغيلية</td><td class="n down">−'+f(E)+'</td></tr>'+
       '<tr style="background:#f4f6ee"><td><b>صافي الربح</b></td><td class="n"><b class="'+(N<0?"down":"up")+'">'+f(N)+'</b> <span class="tag">'+(R?Math.round(N/R*100):0)+'٪</span></td></tr>'+
+      '<tr><td style="color:var(--ink-60)">مصاريف تأسيسية وأصول (خارج الحساب)</td><td class="n" style="color:var(--ink-60)">'+f(capexIn(a,b))+'</td></tr>'+
       '<tr><td style="color:var(--ink-60)">عدد الفواتير · متوسط الفاتورة</td><td class="n">'+salesIn(a,b).length+' · '+f(salesIn(a,b).length? R/salesIn(a,b).length:0)+'</td></tr>'+
     '</tbody></table></div>'+
     '<div class="panel"><h3>المصاريف حسب البند</h3><table><tbody>'+
@@ -832,7 +909,7 @@ VIEWS.settings=function(){
   $("#rs").onclick=function(){$("#file").click()};
   $("#file").onchange=function(e){
     var f=e.target.files[0]; if(!f)return; var r=new FileReader();
-    r.onload=function(){try{var d=JSON.parse(r.result); if(!d.products||!d.settings) throw 0;
+    r.onload=function(){try{var d=JSON.parse(r.result); if(!d.products||!d.settings) throw 0; if(!d.capital) d.capital=[];
       DB=d; save(); toast("تمت الاستعادة"); location.hash="#dash"; route();
     }catch(err){toast("الملف غير صالح")}};
     r.readAsText(f);
