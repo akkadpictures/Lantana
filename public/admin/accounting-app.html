@@ -282,7 +282,7 @@ function nfmt(v,c){
   return Number(v||0).toLocaleString("en-US",{minimumFractionDigits:dec,maximumFractionDigits:dec});
 }
 function money(usd,c){c=c||DB.settings.base;return nfmt(fromUSD(usd,c),c)+" "+c}
-function dfmt(s){if(!s)return"—";var d=new Date(s);return d.toLocaleDateString("ar-SY",{day:"2-digit",month:"short",year:"numeric"})}
+function dfmt(s){if(!s)return"—";var d=new Date(s);return d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"})}
 function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove("on")},2200)}
 function confirmBox(msg,fn){
   openModal("تأكيد","<p style='font-size:14px'>"+esc(msg)+"</p>",
@@ -970,7 +970,7 @@ $("#lock").onclick=function(){try{sessionStorage.removeItem("lantana_open")}catc
 /* ===================== boot ===================== */
 if(EMBED) document.body.classList.add("embed");
 renderNav();
-$("#today").textContent=new Date().toLocaleDateString("ar-SY",{weekday:"long",day:"numeric",month:"long"});
+$("#today").textContent=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
 if(EMBED||sessionOpen()){ $("#gate").style.display="none"; $("#app").classList.add("on"); route(); }
 else { $("#pin").focus(); }
 save();
