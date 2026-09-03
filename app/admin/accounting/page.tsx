@@ -2,18 +2,22 @@ import { Shell } from "@/components/admin/Shell";
 
 export const dynamic = "force-dynamic";
 
+/* Bump `v` whenever accounting-app.html changes, so the browser fetches the
+   new file instead of serving the cached one. */
+const APP = "/admin/accounting-app.html?embed=1&v=2";
+
 export default function AdminAccounting() {
   return (
     <Shell title="Accounting">
       <div className="overflow-hidden rounded-2xl border border-ink/10 bg-[#F6F3EA] shadow-[0_18px_40px_-28px_rgba(42,44,34,0.45)]">
         <iframe
-          src="/admin/accounting-app.html?embed=1"
+          src={APP}
           title="Accounting"
           className="block h-[calc(100vh-12rem)] min-h-[640px] w-full border-0"
         />
       </div>
       <p className="mt-3 font-body text-xs text-ink/45">
-        Sales, inventory, purchases, expenses, cash and P&amp;L. Data is stored in this browser — download a backup weekly from Settings inside the panel.
+        Sales, inventory, purchases, expenses, cash, partner capital and P&amp;L. Data is stored in this browser — download a backup weekly from Settings inside the panel.
       </p>
     </Shell>
   );
