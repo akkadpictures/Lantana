@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LANTANA — Maison de Parfum, Damascus</title>
+<meta name="description" content="LANTANA — eight eaux de parfum with French essences from Grasse, composed in Dubai, born in Damascus.">
+<meta name="theme-color" content="#6F7354">
+<link rel="icon" href="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/066e1635-cd48-4366-8325-4e5fec516f72.png">
+<meta property="og:title" content="LANTANA — Damascus, bottled.">
+<meta property="og:image" content="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/cb7b93f9-e191-4949-abc3-c5c0cac5a206.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://d2ol7oe51mr4n9.cloudfront.net">
+<link rel="preload" as="image" href="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/cb7b93f9-e191-4949-abc3-c5c0cac5a206.jpg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:wght@300;400;500;600&family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap">
+<style>
+/* LANTANA — image-led maison site. Real scenes carry the page; colour bands from the brand palette fill every gap. */
+:root{
+  --olive:#8A8D68; --deep:#6F7354; --sage:#A7AA83; --steel:#B8BDC0; --silver:#D7D8D3; --pearl:#F6F3EA;
+  --ink:#2F3123; --night:#4F5340;
+  --f-display:'Marcellus','Times New Roman',serif;
+  --f-body:'Montserrat','Helvetica Neue',Arial,sans-serif;
+  --f-ar-display:'Amiri','Times New Roman',serif;
+  --f-ar-body:'Cairo','Segoe UI',Tahoma,sans-serif;
+  --ease:cubic-bezier(.22,.7,.2,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--night);color:var(--pearl);font-family:var(--f-body);font-size:16px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.ar{font-family:var(--f-ar-body)}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--pearl);outline-offset:3px}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+.sec{padding-block:clamp(72px,9vw,120px)}
+.eyebrow{font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;font-weight:600}
+body.ar .eyebrow{letter-spacing:0;font-size:.95rem;text-transform:none}
+.disp{font-family:var(--f-display);font-weight:400;letter-spacing:.01em;text-wrap:balance;margin:0;line-height:1.05}
+body.ar .disp{font-family:var(--f-ar-display);font-weight:700;letter-spacing:0;line-height:1.3}
+.h2{font-size:clamp(2.2rem,4.2vw,3.6rem)}
+.lead{font-size:1.05rem;max-width:46ch;margin:0}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 48px;flex-wrap:wrap;margin-bottom:40px}
+.head>div{display:flex;flex-direction:column;gap:12px}
+.latin{font-family:var(--f-display)!important;font-weight:400!important;letter-spacing:.08em!important}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border:0;cursor:pointer;text-decoration:none;font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;transition:background .3s,color .3s,transform .3s var(--ease)}
+body.ar .btn{letter-spacing:0;font-size:1rem;text-transform:none}
+.btn:hover{transform:translateY(-2px)}
+.btn-pearl{background:var(--pearl);color:var(--ink)}
+.btn-pearl:hover{background:#fff}
+.btn-line{background:rgba(47,49,35,.15);color:var(--pearl);box-shadow:inset 0 0 0 1px rgba(246,243,234,.7);backdrop-filter:blur(6px)}
+.btn-line:hover{background:rgba(246,243,234,.15)}
+.btn-ink{background:var(--ink);color:var(--pearl)}
+.btn-ink:hover{background:#22241a}
+
+.js .rv{opacity:0;transform:translateY(22px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+
+/* Header */
+.ann{background:var(--ink);color:rgba(246,243,234,.9);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:9px 16px}
+body.ar .ann{letter-spacing:0;text-transform:none;font-size:.9rem}
+.hdr{position:sticky;top:0;z-index:50;background:rgba(79,83,64,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(246,243,234,.12)}
+.hdr .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:12px}
+.nav{display:flex;gap:28px;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500}
+body.ar .nav{letter-spacing:0;font-size:1rem;text-transform:none}
+.nav a{text-decoration:none;padding:8px 0;border-bottom:1px solid transparent;transition:border-color .3s}
+.nav a:hover{border-color:currentColor}
+.logo{display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none}
+.logo .em{width:22px}.logo .wm{width:112px}
+.hdr-r{display:flex;justify-content:flex-end;align-items:center;gap:12px}
+.lang{background:none;border:1px solid rgba(246,243,234,.45);min-height:40px;padding:0 14px;cursor:pointer;font-family:var(--f-ar-body);font-size:.95rem}
+body.ar .lang{font-family:var(--f-body);font-size:.72rem;letter-spacing:.2em}
+.bag{background:none;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 4px}
+.bag b{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:11px;background:var(--pearl);color:var(--ink);font-size:.7rem}
+.bag b.pop{animation:pop .45s var(--ease)}
+@keyframes pop{50%{transform:scale(1.35)}}
+@media (max-width:900px){.nav .hs{display:none}.nav{gap:16px}.logo .wm{width:92px}}
+
+/* HERO */
+.hero{position:relative;min-height:min(92svh,880px);display:flex;align-items:flex-end;overflow:hidden;background:var(--deep)}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:62% 50%;animation:kb 14s var(--ease) both}
+@keyframes kb{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(47,49,35,.78) 0%,rgba(47,49,35,.45) 32%,rgba(47,49,35,0) 58%),linear-gradient(0deg,rgba(47,49,35,.55),transparent 35%)}
+body.ar .hero::after{background:linear-gradient(90deg,rgba(47,49,35,.78) 0%,rgba(47,49,35,.45) 32%,rgba(47,49,35,0) 58%),linear-gradient(0deg,rgba(47,49,35,.55),transparent 35%)}
+.hero-in{position:relative;z-index:2;width:100%;padding-block:120px 56px;display:flex;flex-direction:column;gap:22px}
+body.ar .hero-in{align-items:flex-end}
+.hero h1{font-size:clamp(3rem,6.2vw,5.8rem);max-width:12ch}
+.hero .lead{color:rgba(246,243,234,.92);max-width:40ch}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.feat{margin-top:22px;display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap;padding-top:18px;border-top:1px solid rgba(246,243,234,.3);max-width:620px;font-size:.92rem}
+.feat .nm{font-family:var(--f-display);font-size:1.5rem;letter-spacing:.1em;line-height:1}
+.feat .an{font-family:var(--f-ar-display);font-size:1.35rem;line-height:1}
+.feat button{background:none;border:0;border-bottom:1px solid currentColor;padding:4px 0;cursor:pointer;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+body.ar .feat button{letter-spacing:0;font-size:.95rem;text-transform:none}
+@media (max-width:820px){
+  .hero{flex-direction:column;align-items:stretch;min-height:0}
+  .hero-bg{position:relative;height:62svh;min-height:380px}
+  .hero-bg img{object-position:76% 50%}
+  .hero::after{display:none}
+  .hero-in{padding-block:36px 48px;background:var(--deep)}
+}
+
+/* Strip */
+.strip{background:var(--sage);color:var(--ink)}
+.strip .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.strip .it{display:flex;align-items:center;gap:14px;padding:24px 18px}
+.strip .it+.it{border-inline-start:1px solid rgba(47,49,35,.2)}
+.strip img{width:22px;flex:0 0 auto}
+.strip b{display:block;font-family:var(--f-display);font-weight:400;font-size:1.2rem;line-height:1.2}
+body.ar .strip b{font-family:var(--f-ar-display);font-weight:700}
+.strip small{font-size:.82rem;opacity:.85}
+@media (max-width:900px){.strip .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.strip .it:nth-child(3){border-inline-start:0}.strip .it:nth-child(n+3){border-top:1px solid rgba(47,49,35,.2)}}
+
+/* Shop mosaic */
+.shop{background:var(--deep)}
+.filters{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+body.ar .filters{align-items:flex-start}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:42px;padding:0 18px;border-radius:999px;border:1px solid rgba(246,243,234,.5);background:transparent;cursor:pointer;font-size:.86rem;transition:background .3s,color .3s}
+.chip.on{background:var(--pearl);color:var(--ink);border-color:var(--pearl)}
+.mosaic{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.tile{position:relative;aspect-ratio:4/5;max-width:100%;overflow:hidden;background:var(--night);border:0;padding:0;cursor:pointer;text-align:start;color:var(--pearl);display:block}
+.tile[hidden]{display:none!important}
+.tile img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease)}
+.tile:hover img{transform:scale(1.045)}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(38,40,28,.82) 0%,rgba(38,40,28,.25) 34%,transparent 52%);pointer-events:none}
+.tile .cap{position:absolute;left:18px;right:18px;bottom:16px;z-index:2;display:flex;flex-direction:column;gap:2px}
+.tile .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.tile .row b{font-family:var(--f-display);font-weight:400;font-size:1.35rem;letter-spacing:.1em}
+.tile .row i{font-style:normal;font-family:var(--f-ar-display);font-size:1.3rem}
+.tile .sub{display:flex;justify-content:space-between;gap:10px;font-size:.84rem;opacity:.9}
+.tile .tag{position:absolute;top:14px;inset-inline-start:14px;z-index:2;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;background:rgba(47,49,35,.45);backdrop-filter:blur(6px);padding:6px 10px}
+body.ar .tile .tag{letter-spacing:0;font-size:.82rem}
+.tile .view{position:absolute;top:14px;inset-inline-end:14px;z-index:2;background:var(--pearl);color:var(--ink);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;padding:8px 12px;opacity:0;transform:translateY(-6px);transition:opacity .4s,transform .4s var(--ease)}
+body.ar .tile .view{letter-spacing:0;font-size:.82rem}
+.tile:hover .view,.tile:focus-visible .view{opacity:1;transform:none}
+.count{font-size:.86rem;opacity:.9;margin:20px 0 0}
+@media (max-width:1000px){.mosaic{grid-template-columns:repeat(2,minmax(0,1fr))}.filters,body.ar .filters{align-items:flex-start}}
+@media (max-width:520px){.tile .row b{font-size:1.05rem}.tile .row i{font-size:1.05rem}.tile .sub span:first-child{display:none}.tile .cap{left:12px;right:12px;bottom:10px}}
+
+/* Collections */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--night)}
+.col{position:relative;min-height:min(78svh,720px);overflow:hidden;display:flex;align-items:flex-end;color:var(--pearl);text-decoration:none}
+.col img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease)}
+.col:hover img{transform:scale(1.04)}
+.col::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(38,40,28,.85),rgba(38,40,28,.2) 45%,transparent 65%)}
+.col .in{position:relative;z-index:2;padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;gap:14px;max-width:520px}
+.col p{margin:0;opacity:.92}
+.col .names{font-family:var(--f-display);letter-spacing:.16em;font-size:.86rem;opacity:.85}
+@media (max-width:900px){.cols{grid-template-columns:1fr}.col{min-height:70svh}}
+
+/* Maison */
+.maison{display:grid;grid-template-columns:1fr 1fr;background:var(--deep)}
+.maison .txt{padding:clamp(56px,7vw,110px) clamp(20px,5vw,80px);display:flex;flex-direction:column;justify-content:center;gap:20px;position:relative;overflow:hidden}
+.maison .wmk{position:absolute;inset-inline-end:-80px;bottom:-60px;width:320px;opacity:.08;pointer-events:none}
+.maison p{margin:0;font-size:1.05rem;color:rgba(246,243,234,.92);max-width:46ch}
+.maison .ph{position:relative;min-height:560px;overflow:hidden}
+.maison .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.facts{margin-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid rgba(246,243,234,.28)}
+.fact{padding:20px 16px 0 0;display:flex;flex-direction:column;gap:2px}
+body.ar .fact{padding:20px 0 0 16px}
+.fact>b{font-family:var(--f-display);font-weight:400;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.1}
+body.ar .fact>b{font-family:var(--f-ar-display);font-weight:700}
+.fact>span{font-size:.86rem;opacity:.88}
+@media (max-width:900px){.maison{grid-template-columns:1fr}.maison .ph{min-height:70svh;order:-1}}
+
+/* Coffret */
+.cof{background:linear-gradient(120deg,var(--steel),var(--silver) 50%,var(--steel));color:var(--ink)}
+.cof .in{display:grid;grid-template-columns:1fr 1.15fr;gap:56px;align-items:center}
+.cof .lead{color:#3a3d2f}
+.set{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:10px;background:var(--deep);box-shadow:0 30px 60px rgba(47,49,35,.28)}
+.set img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 45%;transition:transform .8s var(--ease)}
+.set img:hover{transform:translateY(-6px)}
+.price{font-family:var(--f-display);font-size:2rem;line-height:1}
+@media (max-width:900px){.cof .in{grid-template-columns:1fr}}
+
+/* Boutique */
+.btq{background:var(--sage);color:var(--ink)}
+.btq .in{display:grid;grid-template-columns:1fr 1fr;gap:56px}
+.btq dl{display:grid;grid-template-columns:120px 1fr;gap:12px 18px;margin:26px 0 0}
+.btq dt{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;padding-top:4px;opacity:.8}
+body.ar .btq dt{letter-spacing:0;font-size:.95rem;padding-top:0}
+.btq dd{margin:0}
+.rows{display:flex;flex-direction:column;border-top:1px solid rgba(47,49,35,.3);margin-top:26px}
+.rows div{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(47,49,35,.3)}
+@media (max-width:900px){.btq .in{grid-template-columns:1fr;gap:48px}}
+
+/* Footer */
+.ftr{background:var(--ink);color:rgba(246,243,234,.85);padding-top:80px}
+.ftr .top{display:flex;justify-content:space-between;gap:48px;flex-wrap:wrap}
+.ftr form{display:flex;flex-direction:column;gap:10px;max-width:460px;flex:1 1 320px}
+.ftr label{font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--pearl);font-weight:600}
+body.ar .ftr label{letter-spacing:0;font-size:1rem}
+.ftr .fx{display:flex}
+.ftr input{flex:1;min-width:0;min-height:52px;background:transparent;border:1px solid rgba(246,243,234,.4);border-inline-end:0;color:var(--pearl);padding:0 16px;font:inherit}
+.ftr .ok{font-size:.88rem;color:var(--sage);min-height:1.4em}
+.ftr .links{display:flex;gap:56px;flex-wrap:wrap;font-size:.92rem}
+.ftr .links div{display:flex;flex-direction:column;gap:8px}
+.ftr .links a{text-decoration:none;opacity:.85}.ftr .links a:hover{opacity:1}
+.ftr .links small{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;opacity:.6}
+body.ar .ftr .links small{letter-spacing:0;font-size:.85rem}
+.ftr .sig{display:flex;justify-content:center;padding-block:64px 40px}
+.ftr .sig img{width:min(400px,70vw);opacity:.9}
+.legal{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.78rem;opacity:.65;padding-block:20px;border-top:1px solid rgba(246,243,234,.15)}
+
+/* Drawer */
+.scrim{position:fixed;inset:0;z-index:80;background:rgba(25,27,17,.6);opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;z-index:81;width:min(560px,100vw);background:var(--deep);color:var(--pearl);transform:translateX(100%);visibility:hidden;transition:transform .55s var(--ease),visibility 0s linear .55s;display:flex;flex-direction:column;overflow-y:auto}
+body.ar .drawer{transform:translateX(-100%)}
+.drawer.open,body.ar .drawer.open{transform:none;visibility:visible;transition:transform .55s var(--ease),visibility 0s}
+.dr-top{position:relative;aspect-ratio:4/5;max-height:62vh;flex:0 0 auto;overflow:hidden;background:var(--night)}
+.dr-top img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.dr-x{position:absolute;top:14px;inset-inline-end:14px;width:46px;height:46px;border-radius:50%;border:0;background:rgba(47,49,35,.55);backdrop-filter:blur(6px);color:var(--pearl);cursor:pointer;display:grid;place-items:center}
+.dr-body{padding:28px clamp(20px,5vw,40px) 40px;display:flex;flex-direction:column;gap:20px}
+.dr-body h3{font-size:2.8rem}
+.dr-body .an{font-family:var(--f-ar-display);font-size:1.8rem;line-height:1}
+.pyr{display:grid;border-top:1px solid rgba(246,243,234,.25)}
+.pyr div{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid rgba(246,243,234,.25)}
+.pyr small{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;opacity:.8;padding-top:4px}
+body.ar .pyr small{letter-spacing:0;font-size:.95rem;padding-top:0}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}.js .rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="ann" data-i="ann">Free delivery across Damascus · Order on WhatsApp +963 984 179 484</div>
+<header class="hdr">
+  <div class="wrap">
+    <nav class="nav" aria-label="Main">
+      <a href="#shop" data-i="nav1">Shop</a>
+      <a href="#collections" class="hs" data-i="nav2">Collections</a>
+      <a href="#maison" class="hs" data-i="nav3">Maison</a>
+      <a href="#boutique" class="hs" data-i="nav4">Boutique</a>
+    </nav>
+    <a class="logo" href="#top" aria-label="LANTANA"><img class="em" src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/67e8b5b4-077a-461a-95c3-8ddbe2fddb4e.png" alt=""><img class="wm" src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/6903571e-5bdf-488f-961d-d01d7012dc8e.png" alt="LANTANA لانتانا"></a>
+    <div class="hdr-r">
+      <button class="lang" id="lang" type="button">العربية</button>
+      <button class="bag" type="button" aria-label="Bag"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg><b id="bagN">0</b></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="hero-bg"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/cb7b93f9-e191-4949-abc3-c5c0cac5a206.jpg" alt="LANTANA Waqar on a travertine plinth in a Damascene courtyard" fetchpriority="high"></div>
+  <div class="wrap hero-in">
+    <div class="eyebrow" style="opacity:.9" data-i="heroEy">Maison de parfum · Damascus</div>
+    <h1 class="disp" data-i="heroH">Damascus, bottled.</h1>
+    <p class="lead" data-i="heroP">Eight eaux de parfum. Essences from Grasse, composed in Dubai, born in the city of jasmine.</p>
+    <div class="hero-cta">
+      <a class="btn btn-pearl" href="#shop" data-i="heroB1">Discover the eight</a>
+      <a class="btn btn-line" href="https://wa.me/963984179484" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 11.6a8.2 8.2 0 0 1-12.2 7.2L4 20l1.2-3.6A8.2 8.2 0 1 1 20 11.6Z"/></svg><span data-i="wa">Order on WhatsApp</span></a>
+    </div>
+    <div class="feat"><span class="nm">WAQAR</span><span class="an" dir="rtl">وقار</span><span id="featDesc">Citrus, ginger and amber woods · $35</span><button type="button" data-open="7" data-i="details">View notes</button></div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <div class="it"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/066e1635-cd48-4366-8325-4e5fec516f72.png" alt=""><div><b>Grasse</b><small data-i="s1">French essences</small></div></div>
+    <div class="it"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/066e1635-cd48-4366-8325-4e5fec516f72.png" alt=""><div><b data-i="s2t">Dubai</b><small data-i="s2">Composed &amp; macerated</small></div></div>
+    <div class="it"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/066e1635-cd48-4366-8325-4e5fec516f72.png" alt=""><div><b data-i="s3t">6–8 hours</b><small data-i="s3">Eau de parfum on skin</small></div></div>
+    <div class="it"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/066e1635-cd48-4366-8325-4e5fec516f72.png" alt=""><div><b data-i="s4t">Damascus</b><small data-i="s4">Free city delivery</small></div></div>
+  </div>
+</div>
+
+<section class="shop sec" id="shop">
+  <div class="wrap">
+    <div class="head">
+      <div class="rv">
+        <div class="eyebrow" style="opacity:.9" data-i="mEy">The collection</div>
+        <h2 class="disp h2" data-i="mH">Eight scents, eight corners of the house.</h2>
+      </div>
+      <div class="filters">
+        <div class="chips" id="chipsL" role="group" aria-label="Collection"></div>
+        <div class="chips" id="chipsM" role="group" aria-label="Mood"></div>
+      </div>
+    </div>
+    <div class="mosaic" id="grid"></div>
+    <p class="count" id="count"></p>
+  </div>
+</section>
+
+<section class="cols" id="collections">
+  <a class="col" href="#shop" data-go="pearl">
+    <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/91314a35-0d59-4e2b-994c-efe978c0f5f9.jpg" alt="" loading="lazy">
+    <div class="in rv">
+      <div class="eyebrow" data-i="pEy">Crowned in mother-of-pearl</div>
+      <h2 class="disp h2" data-i="pH">The Pearl Collection</h2>
+      <p data-i="pP">Floral, luminous and soft. Each bottle is sealed with a nacre sphere.</p>
+      <div class="names">MOON · LUNÉA · YASMEEN · MISK</div>
+      <span class="btn btn-pearl" style="align-self:flex-start" data-i="pL">Shop the Pearl Collection</span>
+    </div>
+  </a>
+  <a class="col" href="#shop" data-go="ebony">
+    <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/6a9dacdd-342b-4a39-b6d5-7746feed8116.jpg" alt="" loading="lazy">
+    <div class="in rv">
+      <div class="eyebrow" data-i="eEy">Under a matte black cap</div>
+      <h2 class="disp h2" data-i="eH">The Ebony Collection</h2>
+      <p data-i="eP">Woods, amber, leather and oud, made for the evening.</p>
+      <div class="names">LAYAL · ASRAR · BARQ · WAQAR</div>
+      <span class="btn btn-pearl" style="align-self:flex-start" data-i="eL">Shop the Ebony Collection</span>
+    </div>
+  </a>
+</section>
+
+<section class="maison" id="maison">
+  <div class="txt">
+    <img class="wmk" src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/67e8b5b4-077a-461a-95c3-8ddbe2fddb4e.png" alt="">
+    <div class="eyebrow rv" style="opacity:.85" data-i="maEy">The Maison</div>
+    <h2 class="disp h2 rv" data-i="maH">Born in the city of jasmine.</h2>
+    <p class="rv" data-i="maP1">Lantana blooms in clusters, the way a good perfume opens on skin: one note, then another, then the one you remember.</p>
+    <p class="rv" data-i="maP2">Every formula starts with French essences from Grasse. It is composed and macerated for weeks in Dubai, finished by hand, engraved in silver, and brought home to our boutique in Damascus.</p>
+    <div class="facts rv">
+      <div class="fact"><b>8</b><span data-i="f1">Eaux de parfum</span></div>
+      <div class="fact"><b data-i="f2t">6–8 h</b><span data-i="f2">On skin, close and lasting</span></div>
+    </div>
+  </div>
+  <div class="ph"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/d9bce12d-2d99-4946-99a4-b626a31a1358.jpg" alt="LANTANA Yasmeen among jasmine blossoms" loading="lazy"></div>
+</section>
+
+<section class="cof sec">
+  <div class="wrap in">
+    <div class="rv" style="display:flex;flex-direction:column;gap:18px">
+      <div class="eyebrow" data-i="cEy">The Discovery Coffret</div>
+      <h2 class="disp h2" data-i="cH">Not sure yet? Wear four for a week.</h2>
+      <p class="lead" data-i="cP">Four signatures in 30 ml, boxed together. The considered first purchase, and the gift that never misses.</p>
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px">
+        <span class="price" style="font-size:2.4rem">$75</span><span class="eyebrow" style="opacity:.75">4 × 30 ml</span>
+        <button class="btn btn-ink" type="button" id="addCof" data-i="cB">Add the coffret</button>
+      </div>
+    </div>
+    <div class="set rv"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/a1a84355-9948-45ee-94eb-fcb1eed0d246.jpg" alt="Moon" loading="lazy"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/601d3a6b-17e3-4295-ba7c-bc028d3afb7f.jpg" alt="Lunéa" loading="lazy"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/651796f2-6c53-431f-ba89-d64246b2599a.jpg" alt="Layal" loading="lazy"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/d9b58ee3-66b7-41e5-aa8f-7a0512feae3c.jpg" alt="Waqar" loading="lazy"></div>
+  </div>
+</section>
+
+<section class="btq sec" id="boutique">
+  <div class="wrap in">
+    <div class="rv">
+      <div class="eyebrow" data-i="bEy">Visit the boutique</div>
+      <h2 class="disp h2" style="margin-top:12px" data-i="bH">Al-Shaalan Street, Damascus</h2>
+      <dl>
+        <dt data-i="bHours">Hours</dt><dd>[Opening hours]</dd>
+        <dt>WhatsApp</dt><dd dir="ltr" style="user-select:all;justify-self:start">+963 984 179 484</dd>
+        <dt>Instagram</dt><dd dir="ltr" style="justify-self:start"><a href="https://instagram.com/lantana.perfume" target="_blank" rel="noopener">@lantana.perfume</a></dd>
+      </dl>
+      <div style="margin-top:30px"><a class="btn btn-ink" href="https://wa.me/963984179484" target="_blank" rel="noopener" data-i="bWa">Order on WhatsApp</a></div>
+    </div>
+    <div class="rv">
+      <div class="eyebrow" data-i="dEy">Delivery</div>
+      <h2 class="disp h2" style="margin-top:12px" data-i="dH">Free across Damascus</h2>
+      <div class="rows">
+        <div><span data-i="d1">Damascus</span><span data-i="free">Free</span></div>
+        <div><span data-i="d2">Other Syrian cities</span><span>[Rate]</span></div>
+        <div><span data-i="d3">Gulf countries</span><span>[Rate]</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="top">
+      <form id="news" novalidate>
+        <label for="em" data-i="nl">The private list</label>
+        <span style="font-size:.92rem;opacity:.85" data-i="nlP">New launches and boutique previews, once a month at most.</span>
+        <div class="fx"><input id="em" type="email" placeholder="you@email.com" autocomplete="email"><button class="btn btn-pearl" type="submit" data-i="join">Join</button></div>
+        <div class="ok" id="ok" role="status"></div>
+      </form>
+      <div class="links">
+        <div><small data-i="fs">Shop</small><a href="#collections" data-i="pH">The Pearl Collection</a><a href="#collections" data-i="eH">The Ebony Collection</a><a href="#shop" data-i="cEy">The Discovery Coffret</a></div>
+        <div><small data-i="fm">Maison</small><a href="#maison" data-i="fstory">Our story</a><a href="#boutique" data-i="nav4">Boutique</a><a href="https://instagram.com/lantana.perfume" target="_blank" rel="noopener">Instagram</a></div>
+      </div>
+    </div>
+    <div class="sig"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/6903571e-5bdf-488f-961d-d01d7012dc8e.png" alt="LANTANA لانتانا"></div>
+    <div class="legal"><span>© 2026 LANTANA</span><span style="font-family:var(--f-ar-body)">لانتانا · دمشق</span></div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drName" aria-hidden="true">
+  <div class="dr-top">
+    <img id="drImg" src="" alt="">
+    <button class="dr-x" type="button" id="drX" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="dr-body">
+    <div>
+      <div class="eyebrow" id="drLine" style="opacity:.85"></div>
+      <h3 class="disp latin" id="drName"></h3>
+      <div class="an" id="drAr" dir="rtl"></div>
+      <p id="drDesc" style="margin:12px 0 0;font-size:1.08rem"></p>
+    </div>
+    <div class="pyr" id="drPyr"></div>
+    <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap"><span class="price">$35</span><span class="eyebrow" style="opacity:.8" data-i="size">50 ml · Eau de parfum</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-pearl" type="button" id="drAdd" style="flex:1 1 200px" data-i="add">Add to bag</button>
+      <a class="btn btn-line" id="drWa" href="https://wa.me/963984179484" target="_blank" rel="noopener" style="flex:1 1 200px" data-i="wa">Order on WhatsApp</a>
+    </div>
+  </div>
+</aside>
+
+<script>
+(function(){
+document.documentElement.classList.add('js');
+const IMG={"moon": "https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/a1a84355-9948-45ee-94eb-fcb1eed0d246.jpg", "lunea": "https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/601d3a6b-17e3-4295-ba7c-bc028d3afb7f.jpg", "yasmeen": "https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/d9bce12d-2d99-4946-99a4-b626a31a1358.jpg", "misk": "https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/91314a35-0d59-4e2b-994c-efe978c0f5f9.jpg", "layal": "https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/651796f2-6c53-431f-ba89-d64246b2599a.jpg", "asrar": "https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/6a9dacdd-342b-4a39-b6d5-7746feed8116.jpg", "barq": "https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/15e51e81-514b-484a-932a-65f1a728e6ec.jpg", "waqar": "https://d2ol7oe51mr4n9.cloudfront.net/user_32yCLin8DLcapwvOq04QMxVJkgS/d9b58ee3-66b7-41e5-aa8f-7a0512feae3c.jpg"};
+const F=[
+ {id:'moon',name:'MOON',ar:'مون',line:'pearl',mood:'oud',
+  en:{desc:'Leather and night rose',top:'Leather, tobacco',heart:'Rose, patchouli',base:'Oud, woods'},
+  arT:{desc:'جلد وورد الليل',top:'جلد، تبغ',heart:'ورد، باتشولي',base:'عود، أخشاب'}},
+ {id:'lunea',name:'LUNÉA',ar:'لونيا',line:'pearl',mood:'floral',
+  en:{desc:'Berries, jasmine and vanilla',top:'Lime, mandarin, orange blossom, wild berries',heart:'Jasmine, pear, immortelle, caramel',base:'White musk, sandalwood, licorice, vanilla'},
+  arT:{desc:'توت وياسمين وفانيلا',top:'ليمون أخضر، يوسفي، زهر البرتقال، توت بري',heart:'ياسمين، إجاص، خلود، كراميل',base:'مسك أبيض، صندل، عرقسوس، فانيلا'}},
+ {id:'yasmeen',name:'YASMEEN',ar:'ياسمين',line:'pearl',mood:'floral',
+  en:{desc:'Damascene jasmine',top:'Lavender, citrus',heart:'Jasmine, white flowers, orchid',base:'Vanilla, amber, vetiver'},
+  arT:{desc:'ياسمين دمشقي',top:'لافندر، حمضيات',heart:'ياسمين، زهور بيضاء، أوركيد',base:'فانيلا، عنبر، فيتيفر'}},
+ {id:'misk',name:'MISK',ar:'مسك',line:'pearl',mood:'musk',
+  en:{desc:'Soft skin musk',top:'Musk, powder, warm and fresh spices',heart:'White flowers',base:'Woods, an animalic touch'},
+  arT:{desc:'مسك ناعم على البشرة',top:'مسك، بودرة، توابل دافئة ومنعشة',heart:'زهور بيضاء',base:'أخشاب، لمسة حيوانية'}},
+ {id:'layal',name:'LAYAL',ar:'ليال',line:'ebony',mood:'fresh',
+  en:{desc:'Lavender, amber and oud',top:'Bergamot, pink pepper, cardamom, mineral accord',heart:'Lavender, geranium, clary sage, nutmeg',base:'Amber, oud, sandalwood, leather, musk'},
+  arT:{desc:'لافندر وعنبر وعود',top:'برغموت، فلفل وردي، هيل، أكورد معدني',heart:'لافندر، جيرانيوم، مريمية، جوزة الطيب',base:'عنبر، عود، صندل، جلد، مسك'}},
+ {id:'asrar',name:'ASRAR',ar:'أسرار',line:'ebony',mood:'oud',
+  en:{desc:'Tea, saffron and honeyed leather',top:'Bergamot, tea',heart:'Saffron, leather',base:'Honey, woods'},
+  arT:{desc:'شاي وزعفران وجلد معسّل',top:'برغموت، شاي',heart:'زعفران، جلد',base:'عسل، أخشاب'}},
+ {id:'barq',name:'BARQ',ar:'برق',line:'ebony',mood:'oud',
+  en:{desc:'Saffron, rose and oud',top:'Saffron, rose, bergamot',heart:'Tonka, oud',base:'Amber, musk'},
+  arT:{desc:'زعفران وورد وعود',top:'زعفران، ورد، برغموت',heart:'تونكا، عود',base:'عنبر، مسك'}},
+ {id:'waqar',name:'WAQAR',ar:'وقار',line:'ebony',mood:'fresh',
+  en:{desc:'Citrus, ginger and amber woods',top:'Citrus, pear',heart:'Flowers, ginger',base:'Musk, woods, amber'},
+  arT:{desc:'حمضيات وزنجبيل وأخشاب عنبرية',top:'حمضيات، إجاص',heart:'زهور، زنجبيل',base:'مسك، أخشاب، عنبر'}}
+];
+const T={
+ en:{ann:'Free delivery across Damascus · Order on WhatsApp +963 984 179 484',nav1:'Shop',nav2:'Collections',nav3:'Maison',nav4:'Boutique',
+  heroEy:'Maison de parfum · Damascus',heroH:'Damascus, bottled.',heroP:'Eight eaux de parfum. Essences from Grasse, composed in Dubai, born in the city of jasmine.',heroB1:'Discover the eight',wa:'Order on WhatsApp',details:'View notes',
+  s1:'French essences',s2t:'Dubai',s2:'Composed & macerated',s3t:'6–8 hours',s3:'Eau de parfum on skin',s4t:'Damascus',s4:'Free city delivery',
+  pEy:'Crowned in mother-of-pearl',pH:'The Pearl Collection',pP:'Floral, luminous and soft. Each bottle is sealed with a nacre sphere.',pL:'Shop the Pearl Collection',
+  eEy:'Under a matte black cap',eH:'The Ebony Collection',eP:'Woods, amber, leather and oud, made for the evening.',eL:'Shop the Ebony Collection',
+  mEy:'The collection',mH:'Eight scents, eight corners of the house.',maEy:'The Maison',maH:'Born in the city of jasmine.',
+  maP1:'Lantana blooms in clusters, the way a good perfume opens on skin: one note, then another, then the one you remember.',
+  maP2:'Every formula starts with French essences from Grasse. It is composed and macerated for weeks in Dubai, finished by hand, engraved in silver, and brought home to our boutique in Damascus.',
+  f1:'Eaux de parfum',f2t:'6–8 h',f2:'On skin, close and lasting',
+  cEy:'The Discovery Coffret',cH:'Not sure yet? Wear four for a week.',cP:'Four signatures in 30 ml, boxed together. The considered first purchase, and the gift that never misses.',cB:'Add the coffret',
+  bEy:'Visit the boutique',bH:'Al-Shaalan Street, Damascus',bHours:'Hours',bWa:'Order on WhatsApp',dEy:'Delivery',dH:'Free across Damascus',d1:'Damascus',d2:'Other Syrian cities',d3:'Gulf countries',free:'Free',
+  nl:'The private list',nlP:'New launches and boutique previews, once a month at most.',join:'Join',fs:'Shop',fm:'Maison',fstory:'Our story',
+  size:'50 ml · Eau de parfum',add:'Add to bag',added:'Added to bag',view:'View notes',
+  top:'Top',heart:'Heart',base:'Base',col:'Collection',pearl:'Pearl',ebony:'Ebony',
+  lines:{all:'All eight',pearl:'Pearl',ebony:'Ebony'},
+  moods:{all:'Every mood',floral:'Floral',musk:'Soft musk',fresh:'Fresh & aromatic',oud:'Oud & leather'},
+  showing:n=>n===8?'Showing all eight fragrances.':'Showing '+n+' of 8 fragrances.',none:'No fragrance matches both filters. Choose another mood.',
+  waMsg:n=>'Hello LANTANA, I would like to order '+n+' (50 ml).',okMsg:'Thank you. You are on the list.',badMsg:'Enter a valid email address, like name@email.com.'},
+ ar:{ann:'توصيل مجاني داخل دمشق · اطلب عبر واتساب ‎+963 984 179 484',nav1:'تسوّق',nav2:'المجموعات',nav3:'الدار',nav4:'البوتيك',
+  heroEy:'دار عطور · دمشق',heroH:'دمشق في قارورة.',heroP:'ثمانية عطور أو دو بارفان. خلاصات فرنسية من غراس، تُركَّب في دبي، ووُلدت في مدينة الياسمين.',heroB1:'اكتشف العطور الثمانية',wa:'اطلب عبر واتساب',details:'شاهد النوتات',
+  s1:'خلاصات فرنسية',s2t:'دبي',s2:'تركيب وتعتيق',s3t:'٦–٨ ساعات',s3:'ثبات على البشرة',s4t:'دمشق',s4:'توصيل مجاني',
+  pEy:'متوّجة بالصدف',pH:'مجموعة اللؤلؤ',pP:'زهرية ومضيئة وناعمة، كل قارورة مختومة بكرة من الصدف.',pL:'تسوّق مجموعة اللؤلؤ',
+  eEy:'تحت غطاء أسود مطفأ',eH:'مجموعة الأبنوس',eP:'أخشاب وعنبر وجلد وعود، للمساء.',eL:'تسوّق مجموعة الأبنوس',
+  mEy:'المجموعة',mH:'ثمانية عطور، ثماني زوايا من البيت.',maEy:'الدار',maH:'وُلدت في مدينة الياسمين.',
+  maP1:'تتفتّح اللانتانا عناقيد، كما يتفتّح العطر الجيد على البشرة: نوتة، ثم أخرى، ثم تلك التي تبقى في الذاكرة.',
+  maP2:'تبدأ كل تركيبة بخلاصات فرنسية من غراس، تُركَّب وتُعتَّق لأسابيع في دبي، وتُنهى يدوياً وتُحفر بالفضة، ثم تعود إلى بوتيكنا في دمشق.',
+  f1:'عطور أو دو بارفان',f2t:'٦–٨ س',f2:'ثبات قريب ودائم على البشرة',
+  cEy:'علبة الاكتشاف',cH:'محتار؟ جرّب أربعة عطور لأسبوع.',cP:'أربعة توقيعات بحجم ٣٠ مل في علبة واحدة. أذكى بداية، وأجمل هدية.',cB:'أضف العلبة',
+  bEy:'زوروا البوتيك',bH:'شارع الشعلان، دمشق',bHours:'الدوام',bWa:'اطلب عبر واتساب',dEy:'التوصيل',dH:'مجاني داخل دمشق',d1:'دمشق',d2:'باقي المحافظات السورية',d3:'دول الخليج',free:'مجاني',
+  nl:'القائمة الخاصة',nlP:'إطلاقات جديدة ومعاينات حصرية، مرة في الشهر كحدّ أقصى.',join:'انضم',fs:'تسوّق',fm:'الدار',fstory:'قصتنا',
+  size:'٥٠ مل · أو دو بارفان',add:'أضف إلى السلة',added:'أُضيف إلى السلة',view:'النوتات',
+  top:'القمة',heart:'القلب',base:'القاعدة',col:'مجموعة',pearl:'اللؤلؤ',ebony:'الأبنوس',
+  lines:{all:'الثمانية',pearl:'اللؤلؤ',ebony:'الأبنوس'},
+  moods:{all:'كل الأمزجة',floral:'زهري',musk:'مسك ناعم',fresh:'منعش عطري',oud:'عود وجلد'},
+  showing:n=>n===8?'تعرض جميع العطور الثمانية.':'تعرض '+n+' من ٨ عطور.',none:'لا يوجد عطر يطابق الاختيارين. جرّب مزاجاً آخر.',
+  waMsg:n=>'مرحباً لانتانا، أود طلب عطر '+n+' (٥٠ مل).',okMsg:'شكراً لك، أصبحت ضمن القائمة.',badMsg:'أدخل بريداً إلكترونياً صحيحاً، مثل name@email.com.'}
+};
+let L='en',line='all',mood='all',bag=0,drawerId=null,lastFocus=null;
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const tx=f=>L==='en'?f.en:f.arT;
+const lineName=f=>L==='en'?T.en[f.line]+' '+T.en.col:T.ar.col+' '+T.ar[f.line];
+const waLink=f=>'https://wa.me/963984179484?text='+encodeURIComponent(T[L].waMsg(f.name+' '+f.ar));
+
+function renderChips(){
+  $('#chipsL').innerHTML=Object.keys(T.en.lines).map(k=>'<button type="button" class="chip'+(k===line?' on':'')+'" data-l="'+k+'" aria-pressed="'+(k===line)+'">'+T[L].lines[k]+'</button>').join('');
+  $('#chipsM').innerHTML=Object.keys(T.en.moods).map(k=>'<button type="button" class="chip'+(k===mood?' on':'')+'" data-m="'+k+'" aria-pressed="'+(k===mood)+'">'+T[L].moods[k]+'</button>').join('');
+}
+function renderShop(){
+  renderChips(); let n=0;
+  $('#grid').innerHTML=F.map((f,i)=>{
+    const on=(line==='all'||f.line===line)&&(mood==='all'||f.mood===mood); if(on)n++;
+    return '<button class="tile" type="button" data-open="'+i+'"'+(on?'':' hidden')+'><img src="'+IMG[f.id]+'" alt="LANTANA '+f.name+'" loading="lazy"><span class="tag">'+T[L][f.line]+'</span><span class="view">'+T[L].view+'</span>'+
+      '<span class="cap"><span class="row"><b>'+f.name+'</b><i dir="rtl">'+f.ar+'</i></span><span class="sub"><span>'+tx(f).desc+'</span><span>$35</span></span></span></button>';
+  }).join('');
+  $('#count').textContent=n?T[L].showing(n):T[L].none;
+}
+$('#chipsL').addEventListener('click',e=>{const b=e.target.closest('[data-l]');if(b){line=b.dataset.l;renderShop();}});
+$('#chipsM').addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(b){mood=b.dataset.m;renderShop();}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b){e.preventDefault();openDrawer(+b.dataset.open,b);}});
+$$('[data-go]').forEach(a=>a.addEventListener('click',()=>{line=a.dataset.go;mood='all';renderShop();}));
+
+const drawer=$('#drawer'),scrim=$('#scrim');
+function fillDrawer(){
+  if(drawerId===null)return; const f=F[drawerId],t=tx(f);
+  $('#drImg').src=IMG[f.id];$('#drImg').alt='LANTANA '+f.name;
+  $('#drLine').textContent=lineName(f);$('#drName').textContent=f.name;$('#drAr').textContent=f.ar;$('#drDesc').textContent=t.desc;
+  $('#drPyr').innerHTML='<div><small>'+T[L].top+'</small><span>'+t.top+'</span></div><div><small>'+T[L].heart+'</small><span>'+t.heart+'</span></div><div><small>'+T[L].base+'</small><span>'+t.base+'</span></div>';
+  $('#drWa').href=waLink(f);
+}
+function openDrawer(i,from){drawerId=i;lastFocus=from||null;fillDrawer();drawer.classList.add('open');scrim.classList.add('open');drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setTimeout(()=>$('#drX').focus(),60);}
+function closeDrawer(){drawer.classList.remove('open');scrim.classList.remove('open');drawer.setAttribute('aria-hidden','true');document.body.style.overflow='';drawerId=null;if(lastFocus)lastFocus.focus();}
+$('#drX').addEventListener('click',closeDrawer);scrim.addEventListener('click',closeDrawer);
+addEventListener('keydown',e=>{if(e.key==='Escape'&&drawerId!==null)closeDrawer();});
+
+function addBag(btn){bag++;const n=$('#bagN');n.textContent=bag;n.classList.remove('pop');void n.offsetWidth;n.classList.add('pop');
+  if(btn){btn.textContent=T[L].added;setTimeout(()=>{btn.textContent=btn.id==='addCof'?T[L].cB:T[L].add;},1500);}}
+$('#drAdd').addEventListener('click',e=>addBag(e.currentTarget));
+$('#addCof').addEventListener('click',e=>addBag(e.currentTarget));
+$('#news').addEventListener('submit',e=>{e.preventDefault();const v=$('#em').value.trim();$('#ok').textContent=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)?T[L].okMsg:T[L].badMsg;});
+
+function applyLang(){
+  document.documentElement.lang=L;document.documentElement.dir=L==='ar'?'rtl':'ltr';
+  document.body.classList.toggle('ar',L==='ar');
+  $$('[data-i]').forEach(el=>{const v=T[L][el.dataset.i];if(typeof v==='string')el.textContent=v;});
+  $('#lang').textContent=L==='en'?'العربية':'EN';
+  $('#featDesc').textContent=tx(F[7]).desc+' · $35';
+  renderShop();fillDrawer();
+}
+$('#lang').addEventListener('click',()=>{L=L==='en'?'ar':'en';applyLang();});
+
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+  $$('.rv').forEach(el=>io.observe(el));
+}else{$$('.rv').forEach(el=>el.classList.add('in'));}
+renderShop();
+})();
+</script>
+</body>
+</html>
