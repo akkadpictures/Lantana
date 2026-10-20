@@ -1,0 +1,252 @@
+[youtube] Extracting URL: https://www.youtube.com/watch?v=O_NxsX52uNM
+[youtube] O_NxsX52uNM: Downloading webpage
+[youtube] O_NxsX52uNM: Downloading visionos player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] O_NxsX52uNM: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client default failed for O_NxsX52uNM
+[youtube] Extracting URL: https://www.youtube.com/watch?v=O_NxsX52uNM
+[youtube] O_NxsX52uNM: Downloading webpage
+[youtube] O_NxsX52uNM: Downloading tv client config
+[youtube] O_NxsX52uNM: Downloading player c271e571-main
+[youtube] O_NxsX52uNM: Downloading tv player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] O_NxsX52uNM: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client tv failed for O_NxsX52uNM
+[youtube] Extracting URL: https://www.youtube.com/watch?v=O_NxsX52uNM
+[youtube] O_NxsX52uNM: Downloading webpage
+[youtube] O_NxsX52uNM: Downloading web safari client config
+[youtube] O_NxsX52uNM: Downloading web safari player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] O_NxsX52uNM: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_safari failed for O_NxsX52uNM
+[youtube] Extracting URL: https://www.youtube.com/watch?v=O_NxsX52uNM
+[youtube] O_NxsX52uNM: Downloading webpage
+[youtube] O_NxsX52uNM: Downloading web embedded client config
+[youtube] O_NxsX52uNM: Downloading player c271e571-main
+[youtube] O_NxsX52uNM: Downloading web embedded player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] O_NxsX52uNM: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_embedded failed for O_NxsX52uNM
+[youtube] Extracting URL: https://www.youtube.com/watch?v=O_NxsX52uNM
+[youtube] O_NxsX52uNM: Downloading webpage
+[youtube] O_NxsX52uNM: Downloading mweb client config
+[youtube] O_NxsX52uNM: Downloading mweb player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] O_NxsX52uNM: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client mweb failed for O_NxsX52uNM
+[youtube] Extracting URL: https://www.youtube.com/watch?v=GPosoVKvqI4
+[youtube] GPosoVKvqI4: Downloading webpage
+[youtube] GPosoVKvqI4: Downloading visionos player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] GPosoVKvqI4: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client default failed for GPosoVKvqI4
+[youtube] Extracting URL: https://www.youtube.com/watch?v=GPosoVKvqI4
+[youtube] GPosoVKvqI4: Downloading webpage
+[youtube] GPosoVKvqI4: Downloading tv client config
+[youtube] GPosoVKvqI4: Downloading player c271e571-main
+[youtube] GPosoVKvqI4: Downloading tv player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] GPosoVKvqI4: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client tv failed for GPosoVKvqI4
+[youtube] Extracting URL: https://www.youtube.com/watch?v=GPosoVKvqI4
+[youtube] GPosoVKvqI4: Downloading webpage
+[youtube] GPosoVKvqI4: Downloading web safari client config
+[youtube] GPosoVKvqI4: Downloading web safari player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] GPosoVKvqI4: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_safari failed for GPosoVKvqI4
+[youtube] Extracting URL: https://www.youtube.com/watch?v=GPosoVKvqI4
+[youtube] GPosoVKvqI4: Downloading webpage
+[youtube] GPosoVKvqI4: Downloading web embedded client config
+[youtube] GPosoVKvqI4: Downloading player c271e571-main
+[youtube] GPosoVKvqI4: Downloading web embedded player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] GPosoVKvqI4: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_embedded failed for GPosoVKvqI4
+[youtube] Extracting URL: https://www.youtube.com/watch?v=GPosoVKvqI4
+[youtube] GPosoVKvqI4: Downloading webpage
+[youtube] GPosoVKvqI4: Downloading mweb client config
+[youtube] GPosoVKvqI4: Downloading mweb player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] GPosoVKvqI4: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client mweb failed for GPosoVKvqI4
+[youtube] Extracting URL: https://www.youtube.com/watch?v=tMgQ5nh8TzA
+[youtube] tMgQ5nh8TzA: Downloading webpage
+[youtube] tMgQ5nh8TzA: Downloading visionos player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] tMgQ5nh8TzA: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client default failed for tMgQ5nh8TzA
+[youtube] Extracting URL: https://www.youtube.com/watch?v=tMgQ5nh8TzA
+[youtube] tMgQ5nh8TzA: Downloading webpage
+[youtube] tMgQ5nh8TzA: Downloading tv client config
+[youtube] tMgQ5nh8TzA: Downloading player c271e571-main
+[youtube] tMgQ5nh8TzA: Downloading tv player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] tMgQ5nh8TzA: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client tv failed for tMgQ5nh8TzA
+[youtube] Extracting URL: https://www.youtube.com/watch?v=tMgQ5nh8TzA
+[youtube] tMgQ5nh8TzA: Downloading webpage
+[youtube] tMgQ5nh8TzA: Downloading web safari client config
+[youtube] tMgQ5nh8TzA: Downloading web safari player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] tMgQ5nh8TzA: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_safari failed for tMgQ5nh8TzA
+[youtube] Extracting URL: https://www.youtube.com/watch?v=tMgQ5nh8TzA
+[youtube] tMgQ5nh8TzA: Downloading webpage
+[youtube] tMgQ5nh8TzA: Downloading web embedded client config
+[youtube] tMgQ5nh8TzA: Downloading player c271e571-main
+[youtube] tMgQ5nh8TzA: Downloading web embedded player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] tMgQ5nh8TzA: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_embedded failed for tMgQ5nh8TzA
+[youtube] Extracting URL: https://www.youtube.com/watch?v=tMgQ5nh8TzA
+[youtube] tMgQ5nh8TzA: Downloading webpage
+[youtube] tMgQ5nh8TzA: Downloading mweb client config
+[youtube] tMgQ5nh8TzA: Downloading mweb player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] tMgQ5nh8TzA: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client mweb failed for tMgQ5nh8TzA
+[youtube] Extracting URL: https://www.youtube.com/watch?v=UsJCHm0Vgtw
+[youtube] UsJCHm0Vgtw: Downloading webpage
+[youtube] UsJCHm0Vgtw: Downloading visionos player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] UsJCHm0Vgtw: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client default failed for UsJCHm0Vgtw
+[youtube] Extracting URL: https://www.youtube.com/watch?v=UsJCHm0Vgtw
+[youtube] UsJCHm0Vgtw: Downloading webpage
+[youtube] UsJCHm0Vgtw: Downloading tv client config
+[youtube] UsJCHm0Vgtw: Downloading player c271e571-main
+[youtube] UsJCHm0Vgtw: Downloading tv player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] UsJCHm0Vgtw: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client tv failed for UsJCHm0Vgtw
+[youtube] Extracting URL: https://www.youtube.com/watch?v=UsJCHm0Vgtw
+[youtube] UsJCHm0Vgtw: Downloading webpage
+[youtube] UsJCHm0Vgtw: Downloading web safari client config
+[youtube] UsJCHm0Vgtw: Downloading web safari player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] UsJCHm0Vgtw: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_safari failed for UsJCHm0Vgtw
+[youtube] Extracting URL: https://www.youtube.com/watch?v=UsJCHm0Vgtw
+[youtube] UsJCHm0Vgtw: Downloading webpage
+[youtube] UsJCHm0Vgtw: Downloading web embedded client config
+[youtube] UsJCHm0Vgtw: Downloading player c271e571-main
+[youtube] UsJCHm0Vgtw: Downloading web embedded player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] UsJCHm0Vgtw: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_embedded failed for UsJCHm0Vgtw
+[youtube] Extracting URL: https://www.youtube.com/watch?v=UsJCHm0Vgtw
+[youtube] UsJCHm0Vgtw: Downloading webpage
+[youtube] UsJCHm0Vgtw: Downloading mweb client config
+[youtube] UsJCHm0Vgtw: Downloading mweb player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] UsJCHm0Vgtw: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client mweb failed for UsJCHm0Vgtw
+[youtube] Extracting URL: https://www.youtube.com/watch?v=masnyggdO4c
+[youtube] masnyggdO4c: Downloading webpage
+[youtube] masnyggdO4c: Downloading visionos player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] masnyggdO4c: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client default failed for masnyggdO4c
+[youtube] Extracting URL: https://www.youtube.com/watch?v=masnyggdO4c
+[youtube] masnyggdO4c: Downloading webpage
+[youtube] masnyggdO4c: Downloading tv client config
+[youtube] masnyggdO4c: Downloading player c271e571-main
+[youtube] masnyggdO4c: Downloading tv player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] masnyggdO4c: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client tv failed for masnyggdO4c
+[youtube] Extracting URL: https://www.youtube.com/watch?v=masnyggdO4c
+[youtube] masnyggdO4c: Downloading webpage
+[youtube] masnyggdO4c: Downloading web safari client config
+[youtube] masnyggdO4c: Downloading web safari player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] masnyggdO4c: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_safari failed for masnyggdO4c
+[youtube] Extracting URL: https://www.youtube.com/watch?v=masnyggdO4c
+[youtube] masnyggdO4c: Downloading webpage
+[youtube] masnyggdO4c: Downloading web embedded client config
+[youtube] masnyggdO4c: Downloading player c271e571-main
+[youtube] masnyggdO4c: Downloading web embedded player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] masnyggdO4c: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_embedded failed for masnyggdO4c
+[youtube] Extracting URL: https://www.youtube.com/watch?v=masnyggdO4c
+[youtube] masnyggdO4c: Downloading webpage
+[youtube] masnyggdO4c: Downloading mweb client config
+[youtube] masnyggdO4c: Downloading mweb player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] masnyggdO4c: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client mweb failed for masnyggdO4c
+[youtube] Extracting URL: https://www.youtube.com/watch?v=VM8OTfrXqE8
+[youtube] VM8OTfrXqE8: Downloading webpage
+[youtube] VM8OTfrXqE8: Downloading visionos player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] VM8OTfrXqE8: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client default failed for VM8OTfrXqE8
+[youtube] Extracting URL: https://www.youtube.com/watch?v=VM8OTfrXqE8
+[youtube] VM8OTfrXqE8: Downloading webpage
+[youtube] VM8OTfrXqE8: Downloading tv client config
+[youtube] VM8OTfrXqE8: Downloading player c271e571-main
+[youtube] VM8OTfrXqE8: Downloading tv player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] VM8OTfrXqE8: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client tv failed for VM8OTfrXqE8
+[youtube] Extracting URL: https://www.youtube.com/watch?v=VM8OTfrXqE8
+[youtube] VM8OTfrXqE8: Downloading webpage
+[youtube] VM8OTfrXqE8: Downloading web safari client config
+[youtube] VM8OTfrXqE8: Downloading web safari player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] VM8OTfrXqE8: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_safari failed for VM8OTfrXqE8
+[youtube] Extracting URL: https://www.youtube.com/watch?v=VM8OTfrXqE8
+[youtube] VM8OTfrXqE8: Downloading webpage
+[youtube] VM8OTfrXqE8: Downloading web embedded client config
+[youtube] VM8OTfrXqE8: Downloading player c271e571-main
+[youtube] VM8OTfrXqE8: Downloading web embedded player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] VM8OTfrXqE8: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_embedded failed for VM8OTfrXqE8
+[youtube] Extracting URL: https://www.youtube.com/watch?v=VM8OTfrXqE8
+[youtube] VM8OTfrXqE8: Downloading webpage
+[youtube] VM8OTfrXqE8: Downloading mweb client config
+[youtube] VM8OTfrXqE8: Downloading mweb player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] VM8OTfrXqE8: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client mweb failed for VM8OTfrXqE8
+[youtube] Extracting URL: https://www.youtube.com/watch?v=9uDLEbUIySI
+[youtube] 9uDLEbUIySI: Downloading webpage
+[youtube] 9uDLEbUIySI: Downloading visionos player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] 9uDLEbUIySI: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client default failed for 9uDLEbUIySI
+[youtube] Extracting URL: https://www.youtube.com/watch?v=9uDLEbUIySI
+[youtube] 9uDLEbUIySI: Downloading webpage
+[youtube] 9uDLEbUIySI: Downloading tv client config
+[youtube] 9uDLEbUIySI: Downloading player c271e571-main
+[youtube] 9uDLEbUIySI: Downloading tv player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] 9uDLEbUIySI: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client tv failed for 9uDLEbUIySI
+[youtube] Extracting URL: https://www.youtube.com/watch?v=9uDLEbUIySI
+[youtube] 9uDLEbUIySI: Downloading webpage
+[youtube] 9uDLEbUIySI: Downloading web safari client config
+[youtube] 9uDLEbUIySI: Downloading web safari player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] 9uDLEbUIySI: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_safari failed for 9uDLEbUIySI
+[youtube] Extracting URL: https://www.youtube.com/watch?v=9uDLEbUIySI
+[youtube] 9uDLEbUIySI: Downloading webpage
+[youtube] 9uDLEbUIySI: Downloading web embedded client config
+[youtube] 9uDLEbUIySI: Downloading player c271e571-main
+[youtube] 9uDLEbUIySI: Downloading web embedded player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] 9uDLEbUIySI: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client web_embedded failed for 9uDLEbUIySI
+[youtube] Extracting URL: https://www.youtube.com/watch?v=9uDLEbUIySI
+[youtube] 9uDLEbUIySI: Downloading webpage
+[youtube] 9uDLEbUIySI: Downloading mweb client config
+[youtube] 9uDLEbUIySI: Downloading mweb player API JSON
+WARNING: [youtube] No title found in player responses; falling back to title from initial data. Other metadata may also be missing
+ERROR: [youtube] 9uDLEbUIySI: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies
+client mweb failed for 9uDLEbUIySI
