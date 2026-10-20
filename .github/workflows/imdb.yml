@@ -10,17 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download posters and stills
+      - name: Fetch YouTube showreel and thumbnails
         run: |
-          mkdir -p img
-          while read -r slug poster rest; do
-            curl -sSfL -A "Mozilla/5.0" -o "img/${slug}-poster.jpg" "https://m.media-amazon.com/images/M/${poster}._V1_QL88_UX1000_.jpg" || echo "fail $slug poster"
-            i=1; for k in $rest; do
-              curl -sSfL -A "Mozilla/5.0" -o "img/${slug}-${i}.jpg" "https://m.media-amazon.com/images/M/${k}._V1_QL88_UX1600_.jpg" || echo "fail $slug $i"
-              i=$((i+1)); done
-          done < list.txt
-          ls -la img
+          pip install -U "yt-dlp[default]" >/dev/null
+          sudo apt-get install -y ffmpeg >/dev/null 2>&1 || true
+          mkdir -p yt
+          for id in $(cat yt.txt); do
+            curl -sSfL -o "yt/${id}.jpg" "https://i.ytimg.com/vi/${id}/maxresdefault.jpg" || curl -sSfL -o "yt/${id}.jpg" "https://i.ytimg.com/vi/${id}/hqdefault.jpg" || echo "thumb fail $id"
+          done
+          for id in $(cat ytvid.txt); do
+            for c in default web_safari ios tv mweb; do
+              yt-dlp --no-playlist -f "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[height<=1080]" --merge-output-format mp4 \
+                --extractor-args "youtube:player_client=$c" -o "yt/${id}.%(ext)s" "https://www.youtube.com/watch?v=${id}" && break
+              echo "client $c failed for $id"
+            done
+          done
+          ls -la yt
       - name: Commit
         run: |
           git config user.name "akkad-assets"; git config user.email "assets@users.noreply.github.com"
-          git add img && git commit -m "[images] IMDb posters and stills" && git push
+          git add yt && git commit -m "[images] YouTube showreel and thumbnails" && git push
