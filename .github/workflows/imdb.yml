@@ -10,19 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
       - name: Fetch YouTube showreel and thumbnails
         run: |
           pip install -U "yt-dlp[default]" >/dev/null
           sudo apt-get install -y ffmpeg >/dev/null 2>&1 || true
           mkdir -p yt
+          for id in $(cat yt-skip.txt 2>/dev/null); do :; done
           for id in $(cat yt.txt); do
+            [ -f "yt/${id}.jpg" ] && continue
             curl -sSfL -o "yt/${id}.jpg" "https://i.ytimg.com/vi/${id}/maxresdefault.jpg" || curl -sSfL -o "yt/${id}.jpg" "https://i.ytimg.com/vi/${id}/hqdefault.jpg" || echo "thumb fail $id"
           done
           for id in $(cat ytvid.txt); do
-            for c in default web_safari ios tv mweb; do
+            [ -f "yt/${id}.mp4" ] && continue
+            for c in default tv web_safari web_embedded mweb; do
               yt-dlp --no-playlist -f "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[height<=1080]" --merge-output-format mp4 \
-                --extractor-args "youtube:player_client=$c" -o "yt/${id}.%(ext)s" "https://www.youtube.com/watch?v=${id}" && break
-              echo "client $c failed for $id"
+                --extractor-args "youtube:player_client=$c" -o "yt/${id}.%(ext)s" "https://www.youtube.com/watch?v=${id}" >> yt/log.txt 2>&1 && break
+              echo "client $c failed for $id" >> yt/log.txt
             done
           done
           ls -la yt
