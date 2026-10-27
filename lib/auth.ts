@@ -52,7 +52,7 @@ export async function createSession(): Promise<string> {
   return new SignJWT({ role: "admin" })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("365d")
+    .setExpirationTime("12h")
     .sign(secret());
 }
 
@@ -73,7 +73,6 @@ export const sessionCookie = {
     sameSite: "lax" as const,
     secure: process.env.NODE_ENV === "production",
     path: "/",
-    // جهاز موثوق: بعد أول دخول بيضل يفتح دغري عهالجهاز سنة كاملة (تسجيل الخروج بيمسحه)
-    maxAge: 60 * 60 * 24 * 365,
+    maxAge: 60 * 60 * 12,
   },
 };
