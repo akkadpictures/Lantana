@@ -1,2 +1,2 @@
-{"name":"LANTANA Reports","short_name":"Reports","start_url":"/?app=1","scope":"/","display":"standalone","background_color":"#6A6E4F","theme_color":"#6A6E4F","dir":"rtl","lang":"ar",
-"icons":[{"src":"/icon-192.png","sizes":"192x192","type":"image/png"},{"src":"/icon-512.png","sizes":"512x512","type":"image/png"},{"src":"/icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}
+{"name":"LANTANA Reports","short_name":"Reports","start_url":"./?app=1","scope":"./","display":"standalone","background_color":"#6A6E4F","theme_color":"#6A6E4F","dir":"rtl","lang":"ar",
+"icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png"},{"src":"icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}
